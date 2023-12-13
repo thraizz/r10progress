@@ -1,0 +1,1 @@
+export const App = () => <p className="text-3xl font-bold underline"> It works. </p>;
