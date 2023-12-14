@@ -6,21 +6,35 @@ name: Deploy to Firebase Hosting on merge
   push:
     branches:
       - main
+env:
+  VITE_API_KEY: "${{ secrets.VITE_API_KEY }}"
+  VITE_AUTH_DOMAIN: "${{ vars.VITE_AUTH_DOMAIN }}"
+  VITE_PROJECT_ID: "${{ vars.VITE_PROJECT_ID }}"
+  VITE_STORAGE_BUCKET: "${{ vars.VITE_STORAGE_BUCKET }}"
+  VITE_MESSAGING_SENDER_ID: "${{ vars.VITE_MESSAGING_SENDER_ID }}"
+  VITE_APP_ID: "${{ vars.VITE_APP_ID }}"
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v1
-        # with:
-        #   VITE_API_KEY: "${{ secrets.VITE_API_KEY }}"
-        #   VITE_AUTH_DOMAIN: "${{ vars.VITE_AUTH_DOMAIN }}"
-        #   VITE_PROJECT_ID: "${{ vars.VITE_PROJECT_ID }}"
-        #   VITE_STORAGE_BUCKET: "${{ vars.VITE_STORAGE_BUCKET }}"
-        #   VITE_MESSAGING_SENDER_ID: "${{ vars.VITE_MESSAGING_SENDER_ID }}"
-        #   VITE_APP_ID: "${{ vars.VITE_APP_ID }}"
+        env:
+          VITE_API_KEY: "${{ secrets.VITE_API_KEY }}"
+          VITE_AUTH_DOMAIN: "${{ vars.VITE_AUTH_DOMAIN }}"
+          VITE_PROJECT_ID: "${{ vars.VITE_PROJECT_ID }}"
+          VITE_STORAGE_BUCKET: "${{ vars.VITE_STORAGE_BUCKET }}"
+          VITE_MESSAGING_SENDER_ID: "${{ vars.VITE_MESSAGING_SENDER_ID }}"
+          VITE_APP_ID: "${{ vars.VITE_APP_ID }}"
       - run: bun run env
       - run: bun install --frozen-lockfile
+        env:
+          VITE_API_KEY: "${{ secrets.VITE_API_KEY }}"
+          VITE_AUTH_DOMAIN: "${{ vars.VITE_AUTH_DOMAIN }}"
+          VITE_PROJECT_ID: "${{ vars.VITE_PROJECT_ID }}"
+          VITE_STORAGE_BUCKET: "${{ vars.VITE_STORAGE_BUCKET }}"
+          VITE_MESSAGING_SENDER_ID: "${{ vars.VITE_MESSAGING_SENDER_ID }}"
+          VITE_APP_ID: "${{ vars.VITE_APP_ID }}"
       - run: bun run env && bun run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
