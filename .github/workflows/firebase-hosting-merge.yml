@@ -12,10 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v1
-      - run: echo "${{ vars.VITE_AUTH_DOMAIN }}"
-      - run: bun install --frozen-lockfile
-      - run: bun run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           VITE_API_KEY: "${{ secrets.VITE_API_KEY }}"
           VITE_AUTH_DOMAIN: "${{ vars.VITE_AUTH_DOMAIN }}"
@@ -23,6 +19,11 @@ jobs:
           VITE_STORAGE_BUCKET: "${{ vars.VITE_STORAGE_BUCKET }}"
           VITE_MESSAGING_SENDER_ID: "${{ vars.VITE_MESSAGING_SENDER_ID }}"
           VITE_APP_ID: "${{ vars.VITE_APP_ID }}"
+      - run: echo "${{ vars.VITE_AUTH_DOMAIN }}"
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_R10PROGRESS }}"
           channelId: live
