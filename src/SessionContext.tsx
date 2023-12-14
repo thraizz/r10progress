@@ -19,14 +19,14 @@ const SessionContext = createContext<SessionContextInterface>({
 
 const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [sessions, setSession] = useState<Record<string, DocumentData> | null>(
-    null
+    null,
   );
   const memoizedValue = useMemo(
     () => ({
       sessions,
       setSession,
     }),
-    [sessions, setSession]
+    [sessions, setSession],
   );
 
   return (

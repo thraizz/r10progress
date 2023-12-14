@@ -16,7 +16,7 @@ export const SessionPicker = () => {
     async function fetchSnapshot() {
       if (uuid) {
         const querySnapshot = await getDocs(
-          collection(db, "r10data", uuid, "data")
+          collection(db, "r10data", uuid, "data"),
         );
         setSession(
           querySnapshot.docs.reduce(
@@ -25,8 +25,8 @@ export const SessionPicker = () => {
               acc[curr.id] = { ...data, selected: false };
               return acc;
             },
-            {} as Record<string, DocumentData>
-          )
+            {} as Record<string, DocumentData>,
+          ),
         );
         return querySnapshot;
       }
@@ -45,8 +45,8 @@ export const SessionPicker = () => {
           acc[curr] = { ...sessions![curr], selected: curr === value };
           return acc;
         },
-        {} as Record<string, DocumentData>
-      )
+        {} as Record<string, DocumentData>,
+      ),
     );
   };
 

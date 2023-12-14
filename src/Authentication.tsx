@@ -29,7 +29,7 @@ export const Authentication = () => {
         console.log(user);
         setUser(user);
         // ...
-      }
+      },
     );
   };
   const login = () => {
@@ -60,7 +60,7 @@ export const Authentication = () => {
                     selected
                       ? "border-indigo-500 text-indigo-600"
                       : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                    "whitespace-nowrap border-b-2 text-sm font-medium w-full text-center pb-4 block"
+                    "whitespace-nowrap border-b-2 text-sm font-medium w-full text-center pb-4 block",
                   )}
                 >
                   Login
@@ -74,7 +74,7 @@ export const Authentication = () => {
                     selected
                       ? "border-indigo-500 text-indigo-600"
                       : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                    "whitespace-nowrap border-b-2 text-sm font-medium w-full text-center pb-4 block"
+                    "whitespace-nowrap border-b-2 text-sm font-medium w-full text-center pb-4 block",
                   )}
                 >
                   Register
@@ -116,7 +116,7 @@ export const Authentication = () => {
                     "rounded bg-sky-50 px-2 py-1 text-md font-semibold text-sky-600 shadow-sm hover:bg-sky-100",
                     !loginForm.formState.isValid
                       ? "opacity-50 pointer-events-none"
-                      : ""
+                      : "",
                   )}
                   type="submit"
                   disabled={!loginForm.formState.isValid}
@@ -175,7 +175,7 @@ export const Authentication = () => {
                     "rounded bg-sky-50 px-2 py-1 text-md font-semibold text-sky-600 shadow-sm hover:bg-sky-100",
                     !registerForm.formState.isValid
                       ? "opacity-50 pointer-events-none"
-                      : ""
+                      : "",
                   )}
                   type="submit"
                   disabled={!registerForm.formState.isValid}
