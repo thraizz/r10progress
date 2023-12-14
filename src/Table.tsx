@@ -8,7 +8,7 @@ export const Table = () => {
   const { sessions } = useContext(SessionContext);
 
   // Column Definitions: Defines & controls grid columns.
-  const [columnDefs, setColumnDefs] = useState([
+  const [columnDefs] = useState([
     { field: "Spieler" },
     { field: "Schlägerart" },
     { field: "Carry-Distanz" },
