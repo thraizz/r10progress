@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+  @apply rounded bg-sky-200 px-2 py-1 text-lg font-semibold text-sky-600 shadow-sm hover:bg-sky-300;
+
+  &.is-disabled {
+    @apply opacity-50 bg-gray-50 pointer-events-none text-gray-600 hover:bg-gray-50
+  }
+}
+
+input {
+    @apply border-2 border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-transparent;  
+    &:focus {
+        @apply ring-2 ring-sky-600;
+    }
+    &.has-error {
+        @apply border-red-500;
+    }
+}

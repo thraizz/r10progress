@@ -11,10 +11,7 @@ export const UserMenu = () => {
       {isAuthenticated && (
         <>
           <UploadModal />
-          <button
-            onClick={() => auth.signOut()}
-            className="border-2 border-gray-300 px-4 py-2 rounded-md bg-sky-200"
-          >
+          <button onClick={() => auth.signOut()} className="btn">
             Logout
           </button>
         </>

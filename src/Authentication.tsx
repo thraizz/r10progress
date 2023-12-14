@@ -22,15 +22,29 @@ export const Authentication = () => {
   }>();
   const createAccount = () => {
     const { email, password } = registerForm.getValues();
-    createUserWithEmailAndPassword(auth, email, password).then(
-      (userCredential) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
         // Signed up
         const user = userCredential.user;
         console.log(user);
         setUser(user);
         // ...
-      },
-    );
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        if (errorCode === "auth/email-already-in-use") {
+          registerForm.setError("email", {
+            type: "manual",
+            message: "Email already in use",
+          });
+        }
+        if (errorCode === "auth/weak-password") {
+          registerForm.setError("password", {
+            type: "manual",
+            message: "Password is too weak",
+          });
+        }
+      });
   };
   const login = () => {
     const { email, password } = loginForm.getValues();
@@ -44,8 +58,18 @@ export const Authentication = () => {
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        if (errorCode === "auth/wrong-password") {
+          loginForm.setError("password", {
+            type: "manual",
+            message: "Incorrect password",
+          });
+        }
+        if (errorCode === "auth/user-not-found") {
+          loginForm.setError("email", {
+            type: "manual",
+            message: "User not found",
+          });
+        }
       });
   };
   return (
@@ -94,32 +118,46 @@ export const Authentication = () => {
                     Email
                   </label>
                   <input
-                    className="border-2 border-gray-300 px-4 py-2 rounded-md"
+                    className={classNames(
+                      loginForm.formState.errors.email ? "has-error" : "",
+                    )}
                     type="email"
                     id="email"
                     {...loginForm.register("email", { required: true })}
                   />
+                  {loginForm.formState.errors.email && (
+                    <p className="text-red-500 text-sm">
+                      This field is required
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col">
                   <label className="text-sm text-gray-500" htmlFor="password">
                     Password
                   </label>
                   <input
-                    className="border-2 border-gray-300 px-4 py-2 rounded-md"
+                    className={classNames(
+                      "border-2 border-gray-300 px-4 py-2 rounded-md",
+                      loginForm.formState.errors.password
+                        ? "border-red-500"
+                        : "",
+                    )}
                     type="password"
                     id="password"
                     {...loginForm.register("password", { required: true })}
                   />
+                  {loginForm.formState.errors.password && (
+                    <p className="text-red-500 text-sm">
+                      This field is required
+                    </p>
+                  )}
                 </div>
                 <button
                   className={classNames(
-                    "rounded bg-sky-50 px-2 py-1 text-md font-semibold text-sky-600 shadow-sm hover:bg-sky-100",
-                    !loginForm.formState.isValid
-                      ? "opacity-50 pointer-events-none"
-                      : "",
+                    "btn",
+                    loginForm.formState.isValid === false ? "is-disabled" : "",
                   )}
                   type="submit"
-                  disabled={!loginForm.formState.isValid}
                 >
                   Login
                 </button>
@@ -172,10 +210,8 @@ export const Authentication = () => {
                 </div>
                 <button
                   className={classNames(
-                    "rounded bg-sky-50 px-2 py-1 text-md font-semibold text-sky-600 shadow-sm hover:bg-sky-100",
-                    !registerForm.formState.isValid
-                      ? "opacity-50 pointer-events-none"
-                      : "",
+                    "btn",
+                    !registerForm.formState.isValid ? "is-disabled" : "",
                   )}
                   type="submit"
                   disabled={!registerForm.formState.isValid}

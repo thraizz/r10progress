@@ -70,12 +70,12 @@ export const FileUpload = () => {
       </div>
       <button
         className={[
-          "border-2 border-gray-300 px-4 py-2 rounded-md",
+          "btn",
           csvFile !== null &&
           isUploading === false &&
           inputRef.current?.value !== ""
             ? "bg-sky-200"
-            : "bg-gray-200 pointer-events-none",
+            : "is-disabled",
         ].join(" ")}
         type="submit"
       >
