@@ -44,12 +44,12 @@ export const AveragesTable = () => {
     <Disclosure defaultOpen={true} as="div" className="mt-2">
       {({ open }) => (
         <>
-          <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+          <Disclosure.Button className="flex w-full justify-between rounded-lg bg-sky-100 px-4 py-2 text-left text-sm font-medium text-sky-900 hover:bg-sky-200 focus:outline-none focus-visible:ring focus-visible:ring-sky-500/75">
             <h3 className="text-xl font-bold">Average Values</h3>
             <ChevronUpIcon
               className={`${
                 open ? "rotate-180 transform" : ""
-              } h-5 w-5 text-purple-500 self-center`}
+              } h-5 w-5 text-sky-500 self-center`}
             />
           </Disclosure.Button>
           <Disclosure.Panel className="mt-2 pt-4 text-sm text-gray-500">

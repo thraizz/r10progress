@@ -12,7 +12,7 @@ export const App = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="flex flex-row items-center justify-between h-32 bg-sky-600 px-6 py-4">
+      <header className="flex flex-row items-center justify-between h-32 bg-sky-50 px-6 py-4">
         <div>
           <h1 className="text-2xl font-bold">r10progress</h1>
           <p className="text-md">
