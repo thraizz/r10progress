@@ -8,7 +8,7 @@ import { UserContext } from "./UserProvider";
 import { db } from "./firebaseConfig";
 
 export const SessionPicker = () => {
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("All");
   const { sessions, setSession } = useContext(SessionContext);
   const { user } = useContext(UserContext);
   const uuid = user?.uid;
@@ -23,7 +23,7 @@ export const SessionPicker = () => {
           querySnapshot.docs.reduce(
             (acc, curr) => {
               const data = curr.data();
-              acc[curr.id] = { ...data, selected: false };
+              acc[curr.id] = { ...data, selected: true };
               return acc;
             },
             {} as Record<string, DocumentData>,
