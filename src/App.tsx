@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { Authentication } from "./Authentication";
+import { AveragesTable } from "./AveragesTable";
+import { DataTable } from "./DataTable";
 import { SessionPicker } from "./SessionPicker";
-import { Table } from "./Table";
 import { UserMenu } from "./UserMenu";
 import { UserContext } from "./UserProvider";
 
@@ -25,9 +26,9 @@ export const App = () => {
           <div className="flex flex-col items-center justify-center">
             <div className="mx-auto w-full max-w-4xl p-4 bg-gray-100 rounded-md shadow-md flex flex-col gap-4">
               <h2 className="text-2xl font-bold">Sessions</h2>
-              <p className="text-md">Select a session to view details.</p>
               <SessionPicker />
-              <Table />
+              <DataTable />
+              <AveragesTable />
             </div>
           </div>
         </div>

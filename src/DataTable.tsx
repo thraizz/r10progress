@@ -4,7 +4,7 @@ import { AgGridReact } from "ag-grid-react";
 import { useContext, useState } from "react";
 import { SessionContext } from "./SessionContext";
 
-export const Table = () => {
+export const DataTable = () => {
   const { sessions } = useContext(SessionContext);
 
   // Column Definitions: Defines & controls grid columns.
@@ -45,15 +45,33 @@ export const Table = () => {
   // Get the session where selected is true
   const jsonFileWithoutEmptyRows =
     sessions &&
-    Object.values(sessions).find((session) => session.selected)?.results;
+    Object.values(sessions)
+      .filter((session) => session.selected)
+      ?.reduce(
+        (acc, curr) => {
+          if (curr.results.length > 0) {
+            acc.push(...curr.results);
+          }
+          return acc;
+        },
+        [] as Array<Record<string, string>>,
+      );
 
-  return jsonFileWithoutEmptyRows ? (
-    <div className="ag-theme-quartz" style={{ height: 500 }}>
-      <AgGridReact rowData={jsonFileWithoutEmptyRows} columnDefs={columnDefs} />
-    </div>
-  ) : (
-    <p className="text-md text-sky-900">
-      Select a session to display data here.
-    </p>
+  return (
+    <>
+      <h3 className="text-xl font-bold">Data</h3>
+      {jsonFileWithoutEmptyRows ? (
+        <div className="ag-theme-quartz" style={{ height: 500 }}>
+          <AgGridReact
+            rowData={jsonFileWithoutEmptyRows}
+            columnDefs={columnDefs}
+          />
+        </div>
+      ) : (
+        <p className="text-md text-sky-900">
+          Select a session to display data here.
+        </p>
+      )}
+    </>
   );
 };
