@@ -43,19 +43,19 @@ export const DataTable = () => {
   ]);
 
   // Get the session where selected is true
-  const jsonFileWithoutEmptyRows =
-    sessions &&
-    Object.values(sessions)
-      .filter((session) => session.selected)
-      ?.reduce(
-        (acc, curr) => {
-          if (curr.results.length > 0) {
-            acc.push(...curr.results);
-          }
-          return acc;
-        },
-        [] as Array<Record<string, string>>,
-      );
+  const jsonFileWithoutEmptyRows = sessions
+    ? (Object.values(sessions)
+        .filter((session) => session.selected)
+        ?.reduce(
+          (acc, curr) => {
+            if (curr.results.length > 0) {
+              acc.push(...curr.results);
+            }
+            return acc;
+          },
+          [] as Array<Record<string, string>>,
+        ) as Array<Record<string, string>>)
+    : [];
 
   return (
     <>

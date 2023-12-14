@@ -7,6 +7,7 @@ import React, {
 } from "react";
 
 export type SessionType = Record<string, DocumentData> | null;
+
 export interface SessionContextInterface {
   sessions: SessionType;
   setSession: (sessions: SessionType) => void;
@@ -18,9 +19,7 @@ const SessionContext = createContext<SessionContextInterface>({
 });
 
 const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [sessions, setSession] = useState<Record<string, DocumentData> | null>(
-    null,
-  );
+  const [sessions, setSession] = useState<SessionType>(null);
   const memoizedValue = useMemo(
     () => ({
       sessions,

@@ -27,7 +27,9 @@ export const AveragesTable = () => {
     if (sessions) {
       const { field } = columnDef;
       const values = Object.values(sessions).map((session) => {
-        return session.results.map((result) => result[field]);
+        return session?.results.map(
+          (result: { [x: string]: string }) => result[field],
+        );
       });
       const average =
         values.flat().reduce((a, b) => a + b, 0) / values.flat().length;
