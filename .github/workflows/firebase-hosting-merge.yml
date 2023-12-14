@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: oven-sh/setup-bun@v1
+      - run: echo "${{ vars.VITE_AUTH_DOMAIN }}"
       - run: bun install --frozen-lockfile
       - run: bun run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
