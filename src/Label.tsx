@@ -1,5 +1,9 @@
-import { FC, PropsWithChildren } from "react";
+import clsx from "clsx";
+import { PropsWithChildren } from "react";
 
-export const Label: FC<PropsWithChildren> = ({ children }) => (
-  <p className="text-xs text-gray-500">{children}</p>
+export const Label = ({
+  className,
+  children,
+}: { className?: string } & PropsWithChildren) => (
+  <p className={clsx("text-xs text-gray-500", className)}>{children}</p>
 );

@@ -1,6 +1,8 @@
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
-import { AgGridReact } from "ag-grid-react";
+import { AgGridReact } from "ag-grid-react/lib/agGridReact";
 import { useContext, useState } from "react";
 import { SessionContext } from "./SessionContext";
 
@@ -58,20 +60,35 @@ export const DataTable = () => {
     : [];
 
   return (
-    <>
-      <h3 className="text-xl font-bold">Data</h3>
+    <div>
       {jsonFileWithoutEmptyRows ? (
-        <div className="ag-theme-quartz" style={{ height: 500 }}>
-          <AgGridReact
-            rowData={jsonFileWithoutEmptyRows}
-            columnDefs={columnDefs}
-          />
-        </div>
+        <Disclosure defaultOpen={true} as="div" className="mt-2">
+          {({ open }) => (
+            <>
+              <Disclosure.Button className="flex w-full justify-between rounded-lg bg-purple-100 px-4 py-2 text-left text-sm font-medium text-purple-900 hover:bg-purple-200 focus:outline-none focus-visible:ring focus-visible:ring-purple-500/75">
+                <h3 className="text-xl font-bold">All Data</h3>
+                <ChevronUpIcon
+                  className={`${
+                    open ? "rotate-180 transform" : ""
+                  } h-5 w-5 text-purple-500 self-center`}
+                />
+              </Disclosure.Button>
+              <Disclosure.Panel className="mt-2 pt-4 text-sm text-gray-500">
+                <div className="ag-theme-quartz" style={{ height: 500 }}>
+                  <AgGridReact
+                    rowData={jsonFileWithoutEmptyRows}
+                    columnDefs={columnDefs}
+                  />
+                </div>
+              </Disclosure.Panel>
+            </>
+          )}
+        </Disclosure>
       ) : (
         <p className="text-md text-sky-900">
           Select a session to display data here.
         </p>
       )}
-    </>
+    </div>
   );
 };
