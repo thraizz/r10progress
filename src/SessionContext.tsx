@@ -48,22 +48,22 @@ export type Sessions = {
 
 export interface SessionContextInterface {
   sessions: Sessions | null;
-  setSession: (sessions: Sessions) => void;
+  setSessions: (sessions: Sessions) => void;
 }
 
 const SessionContext = createContext<SessionContextInterface>({
   sessions: null,
-  setSession: () => {},
+  setSessions: () => {},
 });
 
 const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [sessions, setSession] = useState<Sessions | null>(null);
+  const [sessions, setSessions] = useState<Sessions | null>(null);
   const memoizedValue = useMemo(
     () => ({
       sessions,
-      setSession,
+      setSessions,
     }),
-    [sessions, setSession],
+    [sessions, setSessions],
   );
 
   return (

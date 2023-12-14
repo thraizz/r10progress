@@ -8,8 +8,8 @@ import { UserContext } from "./UserProvider";
 import { db } from "./firebaseConfig";
 
 export const SessionPicker = () => {
-  const [selected, setSelected] = useState("All");
-  const { sessions, setSession } = useContext(SessionContext);
+  const [selected, setSelected] = useState<string[]>([]);
+  const { sessions, setSessions } = useContext(SessionContext);
   const { user } = useContext(UserContext);
   const uuid = user?.uid;
 
@@ -19,26 +19,26 @@ export const SessionPicker = () => {
         const querySnapshot = await getDocs(
           collection(db, "r10data", uuid, "data"),
         );
-        setSession(
-          querySnapshot.docs.reduce((acc, curr) => {
-            const data = curr.data();
-            // @ts-expect-error - The results property will always be set as we upload it this way
-            acc[curr.id] = { ...data, selected: true };
-            return acc;
-          }, {} as Sessions),
-        );
+        const fetchedSessions = querySnapshot.docs.reduce((acc, curr) => {
+          const data = curr.data();
+          // @ts-expect-error - The results property will always be set as we upload it this way
+          acc[curr.id] = { ...data, selected: true };
+          return acc;
+        }, {} as Sessions);
+        setSessions(fetchedSessions);
+        setSelected([Object.keys(fetchedSessions)[0]]);
         return querySnapshot;
       }
     }
     if (uuid) {
       fetchSnapshot();
     }
-  }, [uuid, setSession]);
+  }, [uuid, setSessions]);
 
-  const writeSelected = (value: string) => {
-    if (value === "All") {
-      setSelected(value);
-      return setSession(
+  const writeSelected = (value: string[]) => {
+    if (value.includes("All")) {
+      setSelected([...Object.keys(sessions!), "All"]);
+      return setSessions(
         Object.keys(sessions!).reduce((acc, curr) => {
           acc[curr] = { ...sessions![curr], selected: true };
           return acc;
@@ -47,9 +47,9 @@ export const SessionPicker = () => {
     } else {
       setSelected(value);
 
-      setSession(
+      setSessions(
         Object.keys(sessions!).reduce((acc, curr) => {
-          acc[curr] = { ...sessions![curr], selected: curr === value };
+          acc[curr] = { ...sessions![curr], selected: value.includes(curr) };
           return acc;
         }, {} as Sessions),
       );
@@ -59,7 +59,7 @@ export const SessionPicker = () => {
   return (
     <div>
       <Label> Select a session to filter data in the table and averages.</Label>
-      <Listbox value={selected} onChange={writeSelected}>
+      <Listbox multiple value={selected} onChange={writeSelected}>
         <div className="relative mt-1 z-20 mb-4">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-300 sm:text-sm">
             <span className="block truncate">{selected}</span>

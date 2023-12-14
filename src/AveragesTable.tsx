@@ -2,7 +2,7 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { Label } from "./Label";
 import { SessionContext } from "./SessionContext";
 import { AveragedSwing, calculateAverages } from "./calculateAverages";
@@ -10,34 +10,6 @@ import { AveragedSwing, calculateAverages } from "./calculateAverages";
 export const AveragesTable = () => {
   const { sessions } = useContext(SessionContext);
 
-  // {
-  //     "Abflugrichtung": 1.926966573132409,
-  //     "Abflugwinkel": 15.135783533917532,
-  //     "Anstellwinkel": -1.1857004306382604,
-  //     "Backspin": 4621.155019802517,
-  //     "Ballgeschwindigkeit": 134.76729867597945,
-  //     "Carry-Abweichungsdistanz": -0.16316428648100958,
-  //     "Carry-Abweichungswinkel": 1.0715296745300293,
-  //     "Carry-Distanz": 82.54763145446778,
-  //     "Drehachse": -2.0749586704704495,
-  //     "Drehrate": 4693.218630642361,
-  //     "Gesamtabweichungsdistanz": 0.2135619772805108,
-  //     "Gesamtabweichungswinkel": 0.9892588668399387,
-  //     "Gesamtstrecke": 97.3018485599094,
-  //     "Höhe des Scheitelpunkts": 10.057312718696064,
-  //     "Luftdichte": 1.2390065688888887,
-  //     "Luftdruck": 100.30643711111111,
-  //     "Relative Luftfeuchtigkeit": 81.57777777777778,
-  //     "Schl.gsch.": 117.50878274523454,
-  //     "Schlagfläche": 1.2794463779156406,
-  //     "Schlagflächenstellung": 1.850954035255644,
-  //     "Schwungbahn": 0.18552126677499878,
-  //     "Sidespin": 227.9454793718126,
-  //     "Smash Factor": 1.146739124703454,
-  //     "Temperatur": 7.962963055555558,
-  //     "count": 45,
-  //     "name": "Eisen 7",
-  //   }
   // Column Definitions: Defines & controls grid columns.
   const columnDefs: ColDef<AveragedSwing>[] = [
     { field: "name", headerName: "Club", sortable: true, filter: true },
@@ -172,6 +144,11 @@ export const AveragesTable = () => {
     },
   ];
 
+  const averages = useMemo(() => {
+    if (sessions) {
+      return calculateAverages(sessions);
+    }
+  }, [sessions]);
   if (!sessions) {
     return (
       <p className="text-md text-sky-900">
@@ -180,7 +157,6 @@ export const AveragesTable = () => {
     );
   }
 
-  const averages = calculateAverages(sessions);
   return (
     <Disclosure defaultOpen={true} as="div" className="mt-2">
       {({ open }) => (
@@ -195,7 +171,7 @@ export const AveragesTable = () => {
           </Disclosure.Button>
           <Disclosure.Panel className="mt-2 pt-4 text-sm text-gray-500">
             <div className="ag-theme-quartz" style={{ height: 500 }}>
-              <Label className="px-4">
+              <Label className="py-4">
                 Averages for all sessions selected in the Session Picker.
               </Label>
               <AgGridReact rowData={averages} columnDefs={columnDefs} />

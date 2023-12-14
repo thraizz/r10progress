@@ -38,6 +38,13 @@ export const calculateAverages: (sessions: Sessions) => AveragedSwing[] = (
     const clubs: { [key: string]: object } = {};
     // Iterate over all sessions
     for (const session of Object.values(sessions)) {
+      if (
+        !session.results ||
+        session.results.length === 0 ||
+        session.selected === false
+      ) {
+        continue;
+      }
       // Iterate over all swings in the session
       for (const swing of session.results) {
         // Get the club name
