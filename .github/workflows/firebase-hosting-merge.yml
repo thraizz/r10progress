@@ -21,7 +21,7 @@ jobs:
           VITE_APP_ID: "${{ vars.VITE_APP_ID }}"
       - run: echo "${{ vars.VITE_AUTH_DOMAIN }}"
       - run: bun install --frozen-lockfile
-      - run: bun run build
+      - run: bun run env && bun run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
