@@ -22,7 +22,8 @@
     "postcss": "^8.4.32",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.49.2"
+    "react-hook-form": "^7.49.2",
+    "vitest": "^1.0.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

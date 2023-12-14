@@ -1,9 +1,9 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { DocumentData, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Label } from "./Label";
-import { SessionContext } from "./SessionContext";
+import { SessionContext, Sessions } from "./SessionContext";
 import { UserContext } from "./UserProvider";
 import { db } from "./firebaseConfig";
 
@@ -20,14 +20,12 @@ export const SessionPicker = () => {
           collection(db, "r10data", uuid, "data"),
         );
         setSession(
-          querySnapshot.docs.reduce(
-            (acc, curr) => {
-              const data = curr.data();
-              acc[curr.id] = { ...data, selected: true };
-              return acc;
-            },
-            {} as Record<string, DocumentData>,
-          ),
+          querySnapshot.docs.reduce((acc, curr) => {
+            const data = curr.data();
+            // @ts-expect-error - The results property will always be set as we upload it this way
+            acc[curr.id] = { ...data, selected: true };
+            return acc;
+          }, {} as Sessions),
         );
         return querySnapshot;
       }
@@ -41,25 +39,19 @@ export const SessionPicker = () => {
     if (value === "All") {
       setSelected(value);
       return setSession(
-        Object.keys(sessions!).reduce(
-          (acc, curr) => {
-            acc[curr] = { ...sessions![curr], selected: true };
-            return acc;
-          },
-          {} as Record<string, DocumentData>,
-        ),
+        Object.keys(sessions!).reduce((acc, curr) => {
+          acc[curr] = { ...sessions![curr], selected: true };
+          return acc;
+        }, {} as Sessions),
       );
     } else {
       setSelected(value);
 
       setSession(
-        Object.keys(sessions!).reduce(
-          (acc, curr) => {
-            acc[curr] = { ...sessions![curr], selected: curr === value };
-            return acc;
-          },
-          {} as Record<string, DocumentData>,
-        ),
+        Object.keys(sessions!).reduce((acc, curr) => {
+          acc[curr] = { ...sessions![curr], selected: curr === value };
+          return acc;
+        }, {} as Sessions),
       );
     }
   };

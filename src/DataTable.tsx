@@ -1,16 +1,17 @@
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
+import { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { AgGridReact } from "ag-grid-react/lib/agGridReact";
-import { useContext, useState } from "react";
-import { SessionContext } from "./SessionContext";
+import { useContext } from "react";
+import { GolfSwingData, SessionContext } from "./SessionContext";
 
 export const DataTable = () => {
   const { sessions } = useContext(SessionContext);
 
   // Column Definitions: Defines & controls grid columns.
-  const [columnDefs] = useState([
+  const columnDefs: ColDef<GolfSwingData>[] = [
     { field: "Spieler" },
     { field: "Schlägerart" },
     { field: "Carry-Distanz" },
@@ -42,27 +43,24 @@ export const DataTable = () => {
     // { field: "Schwungbahn" },
     // { field: "Smash Factor" },
     // { field: "Temperatur" },
-  ]);
+  ];
 
   // Get the session where selected is true
   const jsonFileWithoutEmptyRows = sessions
-    ? (Object.values(sessions)
+    ? Object.values(sessions)
         .filter((session) => session.selected)
-        ?.reduce(
-          (acc, curr) => {
-            if (curr.results.length > 0) {
-              acc.push(...curr.results);
-            }
-            return acc;
-          },
-          [] as Array<Record<string, string>>,
-        ) as Array<Record<string, string>>)
+        ?.reduce((acc, curr) => {
+          if (curr.results.length > 0) {
+            acc.push(...curr.results);
+          }
+          return acc;
+        }, [] as GolfSwingData[])
     : [];
 
   return (
     <div>
       {jsonFileWithoutEmptyRows ? (
-        <Disclosure defaultOpen={true} as="div" className="mt-2">
+        <Disclosure defaultOpen={false} as="div" className="mt-2">
           {({ open }) => (
             <>
               <Disclosure.Button className="flex w-full justify-between rounded-lg bg-sky-100 px-4 py-2 text-left text-sm font-medium text-sky-900 hover:bg-sky-200 focus:outline-none focus-visible:ring focus-visible:ring-sky-500/75">
