@@ -6,7 +6,8 @@ import { Label } from "./Label";
 import { SessionContext } from "./SessionContext";
 import { UserContext } from "./UserProvider";
 import { db } from "./firebaseConfig";
-import { Sessions } from "./types/Sessions";
+import { Session, Sessions } from "./types/Sessions";
+import { reduceSessionToDefinedValues } from "./utils";
 
 export const SessionPicker = () => {
   const [selected, setSelected] = useState<string[]>([]);
@@ -21,8 +22,7 @@ export const SessionPicker = () => {
           collection(db, "r10data", uuid, "data"),
         );
         const fetchedSessions = querySnapshot.docs.reduce((acc, curr) => {
-          const data = curr.data();
-          // @ts-expect-error - The results property will always be set as we upload it this way
+          const data = reduceSessionToDefinedValues(curr.data() as Session);
           acc[curr.id] = { ...data, selected: true };
           return acc;
         }, {} as Sessions);

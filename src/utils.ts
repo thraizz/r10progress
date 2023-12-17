@@ -1,3 +1,6 @@
+import { GolfSwingData } from "./types/GolfSwingData";
+import { Session } from "./types/Sessions";
+
 export const sortGolfSwingKeysForHeader = (a: string, b: string) => {
   // We want to prioritize Carry Distance, Total Distance, Club Name, Ball Spped, and Date
   // over all other keys. This is because these keys are the most important ones to
@@ -61,4 +64,32 @@ export const sortGolfSwingKeysForHeader = (a: string, b: string) => {
 
   // If both keys are not in the list of prioritized keys, sort them alphabetically
   return a.localeCompare(b);
+};
+
+export const reduceSessionToDefinedValues: (session: Session) => Session = (
+  session,
+) => {
+  const fieldValueCount = session.results.reduce((accumulator, curr) => {
+    // @ts-expect-error - We know that the type will be correct
+    Object.keys(curr).forEach((key: keyof GolfSwingData) => {
+      if (accumulator[key] === undefined) accumulator[key] = 0;
+      if (curr[key] !== undefined && curr[key] !== null)
+        accumulator[key] = (accumulator[key] ?? 0) + 1;
+    });
+    return accumulator;
+  }, {} as GolfSwingData);
+
+  const fieldsWithoutValues = Object.keys(fieldValueCount).filter(
+    (key) => fieldValueCount[key as keyof GolfSwingData] === 0,
+  );
+
+  const reducedResults = session.results.map((result) => {
+    const newResult = { ...result };
+    fieldsWithoutValues.forEach((key) => {
+      delete newResult[key as keyof GolfSwingData];
+    });
+    return newResult;
+  });
+
+  return { ...session, results: reducedResults };
 };
