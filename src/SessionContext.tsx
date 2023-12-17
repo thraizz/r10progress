@@ -40,5 +40,4 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-export { GolfSwingData, SessionContext, SessionProvider };
-
+export { SessionContext, SessionProvider };
