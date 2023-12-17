@@ -1,5 +1,8 @@
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { useContext, useMemo, useState } from "react";
 import { PlainObject, Vega, VisualizationSpec } from "react-vega";
+import { Label } from "./Label";
 import { StyledListbox } from "./Listbox";
 import { GolfSwingData, SessionContext } from "./SessionContext";
 import { getAllDataFromSession } from "./getAllDataFromSession";
@@ -40,10 +43,39 @@ export const AveragesScatterPlot = () => {
     return { table: [] };
   }, [sessions, xField, yField]);
   return (
-    <div className="h-auto flex flex-col overflow-hidden gap-3">
-      <StyledListbox options={fields} setOption={setXField} selected={xField} />
-      <StyledListbox options={fields} setOption={setYField} selected={yField} />
-      <Vega height={300} width={800} spec={spec} data={averages} />
-    </div>
+    <Disclosure defaultOpen={true} as="div" className="mt-2">
+      {({ open }) => (
+        <>
+          <Disclosure.Button className="flex w-full justify-between rounded-lg bg-sky-100 px-4 py-2 text-left text-sm font-medium text-sky-900 hover:bg-sky-200 focus:outline-none focus-visible:ring focus-visible:ring-sky-500/75">
+            <h3 className="text-xl font-bold">Visualization</h3>
+            <ChevronUpIcon
+              className={`${
+                open ? "rotate-180 transform" : ""
+              } h-5 w-5 text-sky-500 self-center`}
+            />
+          </Disclosure.Button>
+          <Disclosure.Panel className="mt-2 pt-4 text-sm text-gray-500">
+            <div className="h-auto flex flex-col overflow-hidden gap-3">
+              <div>
+                <Label>Choose the fields to display</Label>
+                <div className="flex flex-row gap-4">
+                  <StyledListbox
+                    options={fields}
+                    setOption={setXField}
+                    selected={xField}
+                  />
+                  <StyledListbox
+                    options={fields}
+                    setOption={setYField}
+                    selected={yField}
+                  />
+                </div>
+              </div>
+              <Vega height={300} width={800} spec={spec} data={averages} />
+            </div>
+          </Disclosure.Panel>
+        </>
+      )}
+    </Disclosure>
   );
 };
