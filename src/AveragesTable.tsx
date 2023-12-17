@@ -169,12 +169,12 @@ export const AveragesTable = () => {
               } h-5 w-5 text-sky-500 self-center`}
             />
           </Disclosure.Button>
-          <Disclosure.Panel className="mt-2 pt-4 text-sm text-gray-500">
+          <Disclosure.Panel className="pt-4 text-sm text-gray-500 mb-6">
             <div
               className="ag-theme-quartz"
               style={{ height: "100%", display: "flex" }}
             >
-              <Label className="py-4">
+              <Label className="py-2 ml-4">
                 Averages for all sessions selected in the Session Picker.
               </Label>
               <AgGridReact rowData={averages} columnDefs={columnDefs} />

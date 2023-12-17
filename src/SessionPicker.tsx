@@ -58,7 +58,9 @@ export const SessionPicker = () => {
 
   return (
     <div>
-      <Label> Select a session to filter data in the table and averages.</Label>
+      <Label className="ml-4">
+        Select a session to filter data in the table and averages.
+      </Label>
       <Listbox multiple value={selected} onChange={writeSelected}>
         <div className="relative mt-1 z-20 mb-4">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-300 sm:text-sm">

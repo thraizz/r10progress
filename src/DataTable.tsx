@@ -54,7 +54,7 @@ export const DataTable = () => {
   return (
     <div>
       {jsonFileWithoutEmptyRows ? (
-        <Disclosure defaultOpen={false} as="div" className="mt-2">
+        <Disclosure defaultOpen={true} as="div" className="mt-2">
           {({ open }) => (
             <>
               <Disclosure.Button className="flex w-full justify-between rounded-lg bg-sky-100 px-4 py-2 text-left text-sm font-medium text-sky-900 hover:bg-sky-200 focus:outline-none focus-visible:ring focus-visible:ring-sky-500/75">
@@ -65,7 +65,7 @@ export const DataTable = () => {
                   } h-5 w-5 text-sky-500 self-center`}
                 />
               </Disclosure.Button>
-              <Disclosure.Panel className="mt-2 pt-4 text-sm text-gray-500">
+              <Disclosure.Panel className="pt-4 text-sm text-gray-500 mb-6">
                 <div className="ag-theme-quartz" style={{ height: 500 }}>
                   <AgGridReact
                     rowData={jsonFileWithoutEmptyRows}

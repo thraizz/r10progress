@@ -54,9 +54,9 @@ export const AveragesScatterPlot = () => {
               } h-5 w-5 text-sky-500 self-center`}
             />
           </Disclosure.Button>
-          <Disclosure.Panel className="mt-2 pt-4 text-sm text-gray-500">
+          <Disclosure.Panel className="pt-4 text-sm text-gray-500 mb-6">
             <div className="h-auto flex flex-col overflow-hidden gap-3">
-              <div>
+              <div className="ml-4">
                 <Label>Choose the fields to display</Label>
                 <div className="flex flex-row gap-4">
                   <StyledListbox
