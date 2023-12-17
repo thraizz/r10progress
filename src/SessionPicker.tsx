@@ -13,7 +13,7 @@ export const SessionPicker = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const { sessions, setSessions } = useContext(SessionContext);
   const { user } = useContext(UserContext);
-  const uuid = user?.uid;
+  const uuid = user?.isAnonymous ? "6U4S2ruwXMPrULj50b9uLpsaRk53" : user?.uid;
 
   useEffect(() => {
     async function fetchSnapshot() {

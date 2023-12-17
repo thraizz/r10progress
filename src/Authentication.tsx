@@ -1,4 +1,5 @@
 import { Tab } from "@headlessui/react";
+import { DemoModeButton } from "./DemoModeButton";
 import { LoginForm } from "./authentication/LoginForm";
 import { RegisterForm } from "./authentication/RegisterForm";
 
@@ -7,7 +8,7 @@ function classNames(...classes: string[]) {
 }
 
 export const Authentication = () => (
-  <section className="flex flex-col flex-grow items-center py-12 bg-gray-50">
+  <section className="flex flex-col flex-grow gap-8 items-center py-12 bg-gray-50">
     <div className="mx-auto max-w-4xl p-4 bg-white rounded-md shadow-md flex flex-col gap-4">
       <Tab.Group>
         <Tab.List className="-mb-px flex">
@@ -16,7 +17,7 @@ export const Authentication = () => (
               <span
                 className={classNames(
                   selected
-                    ? "border-indigo-500 text-indigo-600"
+                    ? "border-sky-500 text-sky-600"
                     : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700",
                   "whitespace-nowrap border-b-2 text-sm font-medium w-full text-center pb-4 block",
                 )}
@@ -30,7 +31,7 @@ export const Authentication = () => (
               <span
                 className={classNames(
                   selected
-                    ? "border-indigo-500 text-indigo-600"
+                    ? "border-sky-500 text-sky-600"
                     : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700",
                   "whitespace-nowrap border-b-2 text-sm font-medium w-full text-center pb-4 block",
                 )}
@@ -50,5 +51,6 @@ export const Authentication = () => (
         </Tab.Panels>
       </Tab.Group>
     </div>
+    <DemoModeButton />
   </section>
 );

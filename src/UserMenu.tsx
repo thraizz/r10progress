@@ -6,11 +6,12 @@ import { auth } from "./firebaseConfig";
 export const UserMenu = () => {
   const { user } = useContext(UserContext);
   const isAuthenticated = user?.uid;
+  const isAnonymous = user?.isAnonymous;
   return (
     <div className="flex flex-row gap-4 items-center">
       {isAuthenticated && (
         <>
-          <UploadModal />
+          {!isAnonymous && <UploadModal />}
           <button onClick={() => auth.signOut()} className="btn">
             Logout
           </button>
