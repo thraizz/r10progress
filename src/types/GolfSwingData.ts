@@ -66,9 +66,11 @@ type GolfSwingDataDE = {
   "Carry-Distanz": number | null;
 };
 
-export type GolfSwingData = GolfSwingDataEN | GolfSwingDataDE;
+export type GolfSwingData = GolfSwingDataEN & GolfSwingDataDE;
 
-export const golfSwingDataKeysInMeters: Array<keyof GolfSwingData> = [
+export const golfSwingDataKeysInMeters: Array<
+  keyof GolfSwingDataEN | keyof GolfSwingDataDE
+> = [
   "Carry Distance",
   "Carry-Distanz",
   "Carry Deviation Distance",
@@ -81,7 +83,9 @@ export const golfSwingDataKeysInMeters: Array<keyof GolfSwingData> = [
   "Höhe des Scheitelpunkts",
 ];
 
-export const golfSwingDataKeysInDegrees: Array<keyof GolfSwingData> = [
+export const golfSwingDataKeysInDegrees: Array<
+  keyof GolfSwingDataEN | keyof GolfSwingDataDE
+> = [
   "Carry Deviation Angle",
   "Carry-Abweichungswinkel",
   "Total Deviation Angle",
@@ -90,4 +94,4 @@ export const golfSwingDataKeysInDegrees: Array<keyof GolfSwingData> = [
   "Abflugrichtung",
   "Club Face",
   "Abflugwinkel",
-];
+] as unknown as Array<keyof GolfSwingData>;

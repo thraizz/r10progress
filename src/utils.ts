@@ -72,8 +72,10 @@ export const reduceSessionToDefinedValues: (session: Session) => Session = (
   const fieldValueCount = session.results.reduce((accumulator, curr) => {
     // @ts-expect-error - We know that the type will be correct
     Object.keys(curr).forEach((key: keyof GolfSwingData) => {
+      // @ts-expect-error - We know that the type will be correct
       if (accumulator[key] === undefined) accumulator[key] = 0;
       if (curr[key] !== undefined && curr[key] !== null)
+        // @ts-expect-error - We know that the type will be correct
         accumulator[key] = (accumulator[key] ?? 0) + 1;
     });
     return accumulator;
