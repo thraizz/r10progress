@@ -16,9 +16,11 @@ export const App = () => {
       <header className="flex flex-row items-center justify-between h-32 bg-sky-50 px-6 py-4">
         <div>
           <h1 className="text-2xl font-bold">r10progress</h1>
-          <p className="text-md">
-            A tool to track golf progress when using the Garmin Approach R10.
-          </p>
+          {!isLoggedIn && (
+            <p className="text-md">
+              A tool to track golf progress when using the Garmin Approach R10.
+            </p>
+          )}
         </div>
         <UserMenu />
       </header>
