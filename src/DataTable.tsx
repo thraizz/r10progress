@@ -6,6 +6,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { AgGridReact } from "ag-grid-react/lib/agGridReact";
 import { useContext } from "react";
 import { GolfSwingData, SessionContext } from "./SessionContext";
+import { getAllDataFromSession } from "./getAllDataFromSession";
 
 export const DataTable = () => {
   const { sessions } = useContext(SessionContext);
@@ -47,14 +48,7 @@ export const DataTable = () => {
 
   // Get the session where selected is true
   const jsonFileWithoutEmptyRows = sessions
-    ? Object.values(sessions)
-        .filter((session) => session.selected)
-        ?.reduce((acc, curr) => {
-          if (curr.results.length > 0) {
-            acc.push(...curr.results);
-          }
-          return acc;
-        }, [] as GolfSwingData[])
+    ? getAllDataFromSession(sessions)
     : [];
 
   return (

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Authentication } from "./Authentication";
+import { AveragesScatterPlot } from "./AveragesScatterPlot";
 import { AveragesTable } from "./AveragesTable";
 import { DataTable } from "./DataTable";
 import { SessionPicker } from "./SessionPicker";
@@ -29,6 +30,7 @@ export const App = () => {
               <SessionPicker />
               <DataTable />
               <AveragesTable />
+              <AveragesScatterPlot />
             </div>
           </div>
         </div>

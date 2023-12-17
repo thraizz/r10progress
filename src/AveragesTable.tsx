@@ -170,7 +170,10 @@ export const AveragesTable = () => {
             />
           </Disclosure.Button>
           <Disclosure.Panel className="mt-2 pt-4 text-sm text-gray-500">
-            <div className="ag-theme-quartz" style={{ height: 500 }}>
+            <div
+              className="ag-theme-quartz"
+              style={{ height: "100%", display: "flex" }}
+            >
               <Label className="py-4">
                 Averages for all sessions selected in the Session Picker.
               </Label>
