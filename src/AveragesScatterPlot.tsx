@@ -6,17 +6,10 @@ import { Label } from "./Label";
 import { StyledListbox } from "./Listbox";
 import { GolfSwingData, SessionContext } from "./SessionContext";
 import { getAllDataFromSession } from "./getAllDataFromSession";
-
-// create the spec for the scatter plot
-const spec: VisualizationSpec = {
-  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-  data: { name: "table" },
-  mark: "point",
-  encoding: {
-    x: { field: "x", type: "quantitative" },
-    y: { field: "y", type: "quantitative" },
-  },
-};
+import {
+  golfSwingDataKeysInDegrees,
+  golfSwingDataKeysInMeters,
+} from "./types/GolfSwingData";
 
 export const AveragesScatterPlot = () => {
   const { sessions } = useContext(SessionContext);
@@ -31,6 +24,42 @@ export const AveragesScatterPlot = () => {
     return [];
   }, [sessions]);
 
+  // create the spec for the scatter plot
+  const spec: VisualizationSpec = {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    data: { name: "table" },
+    mark: "point",
+    encoding: {
+      x: {
+        axis: {
+          labelExpr: golfSwingDataKeysInMeters.includes(
+            xField as keyof GolfSwingData,
+          )
+            ? "datum.value + ' m'"
+            : golfSwingDataKeysInDegrees.includes(xField as keyof GolfSwingData)
+              ? "datum.value + ' °'"
+              : "datum.value",
+        },
+        field: "x",
+        title: xField,
+        type: "quantitative",
+      },
+      y: {
+        axis: {
+          labelExpr: golfSwingDataKeysInMeters.includes(
+            yField as keyof GolfSwingData,
+          )
+            ? "datum.value + ' m'"
+            : golfSwingDataKeysInDegrees.includes(yField as keyof GolfSwingData)
+              ? "datum.value + ' °'"
+              : "datum.value",
+        },
+        field: "y",
+        title: yField,
+        type: "quantitative",
+      },
+    },
+  };
   const averages: PlainObject = useMemo(() => {
     if (sessions) {
       return {
