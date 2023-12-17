@@ -6,14 +6,14 @@ import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { AgGridReact } from "ag-grid-react/lib/agGridReact";
 import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "./SessionContext";
-import { AveragedSwing } from "./calculateAverages";
 import { getAllDataFromSession } from "./getAllDataFromSession";
+import { GolfSwingData } from "./types/GolfSwingData";
 
 export const DataTable = () => {
   const { sessions } = useContext(SessionContext);
 
   // Column Definitions: Defines & controls grid columns.
-  const [columnDefs, setColumnDefs] = useState<ColDef<AveragedSwing>[]>([]);
+  const [columnDefs, setColumnDefs] = useState<ColDef<GolfSwingData>[]>([]);
 
   useEffect(() => {
     if (sessions && Object.keys(sessions)?.length > 0) {
@@ -25,7 +25,7 @@ export const DataTable = () => {
         sortable: true,
         filter: true,
       }));
-      setColumnDefs(columns as ColDef<AveragedSwing>[]);
+      setColumnDefs(columns as ColDef<GolfSwingData>[]);
     }
   }, [sessions]);
 
