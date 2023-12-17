@@ -1,4 +1,5 @@
-import { GolfSwingData, Sessions } from "./SessionContext";
+import { GolfSwingData } from "./types/GolfSwingData";
+import { Sessions } from "./types/Sessions";
 
 export const getAllDataFromSession = (sessions: Sessions) =>
   Object.values(sessions)

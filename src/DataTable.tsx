@@ -5,8 +5,9 @@ import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { AgGridReact } from "ag-grid-react/lib/agGridReact";
 import { useContext } from "react";
-import { GolfSwingData, SessionContext } from "./SessionContext";
+import { SessionContext } from "./SessionContext";
 import { getAllDataFromSession } from "./getAllDataFromSession";
+import { GolfSwingData } from "./types/GolfSwingData";
 
 export const DataTable = () => {
   const { sessions } = useContext(SessionContext);

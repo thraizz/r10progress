@@ -3,9 +3,10 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { collection, getDocs } from "firebase/firestore";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Label } from "./Label";
-import { SessionContext, Sessions } from "./SessionContext";
+import { SessionContext } from "./SessionContext";
 import { UserContext } from "./UserProvider";
 import { db } from "./firebaseConfig";
+import { Sessions } from "./types/Sessions";
 
 export const SessionPicker = () => {
   const [selected, setSelected] = useState<string[]>([]);

@@ -4,14 +4,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { GolfSwingData } from "./types/GolfSwingData";
-
-export type Sessions = {
-  [key: string]: {
-    results: GolfSwingData[];
-    selected: boolean;
-  };
-};
+import { Sessions } from "./types/Sessions";
 
 export interface SessionContextInterface {
   sessions: Sessions | null;

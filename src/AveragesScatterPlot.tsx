@@ -4,9 +4,10 @@ import { useContext, useMemo, useState } from "react";
 import { PlainObject, Vega, VisualizationSpec } from "react-vega";
 import { Label } from "./Label";
 import { StyledListbox } from "./Listbox";
-import { GolfSwingData, SessionContext } from "./SessionContext";
+import { SessionContext } from "./SessionContext";
 import { getAllDataFromSession } from "./getAllDataFromSession";
 import {
+  GolfSwingData,
   golfSwingDataKeysInDegrees,
   golfSwingDataKeysInMeters,
 } from "./types/GolfSwingData";
