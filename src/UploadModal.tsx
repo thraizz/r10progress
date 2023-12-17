@@ -1,25 +1,30 @@
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import clsx from "clsx";
 import { Fragment } from "react";
 import { FileUpload } from "./FileUpload";
 
 export const UploadModal = () => {
   return (
-    <Popover className="relative">
+    <Popover className="static z-40 sm:relative">
       {({ open }) => (
         <>
           <Popover.Button
-            className={`
-                ${open ? "text-white" : "text-white/90"}
-                group inline-flex items-center rounded-md bg-sky-700 px-3 py-2 text-base font-medium hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75`}
+            className={clsx(
+              "btn btn-secondary whitespace-nowrap flex flex-row gap-px items-center justify-center",
+              open ? "text-white" : "text-white/90",
+            )}
           >
             <span>Upload File</span>
             <ChevronDownIcon
-              className={`${open ? "text-sky-300" : "text-sky-300/70"}
-                  ml-2 h-5 w-5 transition duration-150 ease-in-out group-hover:text-sky-300/80`}
+              className={clsx(
+                "h-5 w-5 transition duration-150 ease-in-out group-hover:text-sky-300/80",
+                open ? "text-sky-600 rotate-180" : "text-sky-600/70",
+              )}
               aria-hidden="true"
             />
           </Popover.Button>
+          <Popover.Overlay className="fixed inset-0 bg-sky-800 opacity-30" />
           <Transition
             as={Fragment}
             enter="transition ease-out duration-200"
@@ -29,8 +34,8 @@ export const UploadModal = () => {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute right-1/2 z-10 mt-3 w-screen max-w-sm translate-x-[18%] transform px-4 sm:px-0 lg:max-w-3xl">
-              <div className="mx-auto w-full max-w-xl p-4 bg-gray-100 rounded-md shadow-md flex flex-col gap-4">
+            <Popover.Panel className="fixed right-0 left-0 sm:right-1/2 z-30 mt-3 w-screen sm:max-w-sm sm:translate-x-[18%] transform px-4 sm:px-0 lg:max-w-3xl">
+              <div className="mx-auto w-full max-w-xl p-4 bg-white rounded-md shadow-md flex flex-col gap-4 ">
                 <p className="text-md">
                   Upload your CSV file exported from the Garmin Golf App.
                 </p>
