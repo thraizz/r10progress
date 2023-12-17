@@ -15,12 +15,14 @@ import {
 export const AveragesScatterPlot = () => {
   const { sessions } = useContext(SessionContext);
 
-  const [xField, setXField] = useState("Carry-Distanz");
+  const [xField, setXField] = useState("Backspin");
   const [yField, setYField] = useState("Smash Factor");
 
   const fields = useMemo(() => {
     if (sessions) {
-      return Object.keys(sessions[Object.keys(sessions)[0]].results[0]);
+      return Object.keys(sessions).length > 0
+        ? Object.keys(sessions[Object.keys(sessions)[0]]?.results?.[0])
+        : [];
     }
     return [];
   }, [sessions]);

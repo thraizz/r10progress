@@ -4,48 +4,30 @@ import { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { AgGridReact } from "ag-grid-react/lib/agGridReact";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "./SessionContext";
+import { AveragedSwing } from "./calculateAverages";
 import { getAllDataFromSession } from "./getAllDataFromSession";
-import { GolfSwingData } from "./types/GolfSwingData";
 
 export const DataTable = () => {
   const { sessions } = useContext(SessionContext);
 
   // Column Definitions: Defines & controls grid columns.
-  const columnDefs: ColDef<GolfSwingData>[] = [
-    { field: "Spieler" },
-    { field: "Schlägerart" },
-    { field: "Carry-Distanz" },
-    { field: "Abflugrichtung" },
-    { field: "Backspin" },
-    { field: "Ballgeschwindigkeit" },
-    { field: "Carry-Abweichungsdistanz" },
-    { field: "Carry-Abweichungswinkel" },
-    { field: "Abflugwinkel" },
-    { field: "Anstellwinkel" },
-    { field: "Sidespin" },
-    // { field: "Datum" },
-    // { field: "Drehachse" },
-    // { field: "Drehrate" },
-    // { field: "Drehratentyp" },
-    { field: "Gesamtabweichungsdistanz" },
-    { field: "Gesamtabweichungswinkel" },
-    { field: "Gesamtstrecke" },
-    // { field: "Höhe des Scheitelpunkts" },
-    // { field: "Luftdichte" },
-    // { field: "Luftdruck" },
-    // { field: "Markierung" },
-    // { field: "Notiz" },
-    // { field: "Relative Luftfeuchtigkeit" },
-    // { field: "Schl.gsch." },
-    // { field: "Schlagfläche" },
-    // { field: "Schlagflächenstellung" },
-    // { field: "Schlägername" },
-    // { field: "Schwungbahn" },
-    // { field: "Smash Factor" },
-    // { field: "Temperatur" },
-  ];
+  const [columnDefs, setColumnDefs] = useState<ColDef<AveragedSwing>[]>([]);
+
+  useEffect(() => {
+    if (sessions && Object.keys(sessions)?.length > 0) {
+      const columns = Object.keys(
+        sessions[Object.keys(sessions)[0]]?.results?.[0],
+      ).map((key) => ({
+        field: key,
+        headerName: key,
+        sortable: true,
+        filter: true,
+      }));
+      setColumnDefs(columns as ColDef<AveragedSwing>[]);
+    }
+  }, [sessions]);
 
   // Get the session where selected is true
   const jsonFileWithoutEmptyRows = sessions
