@@ -24,7 +24,7 @@ export const UploadModal = () => {
               aria-hidden="true"
             />
           </Popover.Button>
-          <Popover.Overlay className="fixed inset-0 bg-sky-800 opacity-30" />
+          <Popover.Overlay className="md:hidden fixed inset-0 bg-sky-800 opacity-30" />
           <Transition
             as={Fragment}
             enter="transition ease-out duration-200"
@@ -34,7 +34,7 @@ export const UploadModal = () => {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="fixed right-0 left-0 sm:right-1/2 z-30 mt-3 w-screen sm:max-w-sm sm:translate-x-[18%] transform px-4 sm:px-0 lg:max-w-3xl">
+            <Popover.Panel className="fixed sm:absolute right-0 left-0 sm:left-[unset] z-30 mt-3 w-screen sm:max-w-sm transform px-4 sm:px-0 lg:max-w-3xl">
               <div className="mx-auto w-full max-w-xl p-4 bg-white rounded-md shadow-md flex flex-col gap-4 ">
                 <p className="text-md">
                   Upload your CSV file exported from the Garmin Golf App.
