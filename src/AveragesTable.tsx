@@ -6,10 +6,15 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { Label } from "./Label";
 import { SessionContext } from "./SessionContext";
 import { AveragedSwing, calculateAverages } from "./calculateAverages";
+import { sortGolfSwingKeysForHeader } from "./utils";
 const defaultColumns: ColDef<AveragedSwing>[] = [
   { field: "name", headerName: "Club", sortable: true, filter: true },
   { field: "count", headerName: "Count", sortable: true, filter: true },
 ];
+const capitalizeFirstLetter = (s: string) => {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+};
+
 export const AveragesTable = () => {
   const { sessions } = useContext(SessionContext);
 
@@ -25,12 +30,16 @@ export const AveragesTable = () => {
 
   useEffect(() => {
     if (averages && averages?.length > 0) {
-      const columns = Object.keys(averages[0]).map((key) => ({
-        field: key,
-        headerName: key,
-        sortable: true,
-        filter: true,
-      }));
+      const columns = Object.keys(averages[0])
+        .sort(sortGolfSwingKeysForHeader)
+        .map((key) => ({
+          field: key,
+          headerName: ["count", "name"].includes(key)
+            ? capitalizeFirstLetter(key)
+            : key,
+          sortable: true,
+          filter: true,
+        }));
       setColumnDefs(columns as ColDef<AveragedSwing>[]);
     }
   }, [averages]);
@@ -58,12 +67,14 @@ export const AveragesTable = () => {
           <Disclosure.Panel className="pt-4 text-sm text-gray-500 mb-6">
             <div
               className="ag-theme-quartz"
-              style={{ height: "100%", display: "flex" }}
+              style={{ display: "flex", flexDirection: "column" }}
             >
               <Label className="py-2 ml-4">
                 Averages for all sessions selected in the Session Picker.
               </Label>
-              <AgGridReact rowData={averages} columnDefs={columnDefs} />
+              <div style={{ height: 500 }}>
+                <AgGridReact rowData={averages} columnDefs={columnDefs} />
+              </div>
             </div>
           </Disclosure.Panel>
         </>

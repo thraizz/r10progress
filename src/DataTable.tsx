@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "./SessionContext";
 import { getAllDataFromSession } from "./getAllDataFromSession";
 import { GolfSwingData } from "./types/GolfSwingData";
+import { sortGolfSwingKeysForHeader } from "./utils";
 
 export const DataTable = () => {
   const { sessions } = useContext(SessionContext);
@@ -19,12 +20,14 @@ export const DataTable = () => {
     if (sessions && Object.keys(sessions)?.length > 0) {
       const columns = Object.keys(
         sessions[Object.keys(sessions)[0]]?.results?.[0],
-      ).map((key) => ({
-        field: key,
-        headerName: key,
-        sortable: true,
-        filter: true,
-      }));
+      )
+        .sort(sortGolfSwingKeysForHeader)
+        .map((key) => ({
+          field: key,
+          headerName: key,
+          sortable: true,
+          filter: true,
+        }));
       setColumnDefs(columns as ColDef<GolfSwingData>[]);
     }
   }, [sessions]);

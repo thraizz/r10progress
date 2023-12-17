@@ -30,6 +30,38 @@ export type GolfSwingData = {
   Schlägerart: string | null;
   Anstellwinkel: null | number;
   "Carry-Distanz": number | null;
+} & {
+  "Club Speed": number;
+  "Launch Direction": number;
+  "Carry Distance": number;
+  "Club Face": number;
+  "Spin Axis": number;
+  "Apex Height": number;
+  "Club Name": null;
+  "Ball Speed": number;
+  "Launch Angle": number;
+  Tag: null;
+  "Carry Deviation Angle": number;
+  Player: string;
+  Note: null;
+  "Club Type": "Driver";
+  "Relative Humidity": number;
+  "Attack Angle": number;
+  "Total Deviation Distance": number;
+  "Smash Factor": number;
+  "Total Distance": number;
+  "Face to Path": number;
+  "Spin Rate Type": string;
+  "Club Path": number;
+  Date: string;
+  "Total Deviation Angle": number;
+  "Air Pressure": number;
+  "Air Density": number;
+  "Spin Rate": number;
+  "Carry Deviation Distance": number;
+  Sidespin: number;
+  Temperature: number;
+  Backspin: number;
 };
 
 export const golfSwingDataKeysInMeters: Array<keyof GolfSwingData> = [

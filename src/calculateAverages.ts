@@ -47,8 +47,8 @@ export const calculateAverages: (sessions: Sessions) => AveragedSwing[] = (
       }
       // Iterate over all swings in the session
       for (const swing of session.results) {
-        // Get the club name
-        const club = swing["Schlägerart"];
+        // Get the club name, which depends on the language
+        const club = swing["Schlägerart"] || swing["Club Type"];
         if (!club) {
           continue;
         }
