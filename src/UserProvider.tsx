@@ -7,19 +7,19 @@ import React, {
 } from "react";
 import { auth } from "./firebaseConfig";
 
-type UserInitialState = User | null | undefined;
+type UserInitialState = User | null;
 interface UserContextInterface {
   user: UserInitialState;
   setUser: (user: User) => void;
 }
 
 export const UserContext = createContext<UserContextInterface>({
-  user: undefined,
+  user: null,
   setUser: () => undefined,
 });
 
 export const UserProvider = ({ children }: PropsWithChildren) => {
-  const [user, setUser] = useState<UserInitialState>();
+  const [user, setUser] = useState<UserInitialState>({} as User);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, setUser);

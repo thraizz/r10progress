@@ -7,17 +7,17 @@ import React, {
 import { Sessions } from "./types/Sessions";
 
 export interface SessionContextInterface {
-  sessions: Sessions | null;
+  sessions: Sessions;
   setSessions: (sessions: Sessions) => void;
 }
 
 const SessionContext = createContext<SessionContextInterface>({
-  sessions: null,
+  sessions: {},
   setSessions: () => {},
 });
 
 const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [sessions, setSessions] = useState<Sessions | null>(null);
+  const [sessions, setSessions] = useState<Sessions>({});
   const memoizedValue = useMemo(
     () => ({
       sessions,
