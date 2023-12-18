@@ -11,7 +11,7 @@ export const UserMenu = () => {
     <div className="flex flex-row gap-4 items-center">
       {isAuthenticated && (
         <>
-          {!isAnonymous && <UploadModal />}
+          <UploadModal disabled={!!isAnonymous} />
           <button onClick={() => auth.signOut()} className="btn">
             Logout
           </button>

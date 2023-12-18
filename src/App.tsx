@@ -19,7 +19,8 @@ export const App = () => {
           <h1 className="text-2xl font-bold">r10progress</h1>
           {!isLoggedIn && (
             <p className="text-md">
-              A tool to track golf progress when using the Garmin Approach R10.
+              A tool to track golf shot progress when using the Garmin Approach
+              R10.
             </p>
           )}
         </div>

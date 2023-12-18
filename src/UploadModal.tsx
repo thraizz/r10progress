@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Fragment } from "react";
 import { FileUpload } from "./FileUpload";
 
-export const UploadModal = () => {
+export const UploadModal = ({ disabled }: { disabled: boolean }) => {
   return (
     <Popover className="static z-40 sm:relative">
       {({ open }) => (
@@ -36,10 +36,16 @@ export const UploadModal = () => {
           >
             <Popover.Panel className="fixed sm:absolute right-0 left-0 sm:left-[unset] z-30 mt-3 w-screen sm:max-w-sm transform px-4 sm:px-0 lg:max-w-3xl">
               <div className="mx-auto w-full max-w-xl p-4 bg-white rounded-md shadow-md flex flex-col gap-4 ">
-                <p className="text-md">
-                  Upload your CSV file exported from the Garmin Golf App.
-                </p>
-                <FileUpload />
+                {disabled ? (
+                  <p className="text-md">Please login to upload a file.</p>
+                ) : (
+                  <>
+                    <p className="text-md">
+                      Upload your CSV file exported from the Garmin Golf App.
+                    </p>
+                    <FileUpload />
+                  </>
+                )}
               </div>
             </Popover.Panel>
           </Transition>
