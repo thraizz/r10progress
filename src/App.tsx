@@ -42,7 +42,12 @@ export const App = () => {
         <Authentication />
       )}
       <footer className="flex flex-row items-center justify-center h-16 bg-sky-50 px-6 py-4 gap-2">
-        <p className="text-md">Created by Aron Schüler </p>
+        <p className="text-md">
+          Created by{" "}
+          <a className="underline" href="https://aronschueler.de/">
+            Aron Schüler
+          </a>
+        </p>
         <a href="mailto:r10progress@lakur.tech" className="ml-2 flex underline">
           <EnvelopeIcon className="w-5 h-5" />
         </a>
