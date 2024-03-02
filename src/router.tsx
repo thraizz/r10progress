@@ -28,12 +28,12 @@ export const router = createBrowserRouter([
         path: "dashboard",
         Component: DataView,
       },
+      {
+        path: "goals",
+        Component: () => <h1>Goals</h1>,
+      },
     ],
   },
-  // {
-  //   index: true,
-  //   Component: LandingPage,
-  // },
   {
     path: "login",
     id: "login",

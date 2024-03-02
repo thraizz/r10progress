@@ -3,14 +3,16 @@ import { PropsWithChildren, useContext } from "react";
 import { SessionPicker } from "../components/SessionPicker";
 import { UserMenu } from "../components/UserMenu";
 import { UserContext } from "../provider/UserContext";
+import { NavLink } from "react-router-dom";
 
 export const Layout = ({ children }: PropsWithChildren) => {
   const { user } = useContext(UserContext);
   const isLoggedIn = user?.uid;
+
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="bg-sky-50 px-6 py-4">
-        <div className="flex flex-row items-center justify-between h-32 ">
+      <header className="bg-sky-50 px-6 py-4 flex flex-col gap-4">
+        <div className="flex flex-row items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">r10progress</h1>
             {!isLoggedIn && (
@@ -20,18 +22,13 @@ export const Layout = ({ children }: PropsWithChildren) => {
               </p>
             )}
           </div>
-          {isLoggedIn && (
-            <div className="hidden lg:block">
-              <SessionPicker />
-            </div>
-          )}
           <UserMenu />
         </div>
-        {isLoggedIn && (
-          <div className="block lg:hidden">
-            <SessionPicker />
-          </div>
-        )}
+        <div className="flex gap-2 text-lg font-semibold [&>.active]:underline border-b-2 border-gray-200 ">
+          <NavLink to="/dashboard">Dashboard</NavLink>
+          <NavLink to="/goals">Goals</NavLink>
+        </div>
+        {isLoggedIn && <SessionPicker />}
       </header>
       {children}
       <footer className="flex flex-row items-center justify-center h-16 bg-sky-50 px-6 py-4 gap-2">
