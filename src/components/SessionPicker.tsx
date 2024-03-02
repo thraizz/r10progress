@@ -59,7 +59,7 @@ export const SessionPicker = () => {
 
   return (
     <div>
-      <BaseLabel className="ml-4">
+      <BaseLabel>
         Select a session to filter data in the table and averages.
       </BaseLabel>
       <Listbox multiple value={selected} onChange={writeSelected}>

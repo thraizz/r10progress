@@ -60,7 +60,7 @@ export const AveragesTable = () => {
         className="ag-theme-quartz"
         style={{ display: "flex", flexDirection: "column" }}
       >
-        <BaseLabel className="py-2 ml-4">
+        <BaseLabel className="py-2">
           Averages for all sessions selected in the Session Picker.
         </BaseLabel>
         <div style={{ height: 500 }}>
