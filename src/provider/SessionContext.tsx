@@ -4,7 +4,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { Sessions } from "./types/Sessions";
+import { Sessions } from "../types/Sessions";
 
 export interface SessionContextInterface {
   sessions: Sessions;

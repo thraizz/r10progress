@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { PropsWithChildren } from "react";
 
-export const Label = ({
+export const BaseLabel = ({
   className,
   children,
 }: { className?: string } & PropsWithChildren) => (

@@ -2,7 +2,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 
-export const StyledListbox = ({
+export const BaseListbox = ({
   options,
   setOption,
   selected,

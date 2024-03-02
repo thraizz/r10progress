@@ -2,8 +2,8 @@ import clsx from "clsx";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { UserContext } from "../UserProvider";
-import { auth } from "../firebaseConfig";
+import { auth } from "../../firebase";
+import { UserContext } from "../../provider/UserContext";
 
 export const LoginForm = () => {
   const { setUser } = useContext(UserContext);

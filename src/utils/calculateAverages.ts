@@ -1,4 +1,4 @@
-import { Sessions } from "./types/Sessions";
+import { Sessions } from "../types/Sessions";
 
 export type AveragedSwing = {
   Abflugrichtung: number;

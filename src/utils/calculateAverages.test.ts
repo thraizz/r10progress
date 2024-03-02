@@ -1,4 +1,4 @@
-import testdata from "./testdata.json";
+import testdata from "../testdata.json";
 
 import { expect, test } from "vitest";
 import { calculateAverages } from "./calculateAverages";

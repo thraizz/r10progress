@@ -2,12 +2,12 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { collection, getDocs } from "firebase/firestore";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { Label } from "./Label";
-import { SessionContext } from "./SessionContext";
-import { UserContext } from "./UserProvider";
-import { db } from "./firebaseConfig";
-import { Session, Sessions } from "./types/Sessions";
-import { reduceSessionToDefinedValues } from "./utils";
+import { db } from "../firebase";
+import { SessionContext } from "../provider/SessionContext";
+import { UserContext } from "../provider/UserContext";
+import { Session, Sessions } from "../types/Sessions";
+import { reduceSessionToDefinedValues } from "../utils";
+import { BaseLabel } from "./base/BaseLabel";
 
 export const SessionPicker = () => {
   const [selected, setSelected] = useState<string[]>([]);
@@ -59,9 +59,9 @@ export const SessionPicker = () => {
 
   return (
     <div>
-      <Label className="ml-4">
+      <BaseLabel className="ml-4">
         Select a session to filter data in the table and averages.
-      </Label>
+      </BaseLabel>
       <Listbox multiple value={selected} onChange={writeSelected}>
         <div className="relative mt-1 z-20 mb-4">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-300 sm:text-sm">

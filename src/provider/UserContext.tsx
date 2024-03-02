@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { auth } from "./firebaseConfig";
+import { auth } from "../firebase";
 
 type UserInitialState = User | null;
 interface UserContextInterface {

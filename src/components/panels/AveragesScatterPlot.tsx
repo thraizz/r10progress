@@ -2,15 +2,15 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { useContext, useMemo, useState } from "react";
 import { PlainObject, Vega, VisualizationSpec } from "react-vega";
-import { Label } from "./Label";
-import { StyledListbox } from "./Listbox";
-import { SessionContext } from "./SessionContext";
-import { getAllDataFromSession } from "./getAllDataFromSession";
+import { SessionContext } from "../../provider/SessionContext";
 import {
   GolfSwingData,
   golfSwingDataKeysInDegrees,
   golfSwingDataKeysInMeters,
-} from "./types/GolfSwingData";
+} from "../../types/GolfSwingData";
+import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
+import { BaseLabel } from "../base/BaseLabel";
+import { BaseListbox } from "../base/BaseListbox";
 
 export const AveragesScatterPlot = () => {
   const { sessions } = useContext(SessionContext);
@@ -89,14 +89,14 @@ export const AveragesScatterPlot = () => {
           <Disclosure.Panel className="pt-4 text-sm text-gray-500 mb-6">
             <div className="h-auto flex flex-col gap-3">
               <div className="ml-4">
-                <Label>Choose the fields to display</Label>
+                <BaseLabel>Choose the fields to display</BaseLabel>
                 <div className="flex flex-row gap-4">
-                  <StyledListbox
+                  <BaseListbox
                     options={fields}
                     setOption={setXField}
                     selected={xField}
                   />
-                  <StyledListbox
+                  <BaseListbox
                     options={fields}
                     setOption={setYField}
                     selected={yField}

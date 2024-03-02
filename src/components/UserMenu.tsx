@@ -1,7 +1,7 @@
 import { useContext } from "react";
+import { auth } from "../firebase";
+import { UserContext } from "../provider/UserContext";
 import { UploadModal } from "./UploadModal";
-import { UserContext } from "./UserProvider";
-import { auth } from "./firebaseConfig";
 
 export const UserMenu = () => {
   const { user } = useContext(UserContext);

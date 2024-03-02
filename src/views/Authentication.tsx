@@ -1,7 +1,7 @@
 import { Tab } from "@headlessui/react";
-import { DemoModeButton } from "./DemoModeButton";
-import { LoginForm } from "./authentication/LoginForm";
-import { RegisterForm } from "./authentication/RegisterForm";
+import { DemoModeButton } from "../components/authentication/DemoModeButton";
+import { LoginForm } from "../components/authentication/LoginForm";
+import { RegisterForm } from "../components/authentication/RegisterForm";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");

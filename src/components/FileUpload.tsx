@@ -1,9 +1,9 @@
 import { doc, setDoc } from "firebase/firestore";
 import Papa from "papaparse";
 import { ChangeEvent, createRef, useContext, useState } from "react";
-import { LoadingSpinner } from "./LoadingSpinner";
-import { UserContext } from "./UserProvider";
-import { db } from "./firebaseConfig";
+import { db } from "../firebase";
+import { UserContext } from "../provider/UserContext";
+import { BaseLoadingSpinner } from "./base/BaseLoadingSpinner";
 
 export const FileUpload = () => {
   const formRef = createRef<HTMLFormElement>();
@@ -80,7 +80,7 @@ export const FileUpload = () => {
         ].join(" ")}
         type="submit"
       >
-        {isUploading ? <LoadingSpinner /> : "Upload"}
+        {isUploading ? <BaseLoadingSpinner /> : "Upload"}
       </button>
     </form>
   );
