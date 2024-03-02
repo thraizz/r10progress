@@ -9,6 +9,7 @@ import {
 } from "../../utils/calculateAverages";
 import { BaseDisclosure } from "../base/BaseDisclosure";
 import { BaseLabel } from "../base/BaseLabel";
+import { translateHeader } from "../../utils/csvLocalization";
 const defaultColumns: ColDef<AveragedSwing>[] = [
   { field: "name", headerName: "Club", sortable: true, filter: true },
   { field: "count", headerName: "Count", sortable: true, filter: true },
@@ -38,7 +39,7 @@ export const AveragesTable = () => {
           field: key,
           headerName: ["count", "name"].includes(key)
             ? capitalizeFirstLetter(key)
-            : key,
+            : translateHeader(key),
           sortable: true,
           filter: true,
         }));

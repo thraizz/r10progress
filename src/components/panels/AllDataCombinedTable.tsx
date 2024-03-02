@@ -8,6 +8,7 @@ import { GolfSwingData } from "../../types/GolfSwingData";
 import { sortGolfSwingKeysForHeader } from "../../utils";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { BaseDisclosure } from "../base/BaseDisclosure";
+import { translateHeader } from "../../utils/csvLocalization";
 
 export const AllDataCombinedTable = () => {
   const { sessions } = useContext(SessionContext);
@@ -23,7 +24,7 @@ export const AllDataCombinedTable = () => {
         .sort(sortGolfSwingKeysForHeader)
         .map((key) => ({
           field: key,
-          headerName: key,
+          headerName: translateHeader(key),
           sortable: true,
           filter: true,
         }));

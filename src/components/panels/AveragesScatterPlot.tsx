@@ -12,6 +12,7 @@ import { Sessions } from "../../types/Sessions";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
+import { translateToEnglish } from "../../utils/csvLocalization";
 
 export const AveragesScatterPlot = () => {
   const { sessions } = useContext(SessionContext);
@@ -80,7 +81,7 @@ export const AveragesScatterPlot = () => {
     const resultsByClub: { [key: string]: GolfSwingData[] } = {};
 
     Object.values(sessions).forEach((session) => {
-      session.results.forEach((result) => {
+      translateToEnglish(session.results).forEach((result) => {
         const club = result.Schlägerart || result["Club Type"];
         if (club) {
           if (!resultsByClub[club]) {
@@ -133,7 +134,7 @@ export const AveragesScatterPlot = () => {
               <div className="flex flex-col md:flex-row gap-2 mb-6">
                 <div>
                   <BaseLabel>Choose the fields to display</BaseLabel>
-                  <div className="flex flex-row gap-4">
+                  <div className="flex flex-col md:flex-row gap-4">
                     <BaseListbox
                       options={fields}
                       setOption={setXField}
