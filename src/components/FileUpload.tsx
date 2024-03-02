@@ -26,27 +26,34 @@ export const FileUpload = () => {
     setCsvFile(null);
   };
 
+  const [error, setError] = useState<string>("");
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
     const file = event.target.files[0];
 
-    if (file) {
-      setFilename(file.name);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (!e.target) return;
-        const csvData = e.target.result;
-        if (!csvData) return;
-        // @ts-expect-error - PapaParse typings are incorrect
-        Papa.parse(csvData, {
-          header: true,
-          dynamicTyping: true,
-          complete: (results) => {
-            setCsvFile(results.data);
-          },
-        });
-      };
-      reader.readAsText(file);
+    try {
+      if (file) {
+        if (file.type !== "text/csv" || !file.name.endsWith(".csv"))
+          throw new Error("Please upload a valid CSV file.");
+        setFilename(file.name);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (!e.target) return;
+          const csvData = e.target.result;
+          if (!csvData) return;
+          // @ts-expect-error - PapaParse typings are incorrect
+          Papa.parse(csvData, {
+            header: true,
+            dynamicTyping: true,
+            complete: (results) => {
+              setCsvFile(results.data);
+            },
+          });
+        };
+        reader.readAsText(file);
+      }
+    } catch (error) {
+      setError("Please upload a valid CSV file.");
     }
   };
 
@@ -68,6 +75,7 @@ export const FileUpload = () => {
           id="file"
           onChange={handleFileChange}
         />
+        <p className="text-red-500 text-sm">{error}</p>
       </div>
       <button
         className={[
