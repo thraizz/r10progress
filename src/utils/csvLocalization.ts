@@ -52,10 +52,10 @@ export const translateToEnglish: (
     const newResult = { ...result };
     Object.keys(result).forEach((key) => {
       if (key === "Schlägerart") {
-        newResult[key] = clubNameLocalizationDE[result[key]];
+        newResult[key] = clubNameLocalizationDE[result[key] as string];
       }
       if (key === "Drehratentyp") {
-        newResult[key] = spinrateMeasure[result[key]];
+        newResult[key] = spinrateMeasure[result[key] as string];
       }
     });
     return newResult;
