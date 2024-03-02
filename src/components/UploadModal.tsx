@@ -43,6 +43,11 @@ export const UploadModal = ({ disabled }: { disabled: boolean }) => {
                     <p className="text-md">
                       Upload your CSV file exported from the Garmin Golf App.
                     </p>
+                    <p className="text-sm text-yellow-600">
+                      <b>Warning:</b> This app requires consistent localization
+                      between exports. Otherwise, your clubs will not be
+                      recognized across sessions.
+                    </p>
                     <FileUpload />
                   </>
                 )}
