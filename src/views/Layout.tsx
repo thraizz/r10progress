@@ -9,18 +9,29 @@ export const Layout = ({ children }: PropsWithChildren) => {
   const isLoggedIn = user?.uid;
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="flex flex-row items-center justify-between h-32 bg-sky-50 px-6 py-4">
-        <div>
-          <h1 className="text-2xl font-bold">r10progress</h1>
-          {!isLoggedIn && (
-            <p className="text-md">
-              A tool to track golf shot progress when using the Garmin Approach
-              R10.
-            </p>
+      <header className="bg-sky-50 px-6 py-4">
+        <div className="flex flex-row items-center justify-between h-32 ">
+          <div>
+            <h1 className="text-2xl font-bold">r10progress</h1>
+            {!isLoggedIn && (
+              <p className="text-md">
+                A tool to track golf shot progress when using the Garmin
+                Approach R10.
+              </p>
+            )}
+          </div>
+          {isLoggedIn && (
+            <div className="hidden lg:block">
+              <SessionPicker />
+            </div>
           )}
+          <UserMenu />
         </div>
-        {isLoggedIn && <SessionPicker />}
-        <UserMenu />
+        {isLoggedIn && (
+          <div className="block lg:hidden">
+            <SessionPicker />
+          </div>
+        )}
       </header>
       {children}
       <footer className="flex flex-row items-center justify-center h-16 bg-sky-50 px-6 py-4 gap-2">
