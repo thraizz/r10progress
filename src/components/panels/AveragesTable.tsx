@@ -3,7 +3,10 @@ import { AgGridReact } from "ag-grid-react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { SessionContext } from "../../provider/SessionContext";
 import { sortGolfSwingKeysForHeader } from "../../utils";
-import { AveragedSwing, calculateAverages } from "../../utils/calculateAverages";
+import {
+  AveragedSwing,
+  calculateAverages,
+} from "../../utils/calculateAverages";
 import { BaseDisclosure } from "../base/BaseDisclosure";
 import { BaseLabel } from "../base/BaseLabel";
 const defaultColumns: ColDef<AveragedSwing>[] = [
