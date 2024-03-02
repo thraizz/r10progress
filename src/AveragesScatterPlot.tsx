@@ -103,7 +103,7 @@ export const AveragesScatterPlot = () => {
                   />
                 </div>
               </div>
-              <Vega height={300} width={800} spec={spec} data={averages} />
+              <Vega width={1500} height={700} spec={spec} data={averages} />
             </div>
           </Disclosure.Panel>
         </>
