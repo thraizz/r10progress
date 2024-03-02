@@ -4,10 +4,12 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "../../firebase";
 import { UserContext } from "../../provider/UserContext";
+import { useNavigate } from "react-router";
 
 export const LoginForm = () => {
   const { setUser } = useContext(UserContext);
   const loginForm = useForm<{ email: string; password: string }>();
+  const navigate = useNavigate();
   const login = () => {
     const { email, password } = loginForm.getValues();
     signInWithEmailAndPassword(auth, email, password)
@@ -16,7 +18,7 @@ export const LoginForm = () => {
         const user = userCredential.user;
         console.log(user);
         setUser(user);
-        // ...
+        navigate("/dashboard");
       })
       .catch((error) => {
         const errorCode = error.code;

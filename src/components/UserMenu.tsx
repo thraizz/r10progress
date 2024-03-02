@@ -12,7 +12,13 @@ export const UserMenu = () => {
       {isAuthenticated && (
         <>
           <UploadModal disabled={!!isAnonymous} />
-          <button onClick={() => auth.signOut()} className="btn">
+          <button
+            onClick={() => {
+              auth.signOut();
+              window.location.assign("/");
+            }}
+            className="btn"
+          >
             Logout
           </button>
         </>
