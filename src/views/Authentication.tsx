@@ -9,7 +9,7 @@ function classNames(...classes: string[]) {
 
 export const Authentication = () => (
   <section className="flex flex-col flex-grow gap-8 items-center py-12 bg-gray-50">
-    <div className="mx-auto max-w-4xl p-4 bg-white rounded-md shadow-md flex flex-col gap-4">
+    <div className="mx-auto max-w-96 w-full p-4 bg-white rounded-md shadow-md flex flex-col gap-4">
       <Tab.Group>
         <Tab.List className="-mb-px flex">
           <Tab className="focus-visible:outline-none w-full pb-4">
