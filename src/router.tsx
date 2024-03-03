@@ -6,6 +6,7 @@ import {
   RedirectIfNotLoggedIn,
   RedirectIfSignedIn,
 } from "./utils/RedirectIfNotLoggedIn";
+import { Goals } from "./views/Goals";
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +31,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "goals",
-        Component: () => <h1>Goals</h1>,
+        Component: Goals,
       },
     ],
   },

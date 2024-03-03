@@ -24,11 +24,15 @@ export const Layout = ({ children }: PropsWithChildren) => {
           </div>
           <UserMenu />
         </div>
-        <div className="flex gap-2 text-lg font-semibold [&>.active]:underline border-b-2 border-gray-200 ">
-          <NavLink to="/dashboard">Dashboard</NavLink>
-          <NavLink to="/goals">Goals</NavLink>
-        </div>
-        {isLoggedIn && <SessionPicker />}
+        {isLoggedIn && (
+          <>
+            <div className="flex gap-2 text-lg font-semibold [&>.active]:underline border-b-2 border-gray-200 ">
+              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink to="/goals">Goals</NavLink>
+            </div>
+            <SessionPicker />
+          </>
+        )}
       </header>
       {children}
       <footer className="flex flex-row items-center justify-center h-16 bg-sky-50 px-6 py-4 gap-2">
