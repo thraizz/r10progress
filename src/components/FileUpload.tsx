@@ -4,8 +4,10 @@ import { ChangeEvent, createRef, useContext, useState } from "react";
 import { db } from "../firebase";
 import { UserContext } from "../provider/UserContext";
 import { BaseLoadingSpinner } from "./base/BaseLoadingSpinner";
+import { SessionContext } from "../provider/SessionContext";
 
 export const FileUpload = () => {
+  const { fetchSnapshot } = useContext(SessionContext);
   const formRef = createRef<HTMLFormElement>();
   const inputRef = createRef<HTMLInputElement>();
   const [csvFile, setCsvFile] = useState<unknown[] | null>(null);
@@ -24,6 +26,7 @@ export const FileUpload = () => {
     setIsUploading(false);
     formRef.current?.reset();
     setCsvFile(null);
+    fetchSnapshot();
   };
 
   const [error, setError] = useState<string>("");

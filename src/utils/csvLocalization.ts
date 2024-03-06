@@ -2,6 +2,7 @@
 // 14.02.24 13:33:18	Aron Schüler		Eisen 9	113.42900776786246	-3.3086297512054443	-4.047730445861816	-1.0483050346374512	2.9994254112243652	128.24671443709485	1.1306341910312527	22.974985122680664	-1.3675819635391235	4863.04638671875	-644.055908203125	4905.51025390625	Berechnet	7.544279098510742	14.848843574523926	88.6080322265625	1.0706405639648438	1.655823826789856	96.77474212646484	1.2754888534545898	2.154283046722412			1.2277452	12.777778	101.169624	72
 
 import { GolfSwingData } from "../types/GolfSwingData";
+import { Sessions } from "../types/Sessions";
 
 // The club names are localized in the CSV files.
 export const clubNameLocalizationDE: { [key: string]: string } = {
@@ -49,7 +50,7 @@ export const spinrateMeasure: { [key: string]: string } = {
   Gemessen: "Measured",
 };
 
-export const translateToEnglish: (
+export const translateSwingsToEnglish: (
   results: GolfSwingData[],
 ) => GolfSwingData[] = (results) =>
   results.map((swing) => {
@@ -76,3 +77,14 @@ export const translateToEnglish: (
   });
 
 export const translateHeader = (header: string) => header;
+
+export const translateSessionsToEnglish = (sessions: Sessions) => {
+  const newSessions: Sessions = {};
+  Object.keys(sessions).forEach((key) => {
+    newSessions[key] = {
+      ...sessions[key],
+      results: translateSwingsToEnglish(sessions[key].results),
+    };
+  });
+  return newSessions;
+};

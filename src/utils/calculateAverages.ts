@@ -1,5 +1,5 @@
 import { Sessions } from "../types/Sessions";
-import { translateToEnglish } from "./csvLocalization";
+import { translateSwingsToEnglish } from "./csvLocalization";
 
 export type AveragedSwing = {
   Abflugrichtung: number;
@@ -37,7 +37,7 @@ export const calculateAverages: (input: Sessions) => AveragedSwing[] = (
   if (input) {
     const sessions = Object.keys(input).map((key) => ({
       ...input[key],
-      results: translateToEnglish(input[key].results),
+      results: translateSwingsToEnglish(input[key].results),
     }));
     // This will hold all averages for each club
     const clubs: { [key: string]: object } = {};

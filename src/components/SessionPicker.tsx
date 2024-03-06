@@ -1,48 +1,26 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import { collection, getDocs } from "firebase/firestore";
 import { Fragment, useContext, useEffect, useState } from "react";
-import { db } from "../firebase";
 import { SessionContext } from "../provider/SessionContext";
-import { UserContext } from "../provider/UserContext";
-import { Session, Sessions } from "../types/Sessions";
-import { reduceSessionToDefinedValues } from "../utils";
+import { Sessions } from "../types/Sessions";
 import { BaseLabel } from "./base/BaseLabel";
-import { filterResultsWithMissingCells } from "../utils/filterResultsWithMissingCells";
-
-const filterSessions = (sessions: Sessions) =>
-  filterResultsWithMissingCells(sessions);
 
 export const SessionPicker = () => {
   const [selected, setSelected] = useState<string[]>([]);
-  const { sessions, setSessions } = useContext(SessionContext);
-  const { user } = useContext(UserContext);
-  const uuid = user?.isAnonymous ? "6U4S2ruwXMPrULj50b9uLpsaRk53" : user?.uid;
-
+  const { sessions, setSessions, fetchSnapshot } = useContext(SessionContext);
   useEffect(() => {
-    async function fetchSnapshot() {
-      if (uuid) {
-        const querySnapshot = await getDocs(
-          collection(db, "r10data", uuid, "data"),
-        );
-        const fetchedSessions = querySnapshot.docs.reduce((acc, curr) => {
-          const data = reduceSessionToDefinedValues(curr.data() as Session);
-          acc[curr.id] = { ...data, selected: true };
-          return acc;
-        }, {} as Sessions);
-
-        setSessions(filterSessions(fetchedSessions));
-        setSelected([Object.keys(fetchedSessions)?.[0]]);
-        return querySnapshot;
+    const _ = async () => await fetchSnapshot();
+    _().then((fetchedSessions) => {
+      if (fetchedSessions) {
+        setSessions(fetchedSessions);
+        setSelected(Object.keys(fetchedSessions));
       }
-    }
-    if (uuid) {
-      fetchSnapshot();
-    }
-  }, [uuid, setSessions]);
+    });
+  }, [fetchSnapshot, setSessions]);
 
   const writeSelected = (value: string[]) => {
-    if (value.includes("All")) {
+    const setAll = value.includes("All") && !selected.includes("All");
+    if (setAll) {
       setSelected([...Object.keys(sessions!), "All"]);
       return setSessions(
         Object.keys(sessions!).reduce((acc, curr) => {
@@ -51,7 +29,7 @@ export const SessionPicker = () => {
         }, {} as Sessions),
       );
     } else {
-      setSelected(value);
+      setSelected(value.filter((v) => v !== "All"));
 
       setSessions(
         Object.keys(sessions!).reduce((acc, curr) => {
