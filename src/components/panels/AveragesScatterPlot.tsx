@@ -34,6 +34,9 @@ export const AveragesScatterPlot = () => {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
     data: { name: "table" },
     mark: "point",
+    height: "container",
+    width: "container",
+    autosize: { resize: true },
     encoding: {
       x: {
         axis: {
@@ -172,7 +175,7 @@ export const AveragesScatterPlot = () => {
                 </div>
               </div>
               <div className="block lg:hidden">
-                <Vega width={700} height={700} spec={spec} data={averages} />
+                <Vega width={512} height={512} spec={spec} data={averages} />
               </div>
               <div className="hidden lg:block">
                 <Vega width={1500} height={700} spec={spec} data={averages} />
