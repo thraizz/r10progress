@@ -53,18 +53,26 @@ export const translateToEnglish: (
   results: GolfSwingData[],
 ) => GolfSwingData[] = (results) =>
   results.map((swing) => {
-    const newResult = { ...swing };
-    Object.keys(swing).forEach((identifier) => {
-      if (clubNameLocalizationDE[swing[identifier]]) {
-        newResult[identifier] =
-          clubNameLocalizationDE[swing[identifier] as string];
-      }
-      if (spinrateMeasure[swing[identifier] as string]) {
-        newResult[identifier] = spinrateMeasure[swing[identifier] as string];
+    let newResult = { ...swing };
+    Object.keys(swing).forEach((key) => {
+      const identifier = key as keyof typeof swing;
+      const currentSwing = swing[identifier];
+      if (currentSwing) {
+        if (clubNameLocalizationDE[currentSwing]) {
+          newResult = {
+            ...newResult,
+            [identifier]: clubNameLocalizationDE[currentSwing],
+          };
+        }
+        if (spinrateMeasure[currentSwing]) {
+          newResult = {
+            ...newResult,
+            [identifier]: spinrateMeasure[currentSwing],
+          };
+        }
       }
     });
     return newResult;
   });
 
-export const translateHeader = (header: string) => {
-};
+export const translateHeader = (header: string) => header;
