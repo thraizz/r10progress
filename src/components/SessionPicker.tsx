@@ -8,6 +8,10 @@ import { UserContext } from "../provider/UserContext";
 import { Session, Sessions } from "../types/Sessions";
 import { reduceSessionToDefinedValues } from "../utils";
 import { BaseLabel } from "./base/BaseLabel";
+import { filterResultsWithMissingCells } from "../utils/filterResultsWithMissingCells";
+
+const filterSessions = (sessions: Sessions) =>
+  filterResultsWithMissingCells(sessions);
 
 export const SessionPicker = () => {
   const [selected, setSelected] = useState<string[]>([]);
@@ -26,7 +30,8 @@ export const SessionPicker = () => {
           acc[curr.id] = { ...data, selected: true };
           return acc;
         }, {} as Sessions);
-        setSessions(fetchedSessions);
+
+        setSessions(filterSessions(fetchedSessions));
         setSelected([Object.keys(fetchedSessions)?.[0]]);
         return querySnapshot;
       }

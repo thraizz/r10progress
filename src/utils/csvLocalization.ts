@@ -34,9 +34,13 @@ export const clubNameLocalizationDE: { [key: string]: string } = {
   "Eisen 8": "8 Iron",
   "Eisen 9": "9 Iron",
   "Pitching Wedge": "Pitching Wedge",
+  "Pitching-Wedge": "Pitching Wedge",
   "Gap Wedge": "Gap Wedge",
+  "Gap-Wedge": "Gap Wedge",
   "Sand Wedge": "Sand Wedge",
+  Sandwedge: "Sand Wedge",
   "Lob Wedge": "Lob Wedge",
+  "Lob-Wedge": "Lob Wedge",
   Putter: "Putter",
 };
 
@@ -48,57 +52,19 @@ export const spinrateMeasure: { [key: string]: string } = {
 export const translateToEnglish: (
   results: GolfSwingData[],
 ) => GolfSwingData[] = (results) =>
-  results.map((result) => {
-    const newResult = { ...result };
-    Object.keys(result).forEach((key) => {
-      if (key === "Schlägerart") {
-        newResult[key] = clubNameLocalizationDE[result[key] as string];
+  results.map((swing) => {
+    const newResult = { ...swing };
+    Object.keys(swing).forEach((identifier) => {
+      if (clubNameLocalizationDE[swing[identifier]]) {
+        newResult[identifier] =
+          clubNameLocalizationDE[swing[identifier] as string];
       }
-      if (key === "Drehratentyp") {
-        newResult[key] = spinrateMeasure[result[key] as string];
+      if (spinrateMeasure[swing[identifier] as string]) {
+        newResult[identifier] = spinrateMeasure[swing[identifier] as string];
       }
     });
     return newResult;
   });
 
 export const translateHeader = (header: string) => {
-  // The values in german are:
-  // Datum	Spieler	Schlägername	Schlägerart	Schl.gsch.	Anstellwinkel	Schwungbahn	Schlagfläche	Schlagflächenstellung	Ballgeschwindigkeit	Smash Factor	Abflugwinkel	Abflugrichtung	Backspin	Sidespin	Drehrate	Drehratentyp	Drehachse	Höhe des Scheitelpunkts	Carry-Distanz	Carry-Abweichungswinkel	Carry-Abweichungsdistanz	Gesamtstrecke	Gesamtabweichungswinkel	Gesamtabweichungsdistanz	Notiz	Markierung	Luftdichte	Temperatur	Luftdruck	Relative Luftfeuchtigkeit
-  // The values in english are:
-  // Date	Player	Club Name	Club Type	Club Speed	Attack Angle	Club Path	Club Face	Face to Path	Ball Speed	Smash Factor	Launch Angle	Launch Direction	Backspin	Sidespin	Spin Rate	Spin Rate Type	Spin Axis	Apex Height	Carry Distance	Carry Deviation Angle	Carry Deviation Distance	Total Distance	Total Deviation Angle	Total Deviation Distance	Note	Tag	Air Density	Temperature	Air Pressure	Relative Humidity
-  const translations = {
-    Datum: "Date",
-    Spieler: "Player",
-    Schlägername: "Club Name",
-    Schlägerart: "Club Type",
-    Anstellwinkel: "Attack Angle",
-    Schwungbahn: "Club Path",
-    Schlagfläche: "Club Face",
-    Schlagflächenstellung: "Face to Path",
-    Ballgeschwindigkeit: "Ball Speed",
-    "Schl.gsch.": "Club Speed",
-    "Smash Factor": "Smash Factor",
-    Abflugwinkel: "Launch Angle",
-    Abflugrichtung: "Launch Direction",
-    Backspin: "Backspin",
-    Sidespin: "Sidespin",
-    Drehrate: "Spin Rate",
-    Drehratentyp: "Spin Rate Type",
-    Drehachse: "Spin Axis",
-    "Höhe des Scheitelpunkts": "Apex Height",
-    "Carry-Distanz": "Carry Distance",
-    "Carry-Abweichungswinkel": "Carry Deviation Angle",
-    "Carry-Abweichungsdistanz": "Carry Deviation Distance",
-    Gesamtstrecke: "Total Distance",
-    Gesamtabweichungswinkel: "Total Deviation Angle",
-    Gesamtabweichungsdistanz: "Total Deviation Distance",
-    Notiz: "Note",
-    Markierung: "Tag",
-    Luftdichte: "Air Density",
-    Temperatur: "Temperature",
-    Luftdruck: "Air Pressure",
-    "Relative Luftfeuchtigkeit": "Relative Humidity",
-  };
-  // @ts-expect-error - header is always a string
-  return translations[header] ? translations[header] : header;
 };
