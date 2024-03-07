@@ -28,9 +28,9 @@ const navigation: NavType[] = [
     icon: HomeIcon,
   },
   {
-    name: "Goals",
-    href: dashboardRoutes.goals,
-    icon: ArrowTrendingUpIcon,
+    name: "Visualization",
+    href: dashboardRoutes.visualization,
+    icon: ChartBarSquareIcon,
   },
   {
     name: "Sessions",
@@ -38,9 +38,9 @@ const navigation: NavType[] = [
     icon: FolderIcon,
   },
   {
-    name: "Visualization",
-    href: dashboardRoutes.visualization,
-    icon: ChartBarSquareIcon,
+    name: "Goals",
+    href: dashboardRoutes.goals,
+    icon: ArrowTrendingUpIcon,
   },
 ];
 
