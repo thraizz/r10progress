@@ -16,13 +16,11 @@ export const LoginForm = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
         setUser(user);
         navigate("/dashboard");
       })
       .catch((error) => {
         const errorCode = error.code;
-        console.log(errorCode);
         if (errorCode === "auth/invalid-credential") {
           loginForm.setError("email", {
             type: "manual",
@@ -57,10 +55,10 @@ export const LoginForm = () => {
           {...loginForm.register("email", { required: true })}
         />
         {loginForm.formState.errors.email?.type === "required" && (
-          <p className="text-red-500 text-sm">This field is required</p>
+          <p className="text-sm text-red-500">This field is required</p>
         )}
         {loginForm.formState.errors.email?.type === "manual" && (
-          <p className="text-red-500 text-sm">
+          <p className="text-sm text-red-500">
             {loginForm.formState.errors.email.message}
           </p>
         )}
@@ -71,7 +69,7 @@ export const LoginForm = () => {
         </label>
         <input
           className={clsx(
-            "border-2 border-gray-300 px-4 py-2 rounded-md",
+            "rounded-md border-2 border-gray-300 px-4 py-2",
             loginForm.formState.errors.password && "border-red-500",
           )}
           type="password"
@@ -79,10 +77,10 @@ export const LoginForm = () => {
           {...loginForm.register("password", { required: true })}
         />
         {loginForm.formState.errors.password?.type === "required" && (
-          <p className="text-red-500 text-sm">This field is required</p>
+          <p className="text-sm text-red-500">This field is required</p>
         )}
         {loginForm.formState.errors.password?.type === "manual" && (
-          <p className="text-red-500 text-sm">
+          <p className="text-sm text-red-500">
             {loginForm.formState.errors.password?.message}
           </p>
         )}

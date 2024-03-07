@@ -10,8 +10,8 @@ export const Layout = ({ children }: PropsWithChildren) => {
   const isLoggedIn = user?.uid;
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="bg-sky-50 px-6 py-4 flex flex-col gap-4">
+    <div className="flex min-h-screen flex-col">
+      <header className="sticky top-0 z-20 flex flex-col gap-4 bg-sky-50 px-6 py-4">
         <div className="flex flex-row items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">r10progress</h1>
@@ -26,7 +26,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
         </div>
         {isLoggedIn && (
           <>
-            <div className="flex gap-2 text-lg font-semibold [&>.active]:underline border-b-2 border-gray-200 ">
+            <div className="flex gap-2 border-b-2 border-gray-200 text-lg font-semibold [&>.active]:underline ">
               <NavLink to="/dashboard">Dashboard</NavLink>
               <NavLink to="/goals">Goals</NavLink>
             </div>
@@ -35,7 +35,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
         )}
       </header>
       {children}
-      <footer className="flex flex-row items-center justify-center h-16 bg-sky-50 px-6 py-4 gap-2">
+      <footer className="flex h-16 flex-row items-center justify-center gap-2 bg-sky-50 px-6 py-4">
         <p className="text-md">
           Created by{" "}
           <a className="underline" href="https://aronschueler.de/">
@@ -43,7 +43,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
           </a>
         </p>
         <a href="mailto:r10progress@lakur.tech" className="ml-2 flex underline">
-          <EnvelopeIcon className="w-5 h-5" />
+          <EnvelopeIcon className="h-5 w-5" />
         </a>
       </footer>
     </div>

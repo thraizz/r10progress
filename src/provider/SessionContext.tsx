@@ -15,12 +15,14 @@ import { filterResultsWithMissingCells } from "../utils/filterResultsWithMissing
 import { translateSessionsToEnglish } from "../utils/csvLocalization";
 
 export interface SessionContextInterface {
+  initialized: boolean;
   sessions: Sessions;
   setSessions: (sessions: Sessions) => void;
   fetchSnapshot: () => Promise<Sessions | undefined>;
 }
 
 const SessionContext = createContext<SessionContextInterface>({
+  initialized: false,
   sessions: {},
   setSessions: () => {},
   fetchSnapshot: () => Promise.resolve(undefined),
@@ -28,6 +30,7 @@ const SessionContext = createContext<SessionContextInterface>({
 
 const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [sessions, setSessions] = useState<Sessions>({});
+  const [initialized, setInitialized] = useState(false);
 
   const { user } = useContext(UserContext);
   const uuid = user?.isAnonymous ? "6U4S2ruwXMPrULj50b9uLpsaRk53" : user?.uid;
@@ -43,17 +46,19 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
         return acc;
       }, {} as Sessions);
       setSessions(filterResultsWithMissingCells(sessionResult));
+      setInitialized(true);
       return sessionResult;
     }
   }, [uuid]);
 
   const memoizedValue = useMemo(
     () => ({
+      initialized,
       sessions: translateSessionsToEnglish(sessions),
       setSessions,
       fetchSnapshot,
     }),
-    [sessions, setSessions, fetchSnapshot],
+    [sessions, setSessions, fetchSnapshot, initialized],
   );
 
   return (

@@ -11,7 +11,7 @@ export const UploadModal = ({ disabled }: { disabled: boolean }) => {
         <>
           <Popover.Button
             className={clsx(
-              "btn btn-secondary whitespace-nowrap flex flex-row gap-px items-center justify-center",
+              "btn btn-secondary flex flex-row items-center justify-center gap-px whitespace-nowrap",
               open ? "text-white" : "text-white/90",
             )}
           >
@@ -19,12 +19,12 @@ export const UploadModal = ({ disabled }: { disabled: boolean }) => {
             <ChevronDownIcon
               className={clsx(
                 "h-5 w-5 transition duration-150 ease-in-out group-hover:text-sky-300/80",
-                open ? "text-sky-600 rotate-180" : "text-sky-600/70",
+                open ? "rotate-180 text-sky-600" : "text-sky-600/70",
               )}
               aria-hidden="true"
             />
           </Popover.Button>
-          <Popover.Overlay className="md:hidden fixed inset-0 bg-sky-800 opacity-30" />
+          <Popover.Overlay className="fixed inset-0 bg-sky-800 opacity-30 md:hidden" />
           <Transition
             as={Fragment}
             enter="transition ease-out duration-200"
@@ -34,8 +34,8 @@ export const UploadModal = ({ disabled }: { disabled: boolean }) => {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="fixed sm:absolute right-0 left-0 sm:left-[unset] z-30 mt-3 w-screen sm:max-w-sm transform px-4 sm:px-0 lg:max-w-3xl">
-              <div className="mx-auto w-full max-w-xl p-4 bg-white rounded-md shadow-md flex flex-col gap-4 ">
+            <Popover.Panel className="fixed left-0 right-0 z-30 mt-3 w-screen transform px-4 sm:absolute sm:left-[unset] sm:max-w-sm sm:px-0 lg:max-w-3xl">
+              <div className="mx-auto flex w-full max-w-xl flex-col gap-4 rounded-md bg-white p-4 shadow-md ">
                 {disabled ? (
                   <p className="text-md">Please login to upload a file.</p>
                 ) : (

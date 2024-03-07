@@ -19,7 +19,6 @@ export const RegisterForm = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
         setUser(user);
         navigate("/dashboard");
       })
@@ -49,7 +48,7 @@ export const RegisterForm = () => {
           Email
         </label>
         <input
-          className="border-2 border-gray-300 px-4 py-2 rounded-md"
+          className="rounded-md border-2 border-gray-300 px-4 py-2"
           type="email"
           id="email"
           {...registerForm.register("email", {
@@ -62,7 +61,7 @@ export const RegisterForm = () => {
           Password
         </label>
         <input
-          className="border-2 border-gray-300 px-4 py-2 rounded-md"
+          className="rounded-md border-2 border-gray-300 px-4 py-2"
           type="password"
           id="password"
           {...registerForm.register("password", {

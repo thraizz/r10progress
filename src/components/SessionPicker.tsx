@@ -3,20 +3,21 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { Fragment, useContext, useEffect, useState } from "react";
 import { SessionContext } from "../provider/SessionContext";
 import { Sessions } from "../types/Sessions";
-import { BaseLabel } from "./base/BaseLabel";
 
 export const SessionPicker = () => {
   const [selected, setSelected] = useState<string[]>([]);
-  const { sessions, setSessions, fetchSnapshot } = useContext(SessionContext);
+  const { sessions, setSessions, fetchSnapshot, initialized } =
+    useContext(SessionContext);
   useEffect(() => {
     const _ = async () => await fetchSnapshot();
-    _().then((fetchedSessions) => {
-      if (fetchedSessions) {
-        setSessions(fetchedSessions);
-        setSelected(Object.keys(fetchedSessions));
-      }
-    });
-  }, [fetchSnapshot, setSessions]);
+    if (!initialized)
+      _().then((fetchedSessions) => {
+        if (fetchedSessions) {
+          setSessions(fetchedSessions);
+          setSelected(Object.keys(fetchedSessions));
+        }
+      });
+  }, [fetchSnapshot, setSessions, sessions, initialized]);
 
   const writeSelected = (value: string[]) => {
     const setAll = value.includes("All") && !selected.includes("All");
@@ -41,23 +42,26 @@ export const SessionPicker = () => {
   };
 
   return (
-    <div>
-      <BaseLabel>
-        Select a session to filter data in the table and averages.
-      </BaseLabel>
+    <div className="flex items-baseline gap-4">
       <Listbox multiple value={selected} onChange={writeSelected}>
-        <div className="relative mt-1 z-20 mb-4">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-300 sm:text-sm">
-            <span className="block truncate">
-              {selected.length < 2 ? selected : `${selected.length} sessions`}
-            </span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronUpDownIcon
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </span>
-          </Listbox.Button>
+        <div className="relative z-20 mb-4 mt-1 max-w-full flex-grow lg:flex-grow-0">
+          <Listbox.Label className="flex w-full flex-col text-sm font-medium text-gray-700">
+            Session Selection
+            <Listbox.Button
+              title="Select a session to filter data in the table and averages."
+              className="relative h-8  cursor-pointer rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-300 sm:text-sm lg:w-full lg:min-w-64"
+            >
+              <span className="block truncate">
+                {selected.length < 2 ? selected : `${selected.length} sessions`}
+              </span>
+              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                <ChevronUpDownIcon
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </span>
+            </Listbox.Button>
+          </Listbox.Label>
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"

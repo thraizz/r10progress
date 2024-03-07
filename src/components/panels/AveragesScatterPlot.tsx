@@ -1,5 +1,3 @@
-import { Disclosure } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { useContext, useMemo, useState } from "react";
 import { PlainObject, Vega, VisualizationSpec } from "react-vega";
 import { SessionContext } from "../../provider/SessionContext";
@@ -12,7 +10,6 @@ import { Sessions } from "../../types/Sessions";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
-import { translateToEnglish } from "../../utils/csvLocalization";
 
 export const AveragesScatterPlot = () => {
   const { sessions } = useContext(SessionContext);
@@ -66,6 +63,20 @@ export const AveragesScatterPlot = () => {
         title: yField,
         type: "quantitative",
       },
+      color: {
+        field: "date",
+        legend: {
+          title: "Date",
+        },
+        type: "nominal",
+      },
+      // Tooltip
+      tooltip: [
+        { field: "x", title: xField, format: ".2f" },
+        { field: "y", title: yField, format: ".2f" },
+        { field: "date", title: "Date" },
+      ],
+      // Allow zoom
     },
   };
 
@@ -84,8 +95,8 @@ export const AveragesScatterPlot = () => {
     const resultsByClub: { [key: string]: GolfSwingData[] } = {};
 
     Object.values(sessions).forEach((session) => {
-      translateToEnglish(session.results).forEach((result) => {
-        const club = result.Schlägerart || result["Club Type"];
+      session.results.forEach((result) => {
+        const club = result["Schlägerart"] || result["Club Type"];
         if (club) {
           if (!resultsByClub[club]) {
             resultsByClub[club] = [];
@@ -107,13 +118,16 @@ export const AveragesScatterPlot = () => {
           table: clubs[club].map((row) => ({
             x: row[xField as keyof GolfSwingData],
             y: row[yField as keyof GolfSwingData],
+            date: row["Date"] || row["Datum"],
           })),
         };
       }
+      const swings = getAllDataFromSession(sessions);
       return {
-        table: getAllDataFromSession(sessions).map((row) => ({
+        table: swings.map((row) => ({
           x: row[xField as keyof GolfSwingData],
           y: row[yField as keyof GolfSwingData],
+          date: (row["Date"] || row["Datum"])?.split(" ")[0],
         })),
       };
     }
@@ -121,69 +135,47 @@ export const AveragesScatterPlot = () => {
   }, [sessions, xField, yField, clubs, club]);
 
   return (
-    <Disclosure defaultOpen={true} as="div" className="mt-2">
-      {({ open }) => (
-        <>
-          <Disclosure.Button className="flex w-full justify-between rounded-lg bg-sky-100 px-4 py-2 text-left text-sm font-medium text-sky-900 hover:bg-sky-200 focus:outline-none focus-visible:ring focus-visible:ring-sky-500/75">
-            <h3 className="text-xl font-bold">Visualization</h3>
-            <ChevronUpIcon
-              className={`${
-                open ? "rotate-180 transform" : ""
-              } h-5 w-5 text-sky-500 self-center`}
+    <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
+      <h4 className="mb-4 text-xl font-bold text-gray-800">
+        Averages Scatter Plot
+      </h4>
+      <div className="mb-6 flex flex-col gap-2 md:flex-row">
+        <div>
+          <BaseLabel>Choose the fields to display</BaseLabel>
+          <div className="flex flex-col gap-4 md:flex-row">
+            <BaseListbox
+              options={fields}
+              setOption={setXField}
+              value={xField}
+              valueText={xField as string}
             />
-          </Disclosure.Button>
-          <Disclosure.Panel className="pt-4 text-sm text-gray-500 mb-6">
-            <div className="h-auto flex flex-col gap-3">
-              <div className="flex flex-col md:flex-row gap-2 mb-6">
-                <div>
-                  <BaseLabel>Choose the fields to display</BaseLabel>
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <BaseListbox
-                      options={fields}
-                      setOption={setXField}
-                      value={xField}
-                      valueText={xField as string}
-                    />
-                    <BaseListbox
-                      options={fields}
-                      setOption={setYField}
-                      value={yField}
-                      valueText={yField as string}
-                    />
-                  </div>
-                </div>
-                <div className="border-l-2 border-gray-300 h-auto  w-0"></div>
-                <div>
-                  <BaseLabel>Choose the club to display</BaseLabel>
-                  <div className="flex flex-row gap-4">
-                    <BaseListbox
-                      options={[
-                        ...Object.keys(clubs).filter(
-                          (v) =>
-                            v !== undefined ||
-                            v !== null ||
-                            v !== "" ||
-                            v !== "undefined",
-                        ),
-                        "All",
-                      ]}
-                      setOption={setClub}
-                      value={club || ""}
-                      valueText={club || "All"}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="block lg:hidden">
-                <Vega width={512} height={512} spec={spec} data={averages} />
-              </div>
-              <div className="hidden lg:block">
-                <Vega width={1500} height={700} spec={spec} data={averages} />
-              </div>
-            </div>
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
+            <BaseListbox
+              options={fields}
+              setOption={setYField}
+              value={yField}
+              valueText={yField as string}
+            />
+          </div>
+        </div>
+        <div className="h-auto w-0 border-l-2 border-gray-300"></div>
+        <div>
+          <BaseLabel>Choose the club to display</BaseLabel>
+          <div className="flex flex-row gap-4">
+            <BaseListbox
+              options={[...Object.keys(clubs).filter((v) => !!v), "All"]}
+              setOption={setClub}
+              value={club || ""}
+              valueText={club || "All"}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="block lg:hidden">
+        <Vega width={512} height={512} spec={spec} data={averages} />
+      </div>
+      <div className="hidden lg:block">
+        <Vega width={1500} height={700} spec={spec} data={averages} />
+      </div>
+    </div>
   );
 };

@@ -8,7 +8,7 @@ export const UserMenu = () => {
   const isAuthenticated = user?.uid;
   const isAnonymous = user?.isAnonymous;
   return (
-    <div className="flex flex-row gap-4 items-center">
+    <div className="flex flex-row items-center gap-4">
       {isAuthenticated && (
         <>
           <UploadModal disabled={!!isAnonymous} />

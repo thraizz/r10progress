@@ -3,24 +3,24 @@
 @tailwind utilities;
 
 .btn {
-  @apply rounded bg-sky-200 px-2 py-1 text-base font-semibold text-sky-600 shadow-sm hover:bg-sky-300;
+  @apply rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600;
 
   &.is-disabled {
-    @apply opacity-50 bg-gray-50 pointer-events-none text-gray-600 hover:bg-gray-50
+    @apply pointer-events-none bg-gray-50 text-gray-600 opacity-50 hover:bg-gray-50;
   }
   &.btn-secondary {
-    @apply bg-sky-400 text-sky-800 hover:bg-sky-300;
+    @apply bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50;
   }
 }
 
 input {
-    @apply border-2 border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-600 focus:border-transparent;  
-    &:focus {
-        @apply ring-2 ring-sky-600;
-    }
-    &.has-error {
-        @apply border-red-500;
-    }
+  @apply rounded-md border-2 border-gray-300 px-4 py-2 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-sky-600;
+  &:focus {
+    @apply ring-2 ring-sky-600;
+  }
+  &.has-error {
+    @apply border-red-500;
+  }
 }
 
 // div.mt-2:nth-child(4) {
@@ -45,7 +45,6 @@ input {
 //   flex-grow: 1;
 // }
 
-
 // .ag-root-wrapper {
 //   max-height: min-content;
 //   height: auto;
@@ -57,23 +56,20 @@ input {
 // min-height: unset;
 // }
 
-
 .marks {
   width: 100%;
   height: 100%;
 }
 
-
 .vega-embed {
   display: flex;
 }
-
 
 .sm\:relative {
   position: initial;
   z-index: 40;
 }
 
-form.flex>div:nth-child(1) {
+form.flex > div:nth-child(1) {
   width: 100%;
 }

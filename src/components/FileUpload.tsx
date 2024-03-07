@@ -5,6 +5,7 @@ import { db } from "../firebase";
 import { UserContext } from "../provider/UserContext";
 import { BaseLoadingSpinner } from "./base/BaseLoadingSpinner";
 import { SessionContext } from "../provider/SessionContext";
+import clsx from "clsx";
 
 export const FileUpload = () => {
   const { fetchSnapshot } = useContext(SessionContext);
@@ -76,19 +77,19 @@ export const FileUpload = () => {
           ref={inputRef}
           type="file"
           id="file"
+          className="btn"
           onChange={handleFileChange}
         />
-        <p className="text-red-500 text-sm">{error}</p>
+        <p className="text-sm text-red-500">{error}</p>
       </div>
       <button
-        className={[
+        className={clsx(
           "btn",
-          csvFile !== null &&
-          isUploading === false &&
-          inputRef.current?.value !== ""
-            ? "bg-sky-200"
-            : "is-disabled",
-        ].join(" ")}
+          (csvFile === null ||
+            isUploading === true ||
+            inputRef.current?.value === "") &&
+            "is-disabled",
+        )}
         type="submit"
       >
         {isUploading ? <BaseLoadingSpinner /> : "Upload"}

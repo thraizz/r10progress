@@ -8,32 +8,32 @@ function classNames(...classes: string[]) {
 }
 
 export const Authentication = () => (
-  <section className="flex flex-col flex-grow gap-8 items-center py-12 bg-gray-50">
-    <div className="mx-auto max-w-96 w-full p-4 bg-white rounded-md shadow-md flex flex-col gap-4">
+  <section className="flex flex-grow flex-col items-center gap-8 bg-gray-50 py-12">
+    <div className="mx-auto flex w-full max-w-96 flex-col gap-4 rounded-md bg-white p-4 shadow-md">
       <Tab.Group>
         <Tab.List className="-mb-px flex">
-          <Tab className="focus-visible:outline-none w-full pb-4">
+          <Tab className="w-full pb-4 focus-visible:outline-none">
             {({ selected }) => (
               <span
                 className={classNames(
                   selected
                     ? "border-sky-500 text-sky-600"
                     : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                  "whitespace-nowrap border-b-2 text-sm font-medium w-full text-center pb-4 block",
+                  "block w-full whitespace-nowrap border-b-2 pb-4 text-center text-sm font-medium",
                 )}
               >
                 Login
               </span>
             )}
           </Tab>
-          <Tab className="focus-visible:outline-none w-full pb-4">
+          <Tab className="w-full pb-4 focus-visible:outline-none">
             {({ selected }) => (
               <span
                 className={classNames(
                   selected
                     ? "border-sky-500 text-sky-600"
                     : "border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                  "whitespace-nowrap border-b-2 text-sm font-medium w-full text-center pb-4 block",
+                  "block w-full whitespace-nowrap border-b-2 pb-4 text-center text-sm font-medium",
                 )}
               >
                 Register
