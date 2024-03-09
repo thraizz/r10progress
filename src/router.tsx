@@ -5,7 +5,7 @@ import { Authentication } from "./views/Authentication";
 import {
   RedirectIfNotLoggedIn,
   RedirectIfSignedIn,
-} from "./utils/RedirectIfNotLoggedIn";
+} from "./utils/AuthRedirects";
 import { Goals } from "./views/Goals";
 import { NewLayout } from "./views/NewLayout";
 import { routes } from "./routes";
