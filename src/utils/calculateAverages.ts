@@ -1,31 +1,8 @@
+import { GolfSwingData } from "../types/GolfSwingData";
 import { Sessions } from "../types/Sessions";
 import { translateSwingsToEnglish } from "./csvLocalization";
 
-export type AveragedSwing = {
-  Abflugrichtung: number;
-  Abflugwinkel: number;
-  Anstellwinkel: number;
-  Backspin: number;
-  Ballgeschwindigkeit: number;
-  "Carry-Abweichungsdistanz": number;
-  "Carry-Abweichungswinkel": number;
-  "Carry-Distanz": number;
-  Drehachse: number;
-  Drehrate: number;
-  Gesamtabweichungsdistanz: number;
-  Gesamtabweichungswinkel: number;
-  Gesamtstrecke: number;
-  "Höhe des Scheitelpunkts": number;
-  Luftdichte: number;
-  Luftdruck: number;
-  "Relative Luftfeuchtigkeit": number;
-  "Schl.gsch.": number;
-  Schlagfläche: number;
-  Schlagflächenstellung: number;
-  Schwungbahn: number;
-  Sidespin: number;
-  "Smash Factor": number;
-  Temperatur: number;
+export type AveragedSwing = GolfSwingData & {
   count: number;
   name: string;
 };
@@ -101,9 +78,104 @@ export const calculateAverages: (input: Sessions) => AveragedSwing[] = (
       }
     }
     // Flatten to an array with the club name as key
-    return Object.keys(clubs).map(
-      (club) => ({ ...clubs[club], name: club }) as AveragedSwing,
-    );
+    return Object.keys(clubs)
+      .map((club) => ({ ...clubs[club], name: club }) as AveragedSwing)
+      .sort(sortClubs);
   }
   return [];
 };
+
+// Sort irons, woods, and hybrids by their number
+// Put wedges first
+// Driver comes last
+const sortClubs = (a: AveragedSwing, b: AveragedSwing) => {
+  const clubA = a.name;
+  const clubB = b.name;
+
+  // Sort wedges
+  const wedgeOrder = [
+    ...lobwedgeVariations,
+    ...sandwedgeVariations,
+    ...gapwedgeVariations,
+    ...pitchingwedgeVariations,
+  ];
+  const wedgeA = wedgeOrder.indexOf(clubA);
+  const wedgeB = wedgeOrder.indexOf(clubB);
+  if (wedgeA !== -1 && wedgeB !== -1) {
+    return wedgeA - wedgeB;
+  }
+  if (wedgeA !== -1) {
+    return -1;
+  }
+  if (wedgeB !== -1) {
+    return 1;
+  }
+  // Wedge could also just include "Wedge" or "wedge" in the name
+  const clubAIsWedge = clubA.includes("Wedge") || clubA.includes("wedge");
+  const clubBIsWedge = clubB.includes("Wedge") || clubB.includes("wedge");
+  if (clubA.includes("Wedge") && !clubA.includes("Driver")) {
+    return -1;
+  }
+  if (clubBIsWedge && !clubB.includes("Driver")) {
+    return 1;
+  }
+  if (clubAIsWedge) {
+    return -1;
+  }
+  if (clubB.includes("Wedge") || clubB.includes("wedge")) {
+    return 1;
+  }
+
+  // Sort irons, woods, and hybrids by their number
+  // but separate them by type
+  const clubTypeOrder = ["Iron", "Hybrid", "Wood"];
+  const typeA = clubTypeOrder.findIndex((type) => clubA.includes(type));
+  const typeB = clubTypeOrder.findIndex((type) => clubB.includes(type));
+  if (typeA !== -1 && typeB !== -1) {
+    if (typeA === typeB) {
+      const numberA = parseInt(clubA.match(/\d+/)?.[0] || "0");
+      const numberB = parseInt(clubB.match(/\d+/)?.[0] || "0");
+      return numberA - numberB;
+    }
+    return typeA - typeB;
+  }
+  if (typeA !== -1) {
+    return -1;
+  }
+  if (typeB !== -1) {
+    return 1;
+  }
+  return clubA.localeCompare(clubB);
+};
+
+const sandwedgeVariations = [
+  "Sand Wedge",
+  "Sandwedge",
+  "Sand-Wedge",
+  "Sand-wedge",
+  "Sand wedge",
+];
+
+const pitchingwedgeVariations = [
+  "Pitching Wedge",
+  "Pitching-Wedge",
+  "Pitchingwedge",
+  "Pitching-wedge",
+  "Pitching wedge",
+];
+
+const gapwedgeVariations = [
+  "Gap Wedge",
+  "Gapwedge",
+  "Gap-Wedge",
+  "Gap-wedge",
+  "Gap wedge",
+];
+
+const lobwedgeVariations = [
+  "Lob Wedge",
+  "Lob-Wedge",
+  "Lobwedge",
+  "Lob wedge",
+  "Lob-wedge",
+];

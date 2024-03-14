@@ -2,57 +2,12 @@ import { useContext, useMemo, useState } from "react";
 import { PlainObject, Vega, VisualizationSpec } from "react-vega";
 import { SessionContext } from "../../provider/SessionContext";
 import { GolfSwingData } from "../../types/GolfSwingData";
-import { Sessions } from "../../types/Sessions";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
 import { translateSwingsToEnglish } from "../../utils/csvLocalization";
+import { calculateAverages } from "../../utils/calculateAverages";
 
-function transformSessions(
-  sessions: Sessions,
-  club: string | null = null,
-): {
-  [key: string]: GolfSwingData[];
-} {
-  console.log("Transforming sessions");
-  const resultsByDate: { [key: string]: GolfSwingData[] } = {};
-
-  // We want to iterate over all sessions and group the swings by club
-  // per session (date).
-  Object.keys(sessions).forEach((sessionName) => {
-    const session = sessions[sessionName];
-
-    if (!session.results || session.results.length === 0 || !session.selected) {
-      return;
-    }
-    const swings = translateSwingsToEnglish(session.results);
-    // Find a row that has `Date` or `Datum` as a key and use that as the date
-    const dateRow = swings.find((row) => row["Date"] || row["Datum"]);
-    if (!dateRow) {
-      return;
-    }
-    const date = dateRow["Date"] || dateRow["Datum"];
-    if (!date) {
-      return;
-    }
-    swings.forEach((swing) => {
-      const clubName = swing["Club Type"] || swing["Schlägerart"];
-      if (!clubName) {
-        return;
-      }
-      if (club && club !== "All" && club !== clubName) {
-        return;
-      }
-
-      if (!resultsByDate[date]) {
-        resultsByDate[date] = [];
-      }
-      resultsByDate[date].push(swing);
-    });
-  });
-
-  return resultsByDate;
-}
 export const AveragesPerSession = () => {
   const { sessions } = useContext(SessionContext);
 
@@ -94,22 +49,11 @@ export const AveragesPerSession = () => {
     [key: string]: GolfSwingData[];
   } = useMemo(() => {
     if (sessions) {
-      const a = transformSessions(sessions);
-      return Object.keys(a)
-        .map((key) =>
-          a[key]
-            .filter(
-              (row) => row["Club Type"] === club || row["Schlägerart"] === club,
-            )
-            .map((row) => ({
-              x: row["Date"] || row["Datum"],
-              y: row[yField as keyof GolfSwingData],
-            })),
-        )
-        .flat();
+      const a = calculateAverages(sessions);
+      console.log(a);
     }
     return {};
-  }, [sessions, yField, club]);
+  }, [sessions]);
 
   const clubSelected = club && club !== "All";
   const averagesByDate: PlainObject = useMemo(() => {
@@ -148,7 +92,9 @@ export const AveragesPerSession = () => {
 
   return (
     <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
-      <h4 className="mb-4 text-xl font-bold text-gray-800">Values over Time</h4>
+      <h4 className="mb-4 text-xl font-bold text-gray-800">
+        Averages per Session
+      </h4>
       <div className="mb-6 flex flex-col gap-2 md:flex-row">
         <div>
           <BaseLabel>Choose the fields to display</BaseLabel>

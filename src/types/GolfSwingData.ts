@@ -1,4 +1,4 @@
-type GolfSwingDataEN = {
+export type GolfSwingDataEN = {
   "Club Speed": number;
   "Launch Direction": number;
   "Carry Distance": number;
@@ -32,13 +32,13 @@ type GolfSwingDataEN = {
   Backspin: number;
 };
 
-type GolfSwingDataDE = {
-  Schlagflächenstellung: null | number | undefined;
-  Luftdruck: number | null | undefined;
+export type GolfSwingDataDE = {
+  Schlagflächenstellung?: null | number;
+  Luftdruck?: number | null;
   Schlagfläche: null | number;
   Datum: string | null;
   Temperatur: number | null;
-  Markierung: null | string;
+  Markierung?: null | string;
   Luftdichte: number | null;
   Schwungbahn: null | number;
   Drehrate: number | null;
@@ -52,7 +52,7 @@ type GolfSwingDataDE = {
   "Carry-Abweichungsdistanz": number | null;
   Abflugrichtung: number | null;
   Backspin: number | null;
-  Schlägername: null | string;
+  Schlägername?: null | string;
   "Carry-Abweichungswinkel": number | null;
   Sidespin: number | null;
   Gesamtstrecke: number | null;
@@ -60,7 +60,7 @@ type GolfSwingDataDE = {
   Abflugwinkel: number | null;
   "Relative Luftfeuchtigkeit": number | null;
   "Schl.gsch.": number | null;
-  Notiz: null | string;
+  Notiz?: null | string;
   Schlägerart: string | null;
   Anstellwinkel: null | number;
   "Carry-Distanz": number | null;

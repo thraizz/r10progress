@@ -111,7 +111,7 @@ export const AveragesScatterPlot = () => {
 
   const [club, setClub] = useState<string | null>(null);
 
-  const averages: PlainObject = useMemo(() => {
+  const data: PlainObject = useMemo(() => {
     if (sessions) {
       if (club && club !== "All" && clubs[club]) {
         return {
@@ -137,7 +137,7 @@ export const AveragesScatterPlot = () => {
   return (
     <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
       <h4 className="mb-4 text-xl font-bold text-gray-800">
-        Averages Scatter Plot
+        Shot Scatter Plot
       </h4>
       <div className="mb-6 flex flex-col gap-2 md:flex-row">
         <div>
@@ -171,10 +171,10 @@ export const AveragesScatterPlot = () => {
         </div>
       </div>
       <div className="block lg:hidden">
-        <Vega width={512} height={512} spec={spec} data={averages} />
+        <Vega width={512} height={512} spec={spec} data={data} />
       </div>
       <div className="hidden lg:block">
-        <Vega width={1500} height={700} spec={spec} data={averages} />
+        <Vega width={1500} height={700} spec={spec} data={data} />
       </div>
     </div>
   );

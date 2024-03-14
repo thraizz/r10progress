@@ -29,7 +29,10 @@ const SessionContext = createContext<SessionContextInterface>({
 });
 
 const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const [sessions, setSessions] = useState<Sessions>({});
+  const [sessions, _setSessions] = useState<Sessions>({});
+  const setSessions = useCallback((sessions: Sessions) => {
+    _setSessions(filterResultsWithMissingCells(sessions));
+  }, []);
   const [initialized, setInitialized] = useState(false);
 
   const { user } = useContext(UserContext);
@@ -45,11 +48,11 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
         acc[curr.id] = { ...data, selected: true };
         return acc;
       }, {} as Sessions);
-      setSessions(filterResultsWithMissingCells(sessionResult));
+      setSessions(sessionResult);
       setInitialized(true);
       return sessionResult;
     }
-  }, [uuid]);
+  }, [uuid, setSessions]);
 
   const memoizedValue = useMemo(
     () => ({

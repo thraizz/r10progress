@@ -52,8 +52,9 @@ export const spinrateMeasure: { [key: string]: string } = {
 
 export const translateSwingsToEnglish: (
   results: GolfSwingData[],
-) => GolfSwingData[] = (results) =>
-  results.map((swing) => {
+) => GolfSwingData[] = (results) => {
+  const translatedResults: GolfSwingData[] = [];
+  results.forEach((swing) => {
     let newResult = { ...swing };
     Object.keys(swing).forEach((key) => {
       const identifier = key as keyof typeof swing;
@@ -73,8 +74,10 @@ export const translateSwingsToEnglish: (
         }
       }
     });
-    return newResult;
+    translatedResults.push(newResult);
   });
+  return translatedResults;
+};
 
 export const translateHeader = (header: string) => header;
 

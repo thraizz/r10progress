@@ -1,4 +1,5 @@
 import { GolfSwingData } from "./GolfSwingData";
+
 export type Session = {
   results: GolfSwingData[];
   selected: boolean;
