@@ -49,7 +49,10 @@ export const LoginForm = () => {
           Email
         </label>
         <input
-          className={clsx(loginForm.formState.errors.email && "has-error")}
+          className={clsx(
+            "rounded-md border-2 border-gray-300 px-4 py-2",
+            loginForm.formState.errors.email && "has-error",
+          )}
           type="email"
           id="email"
           {...loginForm.register("email", { required: true })}
