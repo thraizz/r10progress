@@ -1,7 +1,7 @@
 import { ColDef } from "ag-grid-community";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
-import { AgGridReact } from "ag-grid-react/lib/agGridReact";
+import { AgGridReact } from "ag-grid-react";
 import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../../provider/SessionContext";
 import { GolfSwingData } from "../../types/GolfSwingData";
