@@ -135,7 +135,7 @@ const sortClubs = (a: AveragedSwing, b: AveragedSwing) => {
     if (typeA === typeB) {
       const numberA = parseInt(clubA.match(/\d+/)?.[0] || "0");
       const numberB = parseInt(clubB.match(/\d+/)?.[0] || "0");
-      return numberA - numberB;
+      return numberB - numberA;
     }
     return typeA - typeB;
   }
