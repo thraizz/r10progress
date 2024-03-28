@@ -30,26 +30,37 @@ export const SessionPicker = () => {
         }, {} as Sessions),
       );
     } else {
-      setSelected(value.filter((v) => v !== "All"));
+      // If we clicked on "All" and it was already selected, we want to deselect all sessions.
+      if (!value.includes("All") && selected.includes("All")) {
+        setSelected([]);
+        setSessions(
+          Object.keys(sessions!).reduce((acc, curr) => {
+            acc[curr] = { ...sessions![curr], selected: false };
+            return acc;
+          }, {} as Sessions),
+        );
+      } else {
+        setSelected(value.filter((v) => v !== "All"));
 
-      setSessions(
-        Object.keys(sessions!).reduce((acc, curr) => {
-          acc[curr] = { ...sessions![curr], selected: value.includes(curr) };
-          return acc;
-        }, {} as Sessions),
-      );
+        setSessions(
+          Object.keys(sessions!).reduce((acc, curr) => {
+            acc[curr] = { ...sessions![curr], selected: value.includes(curr) };
+            return acc;
+          }, {} as Sessions),
+        );
+      }
     }
   };
 
   return (
     <div className="flex items-baseline gap-4">
       <Listbox multiple value={selected} onChange={writeSelected}>
-        <div className="relative z-20 mb-4 mt-1 max-w-full flex-grow lg:flex-grow-0">
+        <div className="relative z-20 mt-1 max-w-full flex-grow lg:flex-grow-0">
           <Listbox.Label className="flex w-full flex-col text-sm font-medium text-gray-700">
             Session Selection
             <Listbox.Button
               title="Select a session to filter data in the table and averages."
-              className="relative h-8  cursor-pointer rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-300 sm:text-sm lg:w-full lg:min-w-64"
+              className="relative cursor-pointer rounded-lg bg-white py-3 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-sky-300 sm:text-sm lg:w-full lg:min-w-64"
             >
               <span className="block truncate">
                 {selected.length < 2

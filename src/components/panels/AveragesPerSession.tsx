@@ -1,12 +1,12 @@
 import { useContext, useMemo, useState } from "react";
 import { PlainObject, Vega, VisualizationSpec } from "react-vega";
+import { useClubsPerSession } from "../../hooks/useClubsPerSesssion";
 import { SessionContext } from "../../provider/SessionContext";
 import { GolfSwingData } from "../../types/GolfSwingData";
+import { useAveragedSwings } from "../../utils/calculateAverages";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
-import { translateSwingsToEnglish } from "../../utils/csvLocalization";
-import { calculateAverages } from "../../utils/calculateAverages";
 
 export const AveragesPerSession = () => {
   const { sessions } = useContext(SessionContext);
@@ -45,15 +45,27 @@ export const AveragesPerSession = () => {
     },
   };
 
+  const averages = useAveragedSwings();
+
   const clubDataByDate: {
     [key: string]: GolfSwingData[];
   } = useMemo(() => {
-    if (sessions) {
-      const a = calculateAverages(sessions);
-      console.log(a);
+    if (averages) {
+      return averages.reduce(
+        (acc, curr) => {
+          if (curr["Club Type"] === club) {
+            if (!acc[curr["Date"]]) {
+              acc[curr["Date"]] = [];
+            }
+            acc[curr["Date"]].push(curr);
+          }
+          return acc;
+        },
+        {} as { [key: string]: GolfSwingData[] },
+      );
     }
     return {};
-  }, [sessions]);
+  }, [averages, club]);
 
   const clubSelected = club && club !== "All";
   const averagesByDate: PlainObject = useMemo(() => {
@@ -73,22 +85,7 @@ export const AveragesPerSession = () => {
     return { table: [] };
   }, [sessions, yField, clubDataByDate, clubSelected]);
 
-  const clubs = useMemo(() => {
-    if (sessions) {
-      return Object.keys(sessions).reduce(
-        (acc, curr) => {
-          translateSwingsToEnglish(sessions[curr].results).forEach((result) => {
-            if (result["Club Type"] || result["Schlägerart"]) {
-              acc[result["Club Type"] || result["Schlägerart"]] = true;
-            }
-          });
-          return acc; // Add this line to return the accumulator object
-        },
-        {} as { [key: string]: boolean },
-      );
-    }
-    return {};
-  }, [sessions]);
+  const clubs = useClubsPerSession();
 
   return (
     <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">

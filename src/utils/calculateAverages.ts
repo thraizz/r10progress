@@ -1,23 +1,56 @@
+import { useContext, useMemo } from "react";
+import { SessionContext } from "../provider/SessionContext";
+import { SettingsContext } from "../provider/SettingsContext";
 import { GolfSwingData } from "../types/GolfSwingData";
 import { Sessions } from "../types/Sessions";
 import { translateSwingsToEnglish } from "./csvLocalization";
+
+const quantile = (arr: number[], q: number) => {
+  const sorted = arr.sort((a, b) => a - b);
+  const pos = (sorted.length - 1) * q;
+  const base = Math.floor(pos);
+  const rest = pos - base;
+  if (sorted[base + 1] !== undefined) {
+    return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+  } else {
+    return sorted[base];
+  }
+};
 
 export type AveragedSwing = GolfSwingData & {
   count: number;
   name: string;
 };
 
+export const useAveragedSwings = () => {
+  const { sessions } = useContext(SessionContext);
+
+  const { useIQR } = useContext(SettingsContext);
+
+  return useMemo(() => {
+    if (sessions) {
+      return calculateAverages(sessions, useIQR);
+    }
+    return [];
+  }, [sessions, useIQR]);
+};
+
 // Calculate averages for each club across all sessions
-export const calculateAverages: (input: Sessions) => AveragedSwing[] = (
-  input,
-) => {
+export const calculateAverages: (
+  input: Sessions,
+  calculateWithIqr?: boolean,
+) => AveragedSwing[] = (input, calculateWithIqr = false) => {
   if (input) {
     const sessions = Object.keys(input).map((key) => ({
       ...input[key],
       results: translateSwingsToEnglish(input[key].results),
     }));
+
     // This will hold all averages for each club
-    const clubs: { [key: string]: object } = {};
+    const clubs: {
+      [key: string]: AveragedSwing | { count: number; name: string };
+    } = {};
+
     // Iterate over all sessions
     for (const session of Object.values(sessions)) {
       if (
@@ -36,9 +69,8 @@ export const calculateAverages: (input: Sessions) => AveragedSwing[] = (
         }
         // If the club name is not yet in the clubs object, add it
         if (!clubs[club]) {
-          clubs[club] = { count: 1 };
+          clubs[club] = { name: club, count: 1 };
         } else {
-          // @ts-expect-error - count is always a number
           clubs[club].count++;
         }
         // Iterate over all keys in the swing
@@ -65,18 +97,44 @@ export const calculateAverages: (input: Sessions) => AveragedSwing[] = (
       }
     }
 
-    // Iterate over all clubs and calculate the average, except for the count
+    // Use Interquartile Range to filter out outliers and calculate the average, except for the count
     for (const club of Object.keys(clubs)) {
       for (const key of Object.keys(clubs[club])) {
         // Skip the count
         if (key === "count") {
           continue;
         }
-        // @ts-expect-error - key is taken from Object keys
         // Calculate the average
-        clubs[club][key] = clubs[club][key] / clubs[club].count;
+        const values = sessions
+          .map((session) => session.results)
+          .flat()
+          .filter((swing) => {
+            const swingClub = swing["Schlägerart"] || swing["Club Type"];
+            return swingClub === club;
+          })
+          // @ts-expect-error - key is taken from Object keys
+          .map((swing) => swing[key]);
+
+        if (calculateWithIqr) {
+          const q1 = quantile(values, 0.25);
+          const q3 = quantile(values, 0.75);
+          const iqr = q3 - q1;
+          const filteredValues = values.filter(
+            (value) => value >= q1 - 1.5 * iqr && value <= q3 + 1.5 * iqr,
+          );
+          // @ts-expect-error - key is taken from Object keys
+          clubs[club][key] =
+            filteredValues.reduce((acc, curr) => acc + curr, 0) /
+            filteredValues.length;
+          clubs[club]["count"] = filteredValues.length;
+        } else {
+          // @ts-expect-error - key is taken from Object keys
+          clubs[club][key] =
+            values.reduce((acc, curr) => acc + curr, 0) / values.length;
+        }
       }
     }
+
     // Flatten to an array with the club name as key
     return Object.keys(clubs)
       .map((club) => ({ ...clubs[club], name: club }) as AveragedSwing)

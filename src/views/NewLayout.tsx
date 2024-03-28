@@ -1,19 +1,21 @@
-import { Fragment, PropsWithChildren, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
+  ArrowTrendingUpIcon,
   Bars3Icon,
+  ChartBarSquareIcon,
   Cog6ToothIcon,
   FolderIcon,
   HomeIcon,
   XMarkIcon,
-  ArrowTrendingUpIcon,
-  ChartBarSquareIcon,
 } from "@heroicons/react/24/outline";
-import { NavLink } from "react-router-dom";
-import { SessionPicker } from "../components/SessionPicker";
-import { dashboardRoutes } from "../routes";
 import clsx from "clsx";
+import { Fragment, PropsWithChildren, useContext, useState } from "react";
+import { NavLink } from "react-router-dom";
+import { FullScreenSpinner } from "../components/FullScreenSpinner";
+import { SessionPicker } from "../components/SessionPicker";
 import { UserMenu } from "../components/UserMenu";
+import { SessionContext } from "../provider/SessionContext";
+import { dashboardRoutes } from "../routes";
 
 // href must be in dashboardRoutes
 type NavType = {
@@ -47,8 +49,11 @@ const navigation: NavType[] = [
 export const NewLayout = ({ children }: PropsWithChildren) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const { isLoading } = useContext(SessionContext);
+
   return (
     <>
+      {isLoading && <FullScreenSpinner />}
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
           <Dialog
@@ -255,7 +260,7 @@ export const NewLayout = ({ children }: PropsWithChildren) => {
         </div>
 
         <div className="lg:pl-72">
-          <div className="sticky top-0 z-40 flex shrink-0 justify-between gap-x-4 border-b border-gray-200 bg-white p-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+          <div className="sticky top-0 z-40 flex shrink-0 items-end justify-between gap-x-4 border-b border-gray-200 bg-white p-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
             <button
               type="button"
               className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
