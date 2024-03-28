@@ -14,14 +14,23 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
           ).toPrecision(3) + "m",
       },
       {
-        name: "Deviation Distance",
+        name: "Total",
         stat:
           (
-            average?.["Total Deviation Distance"] ||
-            average?.["Gesamtabweichungsdistanz"] ||
+            average?.["Total Distance"] ||
+            average?.["Gesamtstrecke"] ||
             0
           ).toPrecision(3) + "m",
       },
+      //   {
+      //     name: "Deviation Distance",
+      //     stat:
+      //       (
+      //         average?.["Total Deviation Distance"] ||
+      //         average?.["Gesamtabweichungsdistanz"] ||
+      //         0
+      //       ).toPrecision(3) + "m",
+      //   },
       {
         name: "Smash Factor",
         stat: (average?.["Smash Factor"] || 0).toPrecision(2),
