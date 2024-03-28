@@ -60,6 +60,7 @@ export const calculateAverages: (
       ) {
         continue;
       }
+      console.log(session.selected);
       // Iterate over all swings in the session
       for (const swing of session.results) {
         // Get the club name, which depends on the language
@@ -106,6 +107,7 @@ export const calculateAverages: (
         }
         // Calculate the average
         const values = sessions
+          .filter((session) => session.selected)
           .map((session) => session.results)
           .flat()
           .filter((swing) => {
