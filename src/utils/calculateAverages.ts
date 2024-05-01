@@ -60,7 +60,9 @@ export const calculateAverages: (
       ) {
         continue;
       }
-      console.log(session.selected);
+      if (calculateWithIqr) {
+        session.results = dropOutliers(session.results);
+      }
       // Iterate over all swings in the session
       for (const swing of session.results) {
         // Get the club name, which depends on the language
@@ -117,30 +119,22 @@ export const calculateAverages: (
           // @ts-expect-error - key is taken from Object keys
           .map((swing) => swing[key]);
 
-        if (calculateWithIqr) {
-          const q1 = quantile(values, 0.25);
-          const q3 = quantile(values, 0.75);
-          const iqr = q3 - q1;
-          const filteredValues = values.filter(
-            (value) => value >= q1 - 1.5 * iqr && value <= q3 + 1.5 * iqr,
-          );
-          // @ts-expect-error - key is taken from Object keys
-          clubs[club][key] =
-            filteredValues.reduce((acc, curr) => acc + curr, 0) /
-            filteredValues.length;
-          clubs[club]["count"] = filteredValues.length;
-        } else {
-          // @ts-expect-error - key is taken from Object keys
-          clubs[club][key] =
-            values.reduce((acc, curr) => acc + curr, 0) / values.length;
-        }
+        // @ts-expect-error - key is taken from Object keys
+        clubs[club][key] =
+          Math.round(
+            (values.reduce((acc, curr) => acc + curr, 0) / values.length) * 100,
+          ) / 100;
       }
     }
 
+    console.log(clubs);
+
     // Flatten to an array with the club name as key
-    return Object.keys(clubs)
+    const sortedClubs = Object.keys(clubs)
       .map((club) => ({ ...clubs[club], name: club }) as AveragedSwing)
       .sort(sortClubs);
+
+    return sortedClubs;
   }
   return [];
 };
@@ -239,3 +233,33 @@ const lobwedgeVariations = [
   "Lob wedge",
   "Lob-wedge",
 ];
+
+/**
+ * This function removes outliers based on `Gesamtstrecke` per club type.
+ *
+ * @param swings - The swings to filter
+ */
+const dropOutliers = (swings: GolfSwingData[]) => {
+  // Filter out outliers
+  const filteredSwings = swings.filter((swing) => {
+    const club = swing["Schlägerart"] || swing["Club Type"];
+    const distance = swing["Gesamtstrecke"] || swing["Total Distance"];
+    if (!club || !distance) {
+      return false;
+    }
+    const values = swings
+      .filter((s) => {
+        const sClub = s["Schlägerart"] || s["Club Type"];
+        return sClub === club;
+      })
+      .map((s) => s["Gesamtstrecke"] || s["Total Distance"]);
+    const q1 = quantile(values, 0.25);
+    const q3 = quantile(values, 0.75);
+    const iqr = q3 - q1;
+    const lowerBound = q1 - 1.5 * iqr;
+    const upperBound = q3 + 1.5 * iqr;
+    return distance >= lowerBound && distance <= upperBound;
+  });
+
+  return filteredSwings;
+};

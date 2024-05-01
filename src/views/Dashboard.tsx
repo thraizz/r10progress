@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
 import { BasePageLayout } from "../components/base/BasePageLayout";
 import { Last30DaysAverages } from "../components/panels/Last30DaysAverages";
+import { SettingsForm } from "../components/panels/SettingsForm";
+import { useSelectedSessions } from "../hooks/useSelectedSessions";
 import { dashboardRoutes } from "../routes";
 
 export const Dashboard = () => (
   <BasePageLayout>
+    <SettingsForm />
+    <NoSessionSelectedHint />
     <div className="rounded-md bg-white p-4">
       <Last30DaysAverages />
     </div>
@@ -18,3 +22,22 @@ export const Dashboard = () => (
     </div>
   </BasePageLayout>
 );
+
+const NoSessionSelectedHint = () => {
+  const selectedSessions = useSelectedSessions();
+  if (Object.keys(selectedSessions).length === 0) {
+    return (
+      <div className="rounded-md bg-yellow-100 p-4">
+        <p className="text-lg font-semibold text-yellow-800">
+          No sessions selected
+        </p>
+        <p className="text-sm text-yellow-800">
+          You have not selected any sessions. Please select at least one session
+          to view your averages.
+        </p>
+      </div>
+    );
+  }
+
+  return null;
+};

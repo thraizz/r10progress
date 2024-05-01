@@ -1,15 +1,15 @@
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../../provider/SessionContext";
 import { sortGolfSwingKeysForHeader } from "../../utils";
 import {
   AveragedSwing,
-  calculateAverages,
+  useAveragedSwings,
 } from "../../utils/calculateAverages";
+import { translateHeader } from "../../utils/csvLocalization";
 import { BaseDisclosure } from "../base/BaseDisclosure";
 import { BaseLabel } from "../base/BaseLabel";
-import { translateHeader } from "../../utils/csvLocalization";
 const defaultColumns: ColDef<AveragedSwing>[] = [
   { field: "name", headerName: "Club", sortable: true, filter: true },
   { field: "count", headerName: "Count", sortable: true, filter: true },
@@ -21,11 +21,7 @@ const capitalizeFirstLetter = (s: string) => {
 export const AveragesTable = () => {
   const { sessions } = useContext(SessionContext);
 
-  const averages = useMemo(() => {
-    if (sessions) {
-      return calculateAverages(sessions);
-    }
-  }, [sessions]);
+  const averages = useAveragedSwings();
 
   // Column Definitions: Defines & controls grid columns.
   const [columnDefs, setColumnDefs] =

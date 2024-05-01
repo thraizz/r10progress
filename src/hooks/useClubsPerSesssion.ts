@@ -13,7 +13,7 @@ export const useClubsPerSession = () => {
               acc[result["Club Type"] || result["Schlägerart"]] = true;
             }
           });
-          return acc; // Add this line to return the accumulator object
+          return acc;
         },
         {} as { [key: string]: boolean },
       );
