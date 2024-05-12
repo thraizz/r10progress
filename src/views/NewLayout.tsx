@@ -4,7 +4,9 @@ import {
   Bars3Icon,
   ChartBarSquareIcon,
   Cog6ToothIcon,
+  EnvelopeIcon,
   FolderIcon,
+  HeartIcon,
   HomeIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -236,6 +238,30 @@ export const NewLayout = ({ children }: PropsWithChildren) => {
                   </ul>
                 </li>
                 <li className="mt-auto">
+                  <a
+                    href="https://buymeacoffee.com/aronschueler"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-sky-200 hover:bg-sky-700 hover:text-white"
+                  >
+                    <HeartIcon
+                      className="h-6 w-6 shrink-0 text-sky-200 group-hover:text-white"
+                      aria-hidden="true"
+                    />
+                    Support me
+                  </a>
+
+                  <a
+                    href="mailto:info@lakur.tech"
+                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-sky-200 hover:bg-sky-700 hover:text-white"
+                  >
+                    <EnvelopeIcon
+                      className="h-6 w-6 shrink-0 text-sky-200 group-hover:text-white"
+                      aria-hidden="true"
+                    />
+                    Contact me
+                  </a>
+
                   <NavLink
                     to="/settings"
                     className={({ isActive }) =>
@@ -243,7 +269,7 @@ export const NewLayout = ({ children }: PropsWithChildren) => {
                         isActive
                           ? "bg-sky-700 text-white"
                           : "text-sky-200 hover:bg-sky-700 hover:text-white",
-                        "group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
+                        "group -mx-2 flex gap-x-3 rounded-md p-2 pt-8 text-sm font-semibold leading-6",
                       )
                     }
                   >
