@@ -11,6 +11,8 @@ export const sortGolfSwingKeysForHeader = (a: string, b: string) => {
     "Total Distance",
     "Gesamtstrecke",
     "Club Type",
+    "Club Speed",
+    "Schl.gsch.",
     "Schlägerart",
     "Ball Speed",
     "Ballgeschwindigkeit",
@@ -34,7 +36,23 @@ export const sortGolfSwingKeysForHeader = (a: string, b: string) => {
     return 1;
   }
 
-  // Third should be Total Distance / Gesamtstrecke
+  // Third should be Club Speed / Schl.gsch. / Ball Speed / Ballgeschwindigkeit
+  if (
+    ["Club Speed", "Schl.gsch.", "Ball Speed", "Ballgeschwindigkeit"].includes(
+      a,
+    )
+  ) {
+    return -1;
+  }
+  if (
+    ["Club Speed", "Schl.gsch.", "Ball Speed", "Ballgeschwindigkeit"].includes(
+      b,
+    )
+  ) {
+    return 1;
+  }
+
+  // Fourth should be Total Distance / Gesamtstrecke
   if (["Total Distance", "Gesamtstrecke"].includes(a)) {
     return -1;
   }
@@ -42,11 +60,19 @@ export const sortGolfSwingKeysForHeader = (a: string, b: string) => {
     return 1;
   }
 
-  // Fourth should be Carry Distance / Carry-Distanz
+  // Fifth should be Carry Distance / Carry-Distanz
   if (["Carry Distance", "Carry-Distanz"].includes(a)) {
     return -1;
   }
   if (["Carry Distance", "Carry-Distanz"].includes(b)) {
+    return 1;
+  }
+
+  // Sixth should be Smash Factor / Smash-Faktor
+  if (["Smash Factor", "Smash-Faktor"].includes(a)) {
+    return -1;
+  }
+  if (["Smash Factor", "Smash-Faktor"].includes(b)) {
     return 1;
   }
 

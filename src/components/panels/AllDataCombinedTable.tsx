@@ -6,9 +6,9 @@ import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../../provider/SessionContext";
 import { GolfSwingData } from "../../types/GolfSwingData";
 import { sortGolfSwingKeysForHeader } from "../../utils";
+import { translateHeader } from "../../utils/csvLocalization";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { BaseDisclosure } from "../base/BaseDisclosure";
-import { translateHeader } from "../../utils/csvLocalization";
 
 export const AllDataCombinedTable = () => {
   const { sessions } = useContext(SessionContext);
@@ -28,7 +28,11 @@ export const AllDataCombinedTable = () => {
           sortable: true,
           filter: true,
         }));
-      setColumnDefs(columns as ColDef<GolfSwingData>[]);
+      setColumnDefs(
+        columns.filter(
+          (column) => column.field !== "Schl.gsch.",
+        ) as ColDef<GolfSwingData>[],
+      );
     }
   }, [sessions]);
 

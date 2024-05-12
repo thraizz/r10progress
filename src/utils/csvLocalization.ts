@@ -56,6 +56,9 @@ export const translateSwingsToEnglish: (
   const translatedResults: GolfSwingData[] = [];
   results.forEach((swing) => {
     let newResult = { ...swing };
+    if (newResult["Schl.gsch."]) {
+      newResult["Club Speed"] = Number(swing["Schl.gsch."]);
+    }
     Object.keys(swing).forEach((key) => {
       const identifier = key as keyof typeof swing;
       const currentSwing = swing[identifier];
