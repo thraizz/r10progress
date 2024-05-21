@@ -5,13 +5,17 @@ import { SessionContext } from "../provider/SessionContext";
 import { Sessions } from "../types/Sessions";
 
 export const SessionPicker = () => {
-  const [selected, setSelected] = useState<string[]>([]);
   const { sessions, setSessions, fetchSnapshot, initialized } =
     useContext(SessionContext);
+  const [selected, setSelected] = useState<string[]>(() =>
+    sessions
+      ? Object.keys(sessions).filter((key) => sessions[key].selected)
+      : [],
+  );
+
   useEffect(() => {
-    const _ = async () => await fetchSnapshot();
     if (!initialized)
-      _().then((fetchedSessions) => {
+      fetchSnapshot().then((fetchedSessions) => {
         if (fetchedSessions) {
           setSessions(fetchedSessions);
           setSelected(Object.keys(fetchedSessions));
@@ -64,7 +68,9 @@ export const SessionPicker = () => {
             >
               <span className="block truncate">
                 {selected.length < 2
-                  ? selected
+                  ? selected.length
+                    ? selected
+                    : "None"
                   : `${selected.filter((v) => v !== "All").length} sessions`}
               </span>
               <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
