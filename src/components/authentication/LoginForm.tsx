@@ -2,9 +2,9 @@ import clsx from "clsx";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { auth } from "../../firebase";
 import { UserContext } from "../../provider/UserContext";
-import { useNavigate } from "react-router";
 
 export const LoginForm = () => {
   const { setUser } = useContext(UserContext);
@@ -49,6 +49,7 @@ export const LoginForm = () => {
           Email
         </label>
         <input
+          autoComplete="email"
           className={clsx(
             "rounded-md border-2 border-gray-300 px-4 py-2",
             loginForm.formState.errors.email && "has-error",
@@ -71,6 +72,7 @@ export const LoginForm = () => {
           Password
         </label>
         <input
+          autoComplete="current-password"
           className={clsx(
             "rounded-md border-2 border-gray-300 px-4 py-2",
             loginForm.formState.errors.password && "border-red-500",

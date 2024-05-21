@@ -2,9 +2,9 @@ import clsx from "clsx";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { auth } from "../../firebase";
 import { UserContext } from "../../provider/UserContext";
-import { useNavigate } from "react-router";
 
 export const RegisterForm = () => {
   const { setUser } = useContext(UserContext);
@@ -48,6 +48,7 @@ export const RegisterForm = () => {
           Email
         </label>
         <input
+          autoComplete="email"
           className="rounded-md border-2 border-gray-300 px-4 py-2"
           type="email"
           id="email"
@@ -61,6 +62,7 @@ export const RegisterForm = () => {
           Password
         </label>
         <input
+          autoComplete="new-password"
           className="rounded-md border-2 border-gray-300 px-4 py-2"
           type="password"
           id="password"
