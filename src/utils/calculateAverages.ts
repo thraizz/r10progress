@@ -25,21 +25,30 @@ export type AveragedSwing = GolfSwingData & {
 export const useAveragedSwings = () => {
   const { sessions } = useContext(SessionContext);
 
-  const { useIQR } = useContext(SettingsContext);
+  const { settings } = useContext(SettingsContext);
 
   return useMemo(() => {
     if (sessions) {
-      return calculateAverages(sessions, useIQR);
+      return calculateAverages(
+        sessions,
+        settings.useIQR,
+        settings.useAboveAverageShots,
+      );
     }
     return [];
-  }, [sessions, useIQR]);
+  }, [sessions, settings.useIQR, settings.useAboveAverageShots]);
 };
 
 // Calculate averages for each club across all sessions
 export const calculateAverages: (
   input: Sessions,
   calculateWithIqr?: boolean,
-) => AveragedSwing[] = (input, calculateWithIqr = false) => {
+  useAboveAverageShots?: boolean,
+) => AveragedSwing[] = (
+  input,
+  calculateWithIqr = false,
+  useAboveAverageShots = false,
+) => {
   if (input) {
     const sessions = Object.keys(input).map((key) => ({
       ...input[key],
@@ -62,6 +71,9 @@ export const calculateAverages: (
       }
       if (calculateWithIqr) {
         session.results = dropOutliers(session.results);
+      }
+      if (useAboveAverageShots) {
+        session.results = getAboveAverageShots(session.results);
       }
       // Iterate over all swings in the session
       for (const swing of session.results) {
@@ -126,8 +138,6 @@ export const calculateAverages: (
           ) / 100;
       }
     }
-
-    console.log(clubs);
 
     // Flatten to an array with the club name as key
     const sortedClubs = Object.keys(clubs)
@@ -259,6 +269,27 @@ const dropOutliers = (swings: GolfSwingData[]) => {
     const lowerBound = q1 - 1.5 * iqr;
     const upperBound = q3 + 1.5 * iqr;
     return distance >= lowerBound && distance <= upperBound;
+  });
+
+  return filteredSwings;
+};
+
+const getAboveAverageShots = (swings: GolfSwingData[]) => {
+  // Filter out outliers
+  const filteredSwings = swings.filter((swing) => {
+    const club = swing["Schlägerart"] || swing["Club Type"];
+    const distance = swing["Gesamtstrecke"] || swing["Total Distance"];
+    if (!club || !distance) {
+      return false;
+    }
+    const values = swings
+      .filter((s) => {
+        const sClub = s["Schlägerart"] || s["Club Type"];
+        return sClub === club;
+      })
+      .map((s) => s["Gesamtstrecke"] || s["Total Distance"]);
+    const average = values.reduce((acc, curr) => acc + curr, 0) / values.length;
+    return distance >= average;
   });
 
   return filteredSwings;

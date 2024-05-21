@@ -1,20 +1,28 @@
 import { PropsWithChildren, createContext, useState } from "react";
 
-interface SettingsContextProps {
+export type SettingsType = {
   useIQR: boolean;
-  setUseIQR: (value: boolean) => void;
+  useAboveAverageShots: boolean;
+};
+
+interface SettingsContextProps {
+  settings: SettingsType;
+  setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 }
 
 export const SettingsContext = createContext<SettingsContextProps>({
-  useIQR: false,
-  setUseIQR: () => {},
+  settings: { useIQR: false, useAboveAverageShots: false },
+  setSettings: () => {},
 });
 
 export const SettingsProvider = ({ children }: PropsWithChildren) => {
-  const [useIQR, setUseIQR] = useState<boolean>(false);
+  const [settings, setSettings] = useState<SettingsType>({
+    useIQR: false,
+    useAboveAverageShots: false,
+  });
 
   return (
-    <SettingsContext.Provider value={{ useIQR, setUseIQR }}>
+    <SettingsContext.Provider value={{ settings, setSettings }}>
       {children}
     </SettingsContext.Provider>
   );
