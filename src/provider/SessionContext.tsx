@@ -110,10 +110,15 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
 export { SessionContext, SessionProvider };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getDateFromResults = (results: any[]) => {
   if (results.length > 0) {
-    console.log(results[0]);
-    return results[0].Date || results[0].Datum;
+    const date: string =
+      results[0].Date ||
+      results[0].Datum ||
+      "No date found. Contact me please.";
+
+    return date.split(" ")[0];
   }
   return "";
 };
