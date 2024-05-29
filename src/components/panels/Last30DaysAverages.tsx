@@ -13,7 +13,7 @@ export const Last30DaysAverages = () => {
       <IQRNote />
       <div className="flex flex-col gap-8">
         {averages.map((average) => (
-          <ClubStats average={average} />
+          <ClubStats key={average.name} average={average} />
         ))}
       </div>
     </div>
