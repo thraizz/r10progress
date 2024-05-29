@@ -2,7 +2,7 @@ import { useContext, useMemo } from "react";
 import { SessionContext } from "../provider/SessionContext";
 import { SettingsContext } from "../provider/SettingsContext";
 import { GolfSwingData } from "../types/GolfSwingData";
-import { Sessions } from "../types/Sessions";
+import type { Sessions } from "../types/Sessions";
 import { translateSwingsToEnglish } from "./csvLocalization";
 
 const quantile = (arr: number[], q: number) => {
@@ -37,6 +37,25 @@ export const useAveragedSwings = () => {
     }
     return [];
   }, [sessions, settings.useIQR, settings.useAboveAverageShots]);
+};
+
+export type AveragedSwingRecord = {
+  date: string;
+  averages: AveragedSwing[];
+};
+export const useAveragePerSession = () => {
+  const { sessions } = useContext(SessionContext);
+
+  return useMemo(() => {
+    if (sessions) {
+      return Object.values(sessions).reduce((previousValue, currentValue) => {
+        const date = currentValue.date;
+        const averages = calculateAverages({ "1": currentValue });
+        return [...previousValue, { date, averages }];
+      }, [] as AveragedSwingRecord[]);
+    }
+    return [];
+  }, [sessions]);
 };
 
 // Calculate averages for each club across all sessions

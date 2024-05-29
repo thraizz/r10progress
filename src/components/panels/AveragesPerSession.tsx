@@ -1,17 +1,18 @@
 import { useContext, useMemo, useState } from "react";
-import { PlainObject, Vega, VisualizationSpec } from "react-vega";
+import { Vega, VisualizationSpec } from "react-vega";
 import { useClubsPerSession } from "../../hooks/useClubsPerSesssion";
 import { SessionContext } from "../../provider/SessionContext";
-import { GolfSwingData } from "../../types/GolfSwingData";
-import { useAveragedSwings } from "../../utils/calculateAverages";
-import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
+import {
+  AveragedSwing,
+  useAveragePerSession,
+} from "../../utils/calculateAverages";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
 
 export const AveragesPerSession = () => {
   const { sessions } = useContext(SessionContext);
 
-  const [yField, setYField] = useState("Smash Factor");
+  const [yField, setYField] = useState<keyof AveragedSwing>("Smash Factor");
   const [club, setClub] = useState<string | null>(null);
 
   const fields = useMemo(() => {
@@ -27,7 +28,7 @@ export const AveragesPerSession = () => {
   const spec: VisualizationSpec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
     data: { name: "table" },
-    mark: "bar",
+    mark: "line",
     encoding: {
       x: {
         axis: {
@@ -45,45 +46,54 @@ export const AveragesPerSession = () => {
     },
   };
 
-  const averages = useAveragedSwings();
+  const averages = useAveragePerSession();
 
-  const clubDataByDate: {
-    [key: string]: GolfSwingData[];
-  } = useMemo(() => {
-    if (averages) {
-      return averages.reduce(
-        (acc, curr) => {
-          if (curr["name"] === club) {
-            if (!acc[curr["Date"]]) {
-              acc[curr["Date"]] = [];
-            }
-            acc[curr["Date"]].push(curr);
-          }
-          return acc;
-        },
-        {} as { [key: string]: GolfSwingData[] },
-      );
-    }
-    return {};
-  }, [averages, club]);
+  const clubDataByDate = useMemo(() => {
+    if (!averages) return {};
+
+    return averages.reduce(
+      (accumulatedData, currentSwing) => {
+        const clubData = currentSwing.averages.find(
+          (swing) => swing.name === club,
+        );
+        if (clubData) {
+          accumulatedData[currentSwing.date] =
+            clubData[yField as keyof AveragedSwing];
+        }
+        return accumulatedData;
+      },
+      {} as { [key: string]: YFieldValue },
+    );
+  }, [averages, yField, club]);
 
   const clubSelected = club && club !== "All";
-  const averagesByDate: PlainObject = useMemo(() => {
+  type ClubDataForTable = {
+    table: {
+      x: string | null;
+      y: YFieldValue;
+    }[];
+  };
+
+  const averagesByDate: ClubDataForTable = useMemo(() => {
     if (sessions) {
-      if (clubSelected) {
+      if (clubSelected && clubDataByDate) {
         return {
-          table: clubDataByDate,
+          table: Object.entries(clubDataByDate)?.map((x) => ({
+            x: x[0],
+            y: x[1],
+          })),
+        };
+      } else {
+        return {
+          table: averages.map((x) => ({
+            x: x.date,
+            y: getAllAveragesByField(x.averages, yField),
+          })),
         };
       }
-      return {
-        table: getAllDataFromSession(sessions).map((row) => ({
-          x: row["Date"] || row["Datum"],
-          y: row[yField as keyof GolfSwingData],
-        })),
-      };
     }
     return { table: [] };
-  }, [sessions, yField, clubDataByDate, clubSelected]);
+  }, [sessions, clubSelected, clubDataByDate, averages, yField]);
 
   const clubs = useClubsPerSession();
 
@@ -98,7 +108,7 @@ export const AveragesPerSession = () => {
           <div className="flex flex-col gap-4 md:flex-row">
             <BaseListbox
               options={fields}
-              setOption={setYField}
+              setOption={setYField as (option: string) => void}
               value={yField}
               valueText={yField as string}
             />
@@ -131,3 +141,20 @@ export const AveragesPerSession = () => {
     </div>
   );
 };
+const getAllAveragesByField = (
+  averages: AveragedSwing[],
+  yField: keyof AveragedSwing,
+): YFieldValue => {
+  // @ts-expect-error - TODO Fix typing here
+  return averages.reduce((acc, current) => {
+    if (current[yField] === undefined) {
+      return acc;
+    }
+    if (acc === null) {
+      return current[yField];
+    }
+    return acc + current[yField];
+  }, null);
+};
+
+type YFieldValue = string | number | null | undefined;
