@@ -53,7 +53,7 @@ export const AveragesPerSession = () => {
     if (averages) {
       return averages.reduce(
         (acc, curr) => {
-          if (curr["Club Type"] === club) {
+          if (curr["name"] === club) {
             if (!acc[curr["Date"]]) {
               acc[curr["Date"]] = [];
             }
