@@ -33,7 +33,7 @@ const GoalList = () => {
 
 const Goal = ({ goal }: { goal: Goal }) => {
   return (
-    <div className="mt-4 rounded-md bg-white p-4">
+    <div className="mt-4 max-w-2xl rounded-md bg-white p-4">
       <h3 className="text-lg font-semibold">{goal.title}</h3>
       <hr />
       <div className="flex flex-col justify-between text-lg lg:flex-row">
@@ -46,8 +46,8 @@ const Goal = ({ goal }: { goal: Goal }) => {
         <p>
           Progress: <b>{goal.progressText}</b>
         </p>
-        <ProgressBar progress={goal.progress} />
       </div>
+      <ProgressBar progress={goal.progress} />
     </div>
   );
 };
