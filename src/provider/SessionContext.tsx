@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import React, {
   PropsWithChildren,
   createContext,
@@ -20,6 +20,7 @@ export interface SessionContextInterface {
   sessions: Sessions;
   setSessions: (sessions: Sessions) => void;
   fetchSnapshot: () => Promise<Sessions | undefined>;
+  deleteSession: (id: string) => Promise<void>;
 }
 
 const SessionContext = createContext<SessionContextInterface>({
@@ -28,6 +29,7 @@ const SessionContext = createContext<SessionContextInterface>({
   sessions: {},
   setSessions: () => {},
   fetchSnapshot: () => Promise.resolve(undefined),
+  deleteSession: () => Promise.resolve(),
 });
 
 const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -49,7 +51,11 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
       );
       const sessionResult = querySnapshot.docs.reduce((acc, curr) => {
         const data = reduceSessionToDefinedValues(curr.data() as Session);
-        acc[curr.id] = { ...data, selected: true };
+        acc[curr.id] = {
+          ...data,
+          selected: true,
+          date: getDateFromResults(data.results),
+        };
         return acc;
       }, {} as Sessions);
       setSessions(sessionResult);
@@ -60,6 +66,22 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setIsLoading(false);
   }, [uuid, setSessions]);
 
+  const deleteSession = useCallback(
+    async (id: string) => {
+      if (!uuid) {
+        return;
+      }
+      const document = doc(db, "r10data", uuid, "data", id);
+      await deleteDoc(document);
+      _setSessions((prev: Sessions) => {
+        const newSessions = { ...prev };
+        delete newSessions[id];
+        return newSessions;
+      });
+    },
+    [uuid, _setSessions],
+  );
+
   const memoizedValue = useMemo(
     () => ({
       initialized,
@@ -67,8 +89,16 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
       sessions: translateSessionsToEnglish(sessions),
       setSessions,
       fetchSnapshot,
+      deleteSession,
     }),
-    [initialized, isLoading, sessions, setSessions, fetchSnapshot],
+    [
+      initialized,
+      isLoading,
+      sessions,
+      setSessions,
+      fetchSnapshot,
+      deleteSession,
+    ],
   );
 
   return (
@@ -79,3 +109,11 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 export { SessionContext, SessionProvider };
+
+const getDateFromResults = (results: any[]) => {
+  if (results.length > 0) {
+    console.log(results[0]);
+    return results[0].Date || results[0].Datum;
+  }
+  return "";
+};

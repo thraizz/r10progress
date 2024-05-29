@@ -269,7 +269,7 @@ export const NewLayout = ({ children }: PropsWithChildren) => {
                         isActive
                           ? "bg-sky-700 text-white"
                           : "text-sky-200 hover:bg-sky-700 hover:text-white",
-                        "group -mx-2 flex gap-x-3 rounded-md p-2 pt-8 text-sm font-semibold leading-6",
+                        "group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6",
                       )
                     }
                   >
