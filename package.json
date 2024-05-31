@@ -6,9 +6,12 @@
   "license": "LGPL-3.0-only",
   "scripts": {
     "dev": "vite",
+    "dev:local": "VITE_USE_EMULATORS=true vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "emulate": "npx firebase emulators:start --import firebaseEmulatorData",
+    "emulate:export": "npx firebase emulators:start --import firebaseEmulatorData --export-on-exit"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",

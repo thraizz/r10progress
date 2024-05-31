@@ -1,6 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { browserSessionPersistence, getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import {
+  browserSessionPersistence,
+  connectAuthEmulator,
+  getAuth,
+} from "firebase/auth";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -15,3 +19,8 @@ export const firebaseApp = initializeApp(firebaseConfig);
 export const db = getFirestore(firebaseApp);
 export const auth = getAuth(firebaseApp);
 auth.setPersistence(browserSessionPersistence);
+
+if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS === "true") {
+  connectAuthEmulator(auth, "http://localhost:9099");
+  connectFirestoreEmulator(db, "localhost", 8080);
+}

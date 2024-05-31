@@ -43,7 +43,11 @@ To get started with R10Progress, you need to follow these simple setup steps:
    ```
    bun run dev
    ```
-5. Open your browser and navigate to `http://localhost:5173`.
+5. Start the firebase emulator, which has a default user with `local@example.com` and `Test123!` as password + some (bad 😉) shots already in the account.
+   ```
+   bun run emulate
+   ```
+6. Open your browser and navigate to `http://localhost:5173`.
 
 The app should now be running locally, and you're ready to import your data and see your golf shot progress come to life!
 
