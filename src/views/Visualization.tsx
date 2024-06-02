@@ -1,7 +1,7 @@
 import { BasePageLayout } from "../components/base/BasePageLayout";
 import { AveragesPerSession } from "../components/panels/AveragesPerSession";
-import { AveragesScatterPlot } from "../components/panels/AveragesScatterPlot";
 import { ShotDispersion } from "../components/panels/ShotDispersion";
+import { ShotScatterPlot } from "../components/panels/ShotScatterPlot";
 
 export const Visualization = () => (
   <BasePageLayout>
@@ -10,7 +10,7 @@ export const Visualization = () => (
       <ShotDispersion />
       <AveragesPerSession />
       <hr className="my-6" />
-      <AveragesScatterPlot />
+      <ShotScatterPlot />
     </div>
   </BasePageLayout>
 );

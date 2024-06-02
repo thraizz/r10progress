@@ -11,7 +11,7 @@ import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
 
-export const AveragesScatterPlot = () => {
+export const ShotScatterPlot = () => {
   const { sessions } = useContext(SessionContext);
 
   const [xField, setXField] = useState("Backspin");
@@ -118,7 +118,7 @@ export const AveragesScatterPlot = () => {
           table: clubs[club].map((row) => ({
             x: row[xField as keyof GolfSwingData],
             y: row[yField as keyof GolfSwingData],
-            date: row["Date"] || row["Datum"],
+            date: (row["Date"] || row["Datum"])?.split(" ")[0],
           })),
         };
       }
