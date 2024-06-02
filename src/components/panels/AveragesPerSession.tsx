@@ -1,19 +1,30 @@
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useContext, useMemo, useState } from "react";
-import { Vega, VisualizationSpec } from "react-vega";
+import { useClubDataByDate } from "../../hooks/useClubDataByData";
 import { useClubsPerSession } from "../../hooks/useClubsPerSesssion";
 import { SessionContext } from "../../provider/SessionContext";
-import {
+import { GolfSwingData } from "../../types/GolfSwingData";
+import type {
   AveragedSwing,
-  useAveragePerSession,
+  AveragedSwingRecord as AveragesBySession,
 } from "../../utils/calculateAverages";
+import { useAveragePerSession } from "../../utils/calculateAverages";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
+import type { ClubDataForTable, YFieldValue } from "./AveragesPerSessionGraph";
+import { AveragesPerSessionGraph } from "./AveragesPerSessionGraph";
+dayjs.extend(customParseFormat);
 
 export const AveragesPerSession = () => {
-  const { sessions } = useContext(SessionContext);
-
-  const [yField, setYField] = useState<keyof AveragedSwing>("Smash Factor");
+  const averages = useAveragePerSession();
+  const [yField, setYField] = useState<keyof GolfSwingData>("Smash Factor");
   const [club, setClub] = useState<string | null>(null);
+  const clubDataByDate = useClubDataByDate(club, yField);
+  const clubs = useClubsPerSession();
+  const clubSelected = club && club !== "All";
+
+  const { sessions } = useContext(SessionContext);
 
   const fields = useMemo(() => {
     if (sessions) {
@@ -24,81 +35,22 @@ export const AveragesPerSession = () => {
     return [];
   }, [sessions]);
 
-  // create the spec for the scatter plot
-  const spec: VisualizationSpec = {
-    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-    data: { name: "table" },
-    mark: "line",
-    encoding: {
-      x: {
-        axis: {
-          labelAngle: 0,
-        },
-        field: "x",
-        title: "Date",
-        type: "nominal",
-      },
-      y: {
-        field: "y",
-        title: yField,
-        type: "quantitative",
-      },
-    },
-  };
-
-  const averages = useAveragePerSession();
-
-  const clubDataByDate = useMemo(() => {
-    if (!averages) return {};
-
-    return averages.reduce(
-      (accumulatedData, currentSwing) => {
-        const clubData = currentSwing.averages.find(
-          (swing) => swing.name === club,
-        );
-        if (clubData) {
-          accumulatedData[currentSwing.date] =
-            clubData[yField as keyof AveragedSwing];
-        }
-        return accumulatedData;
-      },
-      {} as { [key: string]: YFieldValue },
-    );
-  }, [averages, yField, club]);
-
-  const clubSelected = club && club !== "All";
-  type ClubDataForTable = {
-    table: {
-      x: string | null;
-      y: YFieldValue;
-    }[];
-  };
-
   const averagesByDate: ClubDataForTable = useMemo(() => {
     if (sessions) {
       if (clubSelected && clubDataByDate) {
-        return {
-          table: Object.entries(clubDataByDate)?.map((x) => ({
-            x: x[0],
-            y: x[1],
-          })),
-        };
+        return Object.entries(clubDataByDate)?.map((x) => ({
+          x: parseDate(x[0]),
+          y: x[1],
+        }));
       } else {
-        return {
-          table: averages.map((x) => ({
-            x: x.date,
-            y: getAllAveragesByField(x.averages, yField),
-          })),
-        };
+        return getPairsForYfield(averages, yField);
       }
     }
-    return { table: [] };
+    return [];
   }, [sessions, clubSelected, clubDataByDate, averages, yField]);
 
-  const clubs = useClubsPerSession();
-
   return (
-    <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
+    <div className="flex h-auto w-full flex-col gap-3 rounded-xl bg-white p-4">
       <h4 className="mb-4 text-xl font-bold text-gray-800">
         Averages per Session
       </h4>
@@ -132,29 +84,38 @@ export const AveragesPerSession = () => {
           </div>
         </div>
       </div>
-      <div className="block lg:hidden">
-        <Vega width={700} height={700} spec={spec} data={averagesByDate} />
-      </div>
-      <div className="hidden lg:block">
-        <Vega width={1500} height={700} spec={spec} data={averagesByDate} />
-      </div>
+      <AveragesPerSessionGraph yField={yField} data={averagesByDate} />
     </div>
   );
 };
-const getAllAveragesByField = (
-  averages: AveragedSwing[],
+
+// Get pairs of average / session date
+const getPairsForYfield: (
+  averages: AveragesBySession[],
   yField: keyof AveragedSwing,
-): YFieldValue => {
-  // @ts-expect-error - TODO Fix typing here
-  return averages.reduce((acc, current) => {
-    if (current[yField] === undefined) {
-      return acc;
-    }
-    if (acc === null) {
-      return current[yField];
-    }
-    return acc + current[yField];
-  }, null);
+) => { x: string; y: YFieldValue }[] = (sessions, yField) => {
+  return sessions
+    .map((session) =>
+      session.averages.map((x) => ({
+        x: parseDate(session.date),
+        y: x[yField],
+        club: x.name,
+      })),
+    )
+    .flat();
 };
 
-type YFieldValue = string | number | null | undefined;
+// Parse date to ISO8601 format using dayjs
+// might be english or german format
+const parseDate = (input: string) => {
+  if (input.includes("/")) {
+    return dayjs(input, "MM/DD/YY").format("YYYY-MM-DD");
+  } else if (input.includes(".")) {
+    return dayjs(input, "DD.MM.YY", "de").format("YYYY-MM-DD");
+  } else {
+    return input;
+  }
+};
+
+console.log(parseDate("01/01/21"));
+console.log(parseDate("19.05.24"));
