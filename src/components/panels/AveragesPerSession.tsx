@@ -116,6 +116,3 @@ const parseDate = (input: string) => {
     return input;
   }
 };
-
-console.log(parseDate("01/01/21"));
-console.log(parseDate("19.05.24"));

@@ -268,7 +268,7 @@ const lobwedgeVariations = [
  *
  * @param swings - The swings to filter
  */
-const dropOutliers = (swings: GolfSwingData[]) => {
+export const dropOutliers = (swings: GolfSwingData[]) => {
   // Filter out outliers
   const filteredSwings = swings.filter((swing) => {
     const club = swing["Schlägerart"] || swing["Club Type"];
@@ -293,7 +293,7 @@ const dropOutliers = (swings: GolfSwingData[]) => {
   return filteredSwings;
 };
 
-const getAboveAverageShots = (swings: GolfSwingData[]) => {
+export const getAboveAverageShots = (swings: GolfSwingData[]) => {
   // Filter out outliers
   const filteredSwings = swings.filter((swing) => {
     const club = swing["Schlägerart"] || swing["Club Type"];

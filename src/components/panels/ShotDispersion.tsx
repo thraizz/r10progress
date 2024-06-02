@@ -1,7 +1,8 @@
 import { useMemo } from "react";
 import { Vega, VisualizationSpec } from "react-vega";
-import { useSelectedSessions } from "../../hooks/useSelectedSessions";
+import { useSelectedSessionsWithSettings } from "../../hooks/useSelectedSessions";
 import { GolfSwingData } from "../../types/GolfSwingData";
+import { SettingsForm } from "./SettingsForm";
 
 export const ShotDispersion = () => {
   const shots = useCarryAndDeviation();
@@ -35,6 +36,7 @@ export const ShotDispersion = () => {
 
   return (
     <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
+      <SettingsForm />
       <h4 className="mb-4 text-xl font-bold text-gray-800">Shot Dispersion</h4>
       <div className="block h-[400px] w-full">
         <Vega spec={spec} data={{ table: shots }} />
@@ -44,7 +46,7 @@ export const ShotDispersion = () => {
 };
 
 const useCarryAndDeviation = () => {
-  const sessions = useSelectedSessions();
+  const sessions = useSelectedSessionsWithSettings();
 
   const shots = useMemo(() => {
     if (sessions) {

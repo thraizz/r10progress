@@ -24,7 +24,6 @@ export const AveragesPerSessionGraph = ({
   yField: keyof GolfSwingData;
   data: ClubDataForTable;
 }) => {
-  console.log(data);
   const spec: VisualizationSpec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
     data: { name: "table" },
