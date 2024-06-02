@@ -30,5 +30,5 @@ export const useSelectedSessionsWithSettings = () => {
 
     acc[session.date] = { ...session, results };
     return acc; // Add this line to return the accumulator
-  }, {});
+  }, {} as Sessions);
 };
