@@ -6,6 +6,13 @@ import { SettingsForm } from "./SettingsForm";
 
 export const ShotDispersion = () => {
   const shots = useCarryAndDeviation();
+
+  let maximumDeviation = Math.max(
+    ...shots.map((shot) => Math.abs(Number(shot.x))),
+  );
+  // Round up to the nearest 10
+  maximumDeviation = Math.ceil(maximumDeviation / 10) * 10;
+
   const spec: VisualizationSpec = {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
     data: { name: "table" },
@@ -19,7 +26,7 @@ export const ShotDispersion = () => {
         title: "Deviation",
         type: "quantitative",
         // Should be centered at 0
-        scale: { zero: true },
+        scale: { zero: true, domain: [-maximumDeviation, maximumDeviation] },
       },
       y: {
         field: "y",
