@@ -1,18 +1,18 @@
 import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
-import { Layout } from "./views/Layout";
-import { Visualization } from "./views/Visualization";
-import { Authentication } from "./views/Authentication";
+import { routes } from "./routes";
 import {
   RedirectIfNotLoggedIn,
   RedirectIfSignedIn,
 } from "./utils/AuthRedirects";
-import { Goals } from "./views/Goals";
-import { NewLayout } from "./views/NewLayout";
-import { routes } from "./routes";
-import { Sessions } from "./views/Sessions";
-import { Reports } from "./views/Reports";
-import { Settings } from "./views/Settings";
+import { Authentication } from "./views/Authentication";
 import { Dashboard } from "./views/Dashboard";
+import { Goals } from "./views/Goals";
+import { Layout } from "./views/Layout";
+import { NewLayout } from "./views/NewLayout";
+import { Reports } from "./views/Reports";
+import { Sessions } from "./views/Sessions";
+import { Settings } from "./views/Settings";
+import { Visualization } from "./views/Visualization";
 
 export const router = createBrowserRouter([
   {
