@@ -5,8 +5,10 @@ import { UserContext } from "../provider/UserContext";
 export const RedirectIfNotLoggedIn = ({ children }: PropsWithChildren) => {
   const { user } = useContext(UserContext);
 
-  const target = "/login" + `?redirect=${window.location.pathname}`;
-
+  let target = "/login";
+  if (window.location.pathname !== "/") {
+    target = target + `?redirect=${window.location.pathname}`;
+  }
   return !user?.uid ? <Navigate to={target} replace /> : children;
 };
 
