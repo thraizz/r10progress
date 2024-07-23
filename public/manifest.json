@@ -1,4 +1,7 @@
 {
+  "id": "r10progress",
+  "description": "Transform your golfing experience with R10Progress, the ultimate companion for your Garmin Approach R10 Golf Radar. This intuitive app is designed to effortlessly track your progress and help you achieve your golfing goals. With R10Progress, you can easily monitor your performance, analyze your data, and make informed adjustments to your game. Say goodbye to guesswork and hello to a smarter way of improving your golf skills.",
+  "lang": "en",
   "name": "R10Progress - Golf Analytics",
   "short_name": "R10Progress",
   "theme_color": "#0c79bc",
