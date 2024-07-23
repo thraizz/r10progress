@@ -54,6 +54,11 @@
   </head>
   <body class="h-full">
     <div id="root" />
+    <script>
+      if (typeof navigator.serviceWorker !== "undefined") {
+        navigator.serviceWorker.register("pwabuilder-sw.js");
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
