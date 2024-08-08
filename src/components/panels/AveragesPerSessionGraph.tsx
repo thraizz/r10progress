@@ -8,14 +8,14 @@ import {
 export type YFieldValue = string | number | null | undefined;
 export type ClubDataForTable =
   | {
-      x: string | null | undefined;
-      y: YFieldValue;
-    }[]
+    x: string | null | undefined;
+    y: YFieldValue;
+  }[]
   | {
-      x: string | null | undefined;
-      y: YFieldValue;
-      club: string;
-    }[];
+    x: string | null | undefined;
+    y: YFieldValue;
+    club: string;
+  }[];
 
 export const AveragesPerSessionGraph = ({
   yField,
@@ -61,9 +61,26 @@ export const AveragesPerSessionGraph = ({
       title: "Club",
     };
   }
+
+  const specForMobile: VisualizationSpec = {
+    ...spec,
+    // Don't show action buttons on mobile
+    config: {
+      view: { stroke: "transparent" },
+      legend: {
+        orient: "bottom",
+      },
+    },
+  };
+
   return (
     <div className="block h-[400px] w-full">
-      <VegaLite spec={spec} data={{ table: data }} />
+      <div className="hidden lg:block">
+        <VegaLite spec={spec} data={{ table: data }} />
+      </div>
+      <div className="h-[400px] w-full lg:hidden">
+        <VegaLite spec={specForMobile} data={{ table: data }} />
+      </div>
     </div>
   );
 };

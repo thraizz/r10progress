@@ -41,12 +41,26 @@ export const ShotDispersion = () => {
     },
   };
 
+  const specForMobile: VisualizationSpec = {
+    ...spec,
+    // Don't show action buttons on mobile
+    config: {
+      view: { stroke: "transparent" },
+      legend: {
+        orient: "bottom",
+      },
+    },
+  };
+
   return (
     <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
       <SettingsForm />
       <h4 className="mb-4 text-xl font-bold text-gray-800">Shot Dispersion</h4>
-      <div className="block h-[400px] w-full">
+      <div className="hidden h-[400px] w-full lg:block">
         <Vega spec={spec} data={{ table: shots }} />
+      </div>
+      <div className="h-[400px] w-full lg:hidden">
+        <Vega spec={specForMobile} data={{ table: shots }} />
       </div>
     </div>
   );

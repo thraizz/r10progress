@@ -80,6 +80,17 @@ export const ShotScatterPlot = () => {
     },
   };
 
+  const specForMobile: VisualizationSpec = {
+    ...spec,
+    // Don't show action buttons on mobile
+    config: {
+      view: { stroke: "transparent" },
+      legend: {
+        orient: "bottom",
+      },
+    },
+  };
+
   const clubs: {
     [key: string]: GolfSwingData[];
   } = useMemo(() => {
@@ -170,8 +181,11 @@ export const ShotScatterPlot = () => {
           </div>
         </div>
       </div>
-      <div className="block h-[400px] w-full">
+      <div className="hidden h-[400px] w-full lg:block">
         <Vega spec={spec} data={data} />
+      </div>
+      <div className="h-[400px] w-full lg:hidden">
+        <Vega spec={specForMobile} data={data} />
       </div>
     </div>
   );
