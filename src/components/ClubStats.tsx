@@ -22,19 +22,14 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
             0
           ).toPrecision(3) + "m",
       },
-      //   {
-      //     name: "Deviation Distance",
-      //     stat:
-      //       (
-      //         average?.["Total Deviation Distance"] ||
-      //         average?.["Gesamtabweichungsdistanz"] ||
-      //         0
-      //       ).toPrecision(3) + "m",
-      //   },
       {
-        name: "Smash Factor",
-        stat: (average?.["Smash Factor"] || 0).toPrecision(2),
+        name: "Deviation Distance",
+        stat: getDeviationString(average),
       },
+      // {
+      //   name: "Smash Factor",
+      //   stat: (average?.["Smash Factor"] || 0).toPrecision(2),
+      // },
     ],
     [average],
   );
@@ -65,4 +60,13 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
       </dl>
     </div>
   );
+};
+
+const getDeviationString = (average: AveragedSwing) => {
+  const deviation =
+    average?.["Total Deviation Distance"] ||
+    average?.["Gesamtabweichungsdistanz"] ||
+    0;
+
+  return deviation > 0 ? `${deviation}m left` : `${Math.abs(deviation)}m right`;
 };

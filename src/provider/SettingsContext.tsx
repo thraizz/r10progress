@@ -1,8 +1,11 @@
 import { PropsWithChildren, createContext, useState } from "react";
 
+import { ClubAverageStat } from "./settings.utils";
+
 export type SettingsType = {
   useIQR: boolean;
   useAboveAverageShots: boolean;
+  clubAverageStats: ClubAverageStat[];
 };
 
 interface SettingsContextProps {
@@ -11,14 +14,19 @@ interface SettingsContextProps {
 }
 
 export const SettingsContext = createContext<SettingsContextProps>({
-  settings: { useIQR: false, useAboveAverageShots: false },
-  setSettings: () => {},
+  settings: {
+    useIQR: false,
+    useAboveAverageShots: false,
+    clubAverageStats: [] as any,
+  },
+  setSettings: () => { },
 });
 
 export const SettingsProvider = ({ children }: PropsWithChildren) => {
   const [settings, setSettings] = useState<SettingsType>({
     useIQR: false,
     useAboveAverageShots: false,
+    clubAverageStats: ["CARRY_DISTANCE"],
   });
 
   return (

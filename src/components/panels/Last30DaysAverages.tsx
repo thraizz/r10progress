@@ -2,7 +2,7 @@ import { useAveragedSwings } from "../../utils/calculateAverages";
 import { ClubStats } from "../ClubStats";
 import { IQRNote } from "../IQRNote";
 
-export const Last30DaysAverages = () => {
+export const AverageOverview = () => {
   const averages = useAveragedSwings();
 
   return (
