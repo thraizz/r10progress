@@ -8,14 +8,14 @@ import {
 export type YFieldValue = string | number | null | undefined;
 export type ClubDataForTable =
   | {
-    x: string | null | undefined;
-    y: YFieldValue;
-  }[]
+      x: string | null | undefined;
+      y: YFieldValue;
+    }[]
   | {
-    x: string | null | undefined;
-    y: YFieldValue;
-    club: string;
-  }[];
+      x: string | null | undefined;
+      y: YFieldValue;
+      club: string;
+    }[];
 
 export const AveragesPerSessionGraph = ({
   yField,
@@ -75,7 +75,7 @@ export const AveragesPerSessionGraph = ({
 
   return (
     <div className="block h-[400px] w-full">
-      <div className="hidden lg:block">
+      <div className="hidden h-[400px] w-full lg:block">
         <VegaLite spec={spec} data={{ table: data }} />
       </div>
       <div className="h-[400px] w-full lg:hidden">
