@@ -38,13 +38,16 @@ export const AveragesPerSession = () => {
         return Object.entries(clubDataByDate)?.map((x) => ({
           x: parseDate(x[0]),
           y: x[1],
+          club,
         }));
       } else {
         return getPairsForYfield(averages, yField);
       }
     }
     return [];
-  }, [sessions, clubSelected, clubDataByDate, averages, yField]);
+  }, [sessions, clubSelected, clubDataByDate, averages, yField, club]);
+
+  console.log(averagesByDate);
 
   return (
     <div className="flex h-auto w-full flex-col gap-3 rounded-xl bg-white p-4">

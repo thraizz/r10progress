@@ -150,8 +150,6 @@ export const ShotScatterPlot = () => {
     return { table: [] };
   }, [sessions, xField, yField, clubs, club]);
 
-  console.log(data);
-
   return (
     <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
       <h4 className="mb-4 text-xl font-bold text-gray-800">

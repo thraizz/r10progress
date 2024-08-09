@@ -6,16 +6,11 @@ import {
 } from "../../types/GolfSwingData";
 
 export type YFieldValue = string | number | null | undefined;
-export type ClubDataForTable =
-  | {
-      x: string | null | undefined;
-      y: YFieldValue;
-    }[]
-  | {
-      x: string | null | undefined;
-      y: YFieldValue;
-      club: string;
-    }[];
+export type ClubDataForTable = {
+  x: string | null | undefined;
+  y: YFieldValue;
+  club: string;
+}[];
 
 export const AveragesPerSessionGraph = ({
   yField,
@@ -52,6 +47,11 @@ export const AveragesPerSessionGraph = ({
         title: yField,
         type: "quantitative",
       },
+      tooltip: [
+        { field: "x", title: "Date", type: "temporal", format: "%b %d %Y" },
+        { field: "y", title: yField, format: ".2f" },
+        { field: "club", title: "Club" },
+      ],
     },
   };
   if (data.length && "club" in data[0]) {

@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
-import { YFieldValue } from "./components/panels/AveragesPerSessionGraph";
+import {
+  ClubDataForTable,
+  YFieldValue,
+} from "./components/panels/AveragesPerSessionGraph";
 import { GolfSwingData } from "./types/GolfSwingData";
 import { Session } from "./types/Sessions";
 import { AveragedSwing, AveragedSwingRecord } from "./utils/calculateAverages";
@@ -128,7 +131,7 @@ export const reduceSessionToDefinedValues: (session: Session) => Session = (
 export const getPairsForYfield: (
   averages: AveragedSwingRecord[],
   yField: keyof AveragedSwing,
-) => { x: string; y: YFieldValue }[] = (sessions, yField) => {
+) => ClubDataForTable = (sessions, yField) => {
   return sessions
     .map((session) =>
       session.averages.map((x) => ({
