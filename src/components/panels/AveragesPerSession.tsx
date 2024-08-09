@@ -5,15 +5,12 @@ import { useClubDataByDate } from "../../hooks/useClubDataByData";
 import { useClubsPerSession } from "../../hooks/useClubsPerSesssion";
 import { SessionContext } from "../../provider/SessionContext";
 import { GolfSwingData } from "../../types/GolfSwingData";
-import type {
-  AveragedSwing,
-  AveragedSwingRecord as AveragesBySession,
-} from "../../utils/calculateAverages";
 import { useAveragePerSession } from "../../utils/calculateAverages";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
-import type { ClubDataForTable, YFieldValue } from "./AveragesPerSessionGraph";
+import type { ClubDataForTable } from "./AveragesPerSessionGraph";
 import { AveragesPerSessionGraph } from "./AveragesPerSessionGraph";
+import { parseDate, getPairsForYfield } from "../../utils";
 dayjs.extend(customParseFormat);
 
 export const AveragesPerSession = () => {
@@ -87,32 +84,4 @@ export const AveragesPerSession = () => {
       <AveragesPerSessionGraph yField={yField} data={averagesByDate} />
     </div>
   );
-};
-
-// Get pairs of average / session date
-const getPairsForYfield: (
-  averages: AveragesBySession[],
-  yField: keyof AveragedSwing,
-) => { x: string; y: YFieldValue }[] = (sessions, yField) => {
-  return sessions
-    .map((session) =>
-      session.averages.map((x) => ({
-        x: parseDate(session.date),
-        y: x[yField],
-        club: x.name,
-      })),
-    )
-    .flat();
-};
-
-// Parse date to ISO8601 format using dayjs
-// might be english or german format
-const parseDate = (input: string) => {
-  if (input.includes("/")) {
-    return dayjs(input, "MM/DD/YY").format("YYYY-MM-DD");
-  } else if (input.includes(".")) {
-    return dayjs(input, "DD.MM.YY", "de").format("YYYY-MM-DD");
-  } else {
-    return input;
-  }
 };

@@ -10,6 +10,7 @@ import { Sessions } from "../../types/Sessions";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
+import { parseDate } from "../../utils";
 
 export const ShotScatterPlot = () => {
   const { sessions } = useContext(SessionContext);
@@ -65,10 +66,14 @@ export const ShotScatterPlot = () => {
       },
       color: {
         field: "date",
+        type: "temporal",
+        scale: {
+          type: "time",
+          range: ["lightblue", "darkblue"],
+        },
         legend: {
           title: "Date",
         },
-        type: "nominal",
       },
       // Tooltip
       tooltip: [
@@ -129,7 +134,7 @@ export const ShotScatterPlot = () => {
           table: clubs[club].map((row) => ({
             x: row[xField as keyof GolfSwingData],
             y: row[yField as keyof GolfSwingData],
-            date: (row["Date"] || row["Datum"])?.split(" ")[0],
+            date: parseDate((row["Date"] || row["Datum"])?.split(" ")[0] ?? ""),
           })),
         };
       }
@@ -138,12 +143,14 @@ export const ShotScatterPlot = () => {
         table: swings.map((row) => ({
           x: row[xField as keyof GolfSwingData],
           y: row[yField as keyof GolfSwingData],
-          date: (row["Date"] || row["Datum"])?.split(" ")[0],
+          date: parseDate((row["Date"] || row["Datum"])?.split(" ")[0] ?? ""),
         })),
       };
     }
     return { table: [] };
   }, [sessions, xField, yField, clubs, club]);
+
+  console.log(data);
 
   return (
     <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">

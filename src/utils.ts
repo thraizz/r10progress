@@ -1,5 +1,8 @@
+import dayjs from "dayjs";
+import { YFieldValue } from "./components/panels/AveragesPerSessionGraph";
 import { GolfSwingData } from "./types/GolfSwingData";
 import { Session } from "./types/Sessions";
+import { AveragedSwing, AveragedSwingRecord } from "./utils/calculateAverages";
 
 export const sortGolfSwingKeysForHeader = (a: string, b: string) => {
   // We want to prioritize Carry Distance, Total Distance, Club Name, Ball Spped, and Date
@@ -120,4 +123,31 @@ export const reduceSessionToDefinedValues: (session: Session) => Session = (
   });
 
   return { ...session, results: reducedResults };
+};
+// Get pairs of average / session date
+export const getPairsForYfield: (
+  averages: AveragedSwingRecord[],
+  yField: keyof AveragedSwing,
+) => { x: string; y: YFieldValue }[] = (sessions, yField) => {
+  return sessions
+    .map((session) =>
+      session.averages.map((x) => ({
+        x: parseDate(session.date),
+        y: x[yField],
+        club: x.name,
+      })),
+    )
+    .flat();
+};
+
+// Parse date to ISO8601 format using dayjs
+// might be english or german format
+export const parseDate = (input: string) => {
+  if (input.includes("/")) {
+    return dayjs(input, "MM/DD/YY").format("YYYY-MM-DD");
+  } else if (input.includes(".")) {
+    return dayjs(input, "DD.MM.YY", "de").format("YYYY-MM-DD");
+  } else {
+    return input;
+  }
 };
