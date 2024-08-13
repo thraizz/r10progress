@@ -7,5 +7,6 @@ export const Settings = () => (
     <h2 className="text-2xl font-bold">Settings</h2>
     <SettingsForm />
     <SessionList />
+    <p>Version: {import.meta.env.VITE_VERSION ?? "None"}</p>
   </BasePageLayout>
 );
