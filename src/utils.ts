@@ -1,8 +1,5 @@
 import dayjs from "dayjs";
-import {
-  ClubDataForTable,
-  YFieldValue,
-} from "./components/panels/AveragesPerSessionGraph";
+import { ClubDataForTable } from "./components/panels/AveragesPerSessionGraph";
 import { GolfSwingData } from "./types/GolfSwingData";
 import { Session } from "./types/Sessions";
 import { AveragedSwing, AveragedSwingRecord } from "./utils/calculateAverages";
