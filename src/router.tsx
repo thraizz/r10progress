@@ -1,9 +1,9 @@
 import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
-import { routes } from "./routes";
 import {
   RedirectIfNotLoggedIn,
   RedirectIfSignedIn,
-} from "./utils/AuthRedirects";
+} from "./components/AuthRedirects";
+import { routes } from "./routes";
 import { Authentication } from "./views/Authentication";
 import { Dashboard } from "./views/Dashboard";
 import { Goals } from "./views/Goals";

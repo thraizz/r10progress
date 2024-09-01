@@ -2,12 +2,12 @@ import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
 import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../../provider/SessionContext";
-import { sortGolfSwingKeysForHeader } from "../../utils";
 import {
   AveragedSwing,
   useAveragedSwings,
 } from "../../utils/calculateAverages";
 import { translateHeader } from "../../utils/csvLocalization";
+import { sortGolfSwingKeysForHeader } from "../../utils/utils";
 import { BaseDisclosure } from "../base/BaseDisclosure";
 import { BaseLabel } from "../base/BaseLabel";
 const defaultColumns: ColDef<AveragedSwing>[] = [

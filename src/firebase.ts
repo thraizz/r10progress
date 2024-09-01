@@ -24,3 +24,5 @@ if (import.meta.env.DEV && import.meta.env.VITE_USE_EMULATORS === "true") {
   connectAuthEmulator(auth, "http://localhost:9099");
   connectFirestoreEmulator(db, "localhost", 8080);
 }
+
+export const ANONYMOUS_USER_UID = "6U4S2ruwXMPrULj50b9uLpsaRk53";

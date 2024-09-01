@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-import { ClubDataForTable } from "./components/panels/AveragesPerSessionGraph";
-import { GolfSwingData } from "./types/GolfSwingData";
-import { Session } from "./types/Sessions";
-import { AveragedSwing, AveragedSwingRecord } from "./utils/calculateAverages";
+import { ClubDataForTable } from "../components/panels/AveragesPerSessionGraph";
+import { GolfSwingData } from "../types/GolfSwingData";
+import { Session } from "../types/Sessions";
+import { AveragedSwing, AveragedSwingRecord } from "./calculateAverages";
 
 export const sortGolfSwingKeysForHeader = (a: string, b: string) => {
   // We want to prioritize Carry Distance, Total Distance, Club Name, Ball Spped, and Date
@@ -144,7 +144,31 @@ export const getPairsForYfield: (
 // might be english or german format
 export const parseDate = (input: string) => {
   if (input.includes("/")) {
-    return dayjs(input, "MM/DD/YY").format("YYYY-MM-DD");
+    const possibleDatFormats = [
+      "MM/DD/YYYY",
+      "MM/DD/YY",
+      "M/DD/YYYY",
+      "M/DD/YY",
+      "MM/D/YYYY",
+      "MM/D/YY",
+      "M/D/YYYY",
+      "M/D/YY",
+    ];
+
+    let date = "";
+
+    const isDateParsed = possibleDatFormats.some((format) => {
+      const parsedDate = dayjs(input, format, "en");
+      if (parsedDate.isValid()) {
+        date = parsedDate.format("YYYY-MM-DD");
+        return true; // Stop iteration once a valid date is found
+      }
+      return false;
+    });
+
+    if (!isDateParsed) console.error("Could not parse date", input);
+
+    return date;
   } else if (input.includes(".")) {
     return dayjs(input, "DD.MM.YY", "de").format("YYYY-MM-DD");
   } else {

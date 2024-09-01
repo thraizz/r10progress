@@ -6,11 +6,11 @@ import { useClubsPerSession } from "../../hooks/useClubsPerSesssion";
 import { SessionContext } from "../../provider/SessionContext";
 import { GolfSwingData } from "../../types/GolfSwingData";
 import { useAveragePerSession } from "../../utils/calculateAverages";
+import { getPairsForYfield, parseDate } from "../../utils/utils";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
 import type { ClubDataForTable } from "./AveragesPerSessionGraph";
 import { AveragesPerSessionGraph } from "./AveragesPerSessionGraph";
-import { parseDate, getPairsForYfield } from "../../utils";
 dayjs.extend(customParseFormat);
 
 export const AveragesPerSession = () => {
@@ -46,8 +46,6 @@ export const AveragesPerSession = () => {
     }
     return [];
   }, [sessions, clubSelected, clubDataByDate, averages, yField, club]);
-
-  console.log(averagesByDate);
 
   return (
     <div className="flex h-auto w-full flex-col gap-3 rounded-xl bg-white p-4">

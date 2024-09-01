@@ -5,9 +5,9 @@ import { AgGridReact } from "ag-grid-react";
 import { useContext, useEffect, useState } from "react";
 import { SessionContext } from "../../provider/SessionContext";
 import { GolfSwingData } from "../../types/GolfSwingData";
-import { sortGolfSwingKeysForHeader } from "../../utils";
 import { translateHeader } from "../../utils/csvLocalization";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
+import { sortGolfSwingKeysForHeader } from "../../utils/utils";
 import { BaseDisclosure } from "../base/BaseDisclosure";
 
 export const AllDataCombinedTable = () => {

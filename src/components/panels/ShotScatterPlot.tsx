@@ -7,10 +7,11 @@ import {
   golfSwingDataKeysInMeters,
 } from "../../types/GolfSwingData";
 import { Sessions } from "../../types/Sessions";
+import { getDayFromRow } from "../../utils/date.utils";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
+import { parseDate } from "../../utils/utils";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
-import { parseDate } from "../../utils";
 
 export const ShotScatterPlot = () => {
   const { sessions } = useContext(SessionContext);
@@ -134,7 +135,7 @@ export const ShotScatterPlot = () => {
           table: clubs[club].map((row) => ({
             x: row[xField as keyof GolfSwingData],
             y: row[yField as keyof GolfSwingData],
-            date: parseDate((row["Date"] || row["Datum"])?.split(" ")[0] ?? ""),
+            date: parseDate(getDayFromRow(row)),
           })),
         };
       }
@@ -143,7 +144,7 @@ export const ShotScatterPlot = () => {
         table: swings.map((row) => ({
           x: row[xField as keyof GolfSwingData],
           y: row[yField as keyof GolfSwingData],
-          date: parseDate((row["Date"] || row["Datum"])?.split(" ")[0] ?? ""),
+          date: parseDate(getDayFromRow(row)),
         })),
       };
     }
