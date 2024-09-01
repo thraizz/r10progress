@@ -1,6 +1,6 @@
 import { PropsWithChildren, createContext, useState } from "react";
 
-import { ClubAverageStat } from "./settings.utils";
+import { ClubAverageStat } from "../utils/settings.utils";
 
 export type SettingsType = {
   useIQR: boolean;
