@@ -29,10 +29,10 @@ const SessionContext = createContext<SessionContextInterface>({
   initialized: false,
   isLoading: false,
   sessions: {},
-  setSessions: () => { },
+  setSessions: () => {},
   fetchSnapshot: () => Promise.resolve(undefined),
   deleteSession: () => Promise.resolve(),
-  exportSessionsToJson: () => { },
+  exportSessionsToJson: () => {},
 });
 
 const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {

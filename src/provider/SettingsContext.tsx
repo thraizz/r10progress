@@ -19,7 +19,7 @@ export const SettingsContext = createContext<SettingsContextProps>({
     useAboveAverageShots: false,
     clubAverageStats: [] as any,
   },
-  setSettings: () => { },
+  setSettings: () => {},
 });
 
 export const SettingsProvider = ({ children }: PropsWithChildren) => {

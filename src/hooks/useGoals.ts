@@ -45,7 +45,10 @@ export const useGoals: () => Goal[] = () => {
       averages.find((average) => average.name === "Driver")?.["Gesamtstrecke"];
 
     const progress = current ? (current / partialGoal.target) * 100 : 0;
-    const progressText = `${(current ? (current / partialGoal.target) * 100 : 0).toFixed(2)}%`;
+    const progressText = `${(current
+      ? (current / partialGoal.target) * 100
+      : 0
+    ).toFixed(2)}%`;
     const unit = golfSwingDataKeysInMeters.includes(partialGoal.metric)
       ? "m"
       : golfSwingDataKeysInDegrees.includes(partialGoal.metric)
