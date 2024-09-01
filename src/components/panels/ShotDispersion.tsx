@@ -74,7 +74,7 @@ const useCarryAndDeviation = () => {
       const results = Object.values(sessions)
         .map((session) => session.results)
         .flat();
-      return calculateCarryAndDeviation(results);
+      return calculateCarryAndDeviation(results).filter((pair) => !!pair);
     }
     return [];
   }, [sessions]);
@@ -91,6 +91,8 @@ const calculateCarryAndDeviation = (results: GolfSwingData[]) => {
       result["Carry Deviation Distance"] || result["Gesamtabweichungsdistanz"]
     )?.toFixed(2);
     const clubName = result["Schlägerart"] || result["Club Type"];
-    return { y: carry, x: deviation, club: clubName };
+    if (carry && deviation && clubName) {
+      return { y: carry, x: deviation, club: clubName };
+    }
   });
 };
