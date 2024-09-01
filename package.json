@@ -1,13 +1,13 @@
 {
   "name": "r10progress",
   "private": true,
-  "version": "1.2.1",
+  "version": "1.2.2",
   "type": "module",
   "license": "LGPL-3.0-only",
   "scripts": {
     "dev": "vite",
     "dev:local": "VITE_USE_EMULATORS=true vite",
-    "build": "tsc && VITE_VERSION=$CF_PAGES_COMMIT_SHA vite build",
+    "build": "tsc && VITE_VERSION=\"$npm_package_version ($CF_PAGES_COMMIT_SHA)\" vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "emulate": "npx firebase emulators:start --import firebaseEmulatorData",
