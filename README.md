@@ -9,14 +9,12 @@ The live version of the app is available at [https://app.r10progress.com](https:
 ## Features
 
 - **Data Import**: Easily import your golf shot data in CSV format directly into the app.
-- **Firebase Integration**: Secure data storage in the cloud with Firebase, ensuring your data is safe and accessible whenever you need it.
 - **Data Visualization**: Utilize powerful charts created with Vega to visualize your progress and performance trends over time.
 - **Interactive Tables**: View detailed shot data in a searchable and sortable table powered by ag-Grid.
-- **Modern Tech Stack**: Built with cutting-edge technologies like Bun, Vite, React, Vega, ag-Grid, and Firebase, delivering a fast and smooth user experience.
-
+- **Goals**(WIP): Set and work on shot metric goals 
 ## How to Use
 
-1. **Capture your shot data** during your practice sessions or gameplay.
+1. **Capture your shot data** during your practice rounds.
 2. **Export your data** to a CSV file from the Garmin Golf App.
 3. **Open R10Progress** and press the Upload button section.
 4. **Upload your CSV file** – Your data will be processed and stored securely in Firebase.
@@ -43,7 +41,7 @@ To get started with R10Progress, you need to follow these simple setup steps:
    ```
    bun run dev
    ```
-5. Start the firebase emulator, which has a default user with `local@example.com` and `Test123!` as password + some (bad 😉) shots already in the account.
+5. Start the firebase emulator, which has a default user with `local@example.com` and `Test123!` as password and some shots already in the account.
    ```
    bun run emulate
    ```
@@ -58,6 +56,7 @@ We appreciate your interest in contributing to R10Progress! If you have suggesti
 ## Support
 
 If you encounter any issues or require assistance, please file an issue on the GitHub repository, and we'll get back to you promptly.
+If you want to support my development of this, feel free to [buy me a coffee](https://buymeacoffee.com/aronschueler)
 
 ## License
 
