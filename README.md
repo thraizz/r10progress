@@ -11,7 +11,7 @@ The live version of the app is available at [https://app.r10progress.com](https:
 - **Data Import**: Easily import your golf shot data in CSV format directly into the app.
 - **Firebase Integration**: Secure data storage in the cloud with Firebase, ensuring your data is safe and accessible whenever you need it.
 - **Data Visualization**: Utilize powerful charts created with Vega to visualize your progress and performance trends over time.
-- **Interactive Grid**: View detailed shot data in a searchable and sortable table powered by ag-Grid.
+- **Interactive Tables**: View detailed shot data in a searchable and sortable table powered by ag-Grid.
 - **Modern Tech Stack**: Built with cutting-edge technologies like Bun, Vite, React, Vega, ag-Grid, and Firebase, delivering a fast and smooth user experience.
 
 ## How to Use
