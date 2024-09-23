@@ -4,7 +4,7 @@ Welcome to the **R10Progress** app – your go-to solution for tracking and visu
 
 Golf enthusiasts, improve your game by importing your shot data, storing it securely in Firebase, and analyzing your performance with intuitive and interactive charts. R10Progress makes it easy to see where you're shining and where you could use a bit more practice.
 
-The live version of the app is available at [https://r10progress.firebaseapp.com](https://r10progress.firebaseapp.com).
+The live version of the app is available at [https://app.r10progress.com](https://app.r10progress.com/login).
 
 ## Features
 
