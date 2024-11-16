@@ -37,9 +37,9 @@ To get started with R10Progress, you need to follow these simple setup steps:
    ```
    bun install
    ```
-4. Start the app in development mode.
+4. Start the app in development mode, using the local emulators.
    ```
-   bun run dev
+   bun run dev:local
    ```
 5. Start the firebase emulator, which has a default user with `local@example.com` and `Test123!` as password and some shots already in the account.
    ```
