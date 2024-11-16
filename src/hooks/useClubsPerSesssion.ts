@@ -1,19 +1,23 @@
 import { useContext, useMemo } from "react";
 import { SessionContext } from "../provider/SessionContext";
 import { translateSwingsToEnglish } from "../utils/csvLocalization";
+import { getClubName } from "../utils/golfSwingData.helpers.ts";
 
 export const useClubsPerSession = () => {
   const { sessions } = useContext(SessionContext);
   return useMemo(() => {
     if (sessions) {
       return Object.keys(sessions).reduce(
-        (acc, curr) => {
-          translateSwingsToEnglish(sessions[curr].results).forEach((result) => {
-            if (result["Club Type"] || result["Schlägerart"]) {
-              acc[result["Club Type"] || result["Schlägerart"]] = true;
-            }
-          });
-          return acc;
+        (clubs, current) => {
+          translateSwingsToEnglish(sessions[current].results).forEach(
+            (shot) => {
+              const clubName = getClubName(shot);
+              if (clubName) {
+                clubs[clubName] = true;
+              }
+            },
+          );
+          return clubs;
         },
         {} as { [key: string]: boolean },
       );

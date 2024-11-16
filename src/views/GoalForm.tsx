@@ -2,7 +2,7 @@ import { useAtom } from "jotai";
 import { useForm } from "react-hook-form";
 import { useClubsPerSession } from "../hooks/useClubsPerSesssion";
 import { goalAtom } from "../hooks/useGoals";
-import { useIsEnglish } from "../hooks/useIsEnglish";
+import { useIsEnglishDataset } from "../hooks/useIsEnglishDataset.ts";
 import {
   GolfSwingDataDE,
   GolfSwingDataEN,
@@ -21,7 +21,7 @@ export const GoalForm = ({ closeAction }: { closeAction: () => void }) => {
     metric: keyof GolfSwingDataDE | keyof GolfSwingDataEN;
   }>();
 
-  const isEnglish = useIsEnglish();
+  const isEnglish = useIsEnglishDataset();
   const metricOptions = isEnglish
     ? [...englishDegreeMetrics, ...englishMetersMetrics]
     : [...germanDegreeMetrics, ...germanMetersMetrics];

@@ -1,16 +1,13 @@
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 import { Goal, PartialGoal } from "../types/Goals";
-import {
-  golfSwingDataKeysInDegrees,
-  golfSwingDataKeysInMeters,
-} from "../types/GolfSwingData";
+import { golfSwingDataKeysInDegrees } from "../types/GolfSwingData";
 import { useAveragedSwings } from "../utils/calculateAverages";
-import { useIsEnglish } from "./useIsEnglish";
+import { useIsEnglishDataset } from "./useIsEnglishDataset.ts";
 
 export const goalAtom = atom<PartialGoal[]>([]);
 export const useGoals: () => Goal[] = () => {
-  const isEnglish = useIsEnglish();
+  const isEnglish = useIsEnglishDataset();
   const [goals, setGoals] = useAtom(goalAtom);
   useEffect(
     () =>
@@ -49,11 +46,12 @@ export const useGoals: () => Goal[] = () => {
       ? (current / partialGoal.target) * 100
       : 0
     ).toFixed(2)}%`;
-    const unit = golfSwingDataKeysInMeters.includes(partialGoal.metric)
-      ? "m"
-      : golfSwingDataKeysInDegrees.includes(partialGoal.metric)
-        ? "°"
-        : "";
+    let unit = "";
+    if (golfSwingDataKeysInDegrees.includes(partialGoal.metric)) {
+      unit = "°";
+    } else if (golfSwingDataKeysInMeters.includes(partialGoal.metric)) {
+      unit = "m";
+    }
     return { progress, progressText, current, unit };
   };
 

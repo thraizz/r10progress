@@ -13,7 +13,7 @@ export const useClubDataByDate = (
   const averages = useAveragePerSession();
 
   return useMemo(() => {
-    if (!averages) return {};
+    if (!averages || averages.length === 0) return {};
 
     return averages.reduce(
       (accumulatedData, currentSwing) => {

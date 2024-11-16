@@ -46,7 +46,7 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { user } = useContext(UserContext);
   const uuid = user?.isAnonymous ? ANONYMOUS_USER_UID : user?.uid;
 
-  const fetchSnapshot = useCallback(async () => {
+  const fetchSessions = useCallback(async () => {
     setIsLoading(true);
     if (uuid) {
       const querySnapshot = await getDocs(
@@ -69,7 +69,7 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setIsLoading(false);
   }, [uuid, setSessionsCallback]);
 
-  // Export current sessions as JSON file
+  // Export current sessions as JSON file, used for debugging
   const exportSessionsToJson = useCallback((sessions: Sessions) => {
     const element = document.createElement("a");
     const file = new Blob([JSON.stringify(sessions)], {
@@ -103,7 +103,7 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
       isLoading,
       sessions: translateSessionsToEnglish(sessions),
       setSessions: setSessionsCallback,
-      fetchSnapshot,
+      fetchSnapshot: fetchSessions,
       deleteSession,
       exportSessionsToJson,
     }),
@@ -112,7 +112,7 @@ const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
       isLoading,
       sessions,
       setSessionsCallback,
-      fetchSnapshot,
+      fetchSessions,
       deleteSession,
       exportSessionsToJson,
     ],

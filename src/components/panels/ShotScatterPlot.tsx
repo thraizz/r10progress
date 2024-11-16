@@ -6,26 +6,28 @@ import {
   golfSwingDataKeysInDegrees,
   golfSwingDataKeysInMeters,
 } from "../../types/GolfSwingData";
-import { Sessions } from "../../types/Sessions";
+
 import { getDayFromRow } from "../../utils/date.utils";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { parseDate } from "../../utils/utils";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
+import { getClubName } from "../../utils/golfSwingData.helpers.ts";
 
 export const ShotScatterPlot = () => {
   const { sessions } = useContext(SessionContext);
+  const [club, setClub] = useState<string | null>(null);
+  // This combines all shots with the same club from all sessions
+  const combinedClubData = useCombinedClubData();
 
   const [xField, setXField] = useState("Backspin");
   const [yField, setYField] = useState("Smash Factor");
 
   const fields = useMemo(() => {
-    if (sessions) {
-      return Object.keys(sessions).length > 0
-        ? Object.keys(sessions[Object.keys(sessions)[0]]?.results?.[0])
-        : [];
-    }
-    return [];
+    const firstSession = Object.values(sessions)?.[0];
+    const firstResult = firstSession?.results?.[0];
+    const fields = firstResult ? Object.keys(firstResult) : [];
+    return fields.sort((a, b) => a.localeCompare(b));
   }, [sessions]);
 
   // create the spec for the scatter plot
@@ -82,7 +84,6 @@ export const ShotScatterPlot = () => {
         { field: "y", title: yField, format: ".2f" },
         { field: "date", title: "Date" },
       ],
-      // Allow zoom
     },
   };
 
@@ -97,51 +98,14 @@ export const ShotScatterPlot = () => {
     },
   };
 
-  const clubs: {
-    [key: string]: GolfSwingData[];
-  } = useMemo(() => {
-    if (sessions) {
-      return transformSessions(sessions);
-    }
-    return {};
-  }, [sessions]);
-
-  function transformSessions(sessions: Sessions): {
-    [key: string]: GolfSwingData[];
-  } {
-    const resultsByClub: { [key: string]: GolfSwingData[] } = {};
-
-    Object.values(sessions).forEach((session) => {
-      session.results.forEach((result) => {
-        const club = result["Schlägerart"] || result["Club Type"];
-        if (club) {
-          if (!resultsByClub[club]) {
-            resultsByClub[club] = [];
-          }
-          resultsByClub[club].push(result);
-        }
-      });
-    });
-
-    return resultsByClub;
-  }
-
-  const [club, setClub] = useState<string | null>(null);
-
   const data: PlainObject = useMemo(() => {
     if (sessions) {
-      if (club && club !== "All" && clubs[club]) {
-        return {
-          table: clubs[club].map((row) => ({
-            x: row[xField as keyof GolfSwingData],
-            y: row[yField as keyof GolfSwingData],
-            date: parseDate(getDayFromRow(row)),
-          })),
-        };
+      let clubData = getAllDataFromSession(sessions);
+      if (club && club !== "All" && combinedClubData[club]) {
+        clubData = combinedClubData[club];
       }
-      const swings = getAllDataFromSession(sessions);
       return {
-        table: swings.map((row) => ({
+        table: clubData.map((row) => ({
           x: row[xField as keyof GolfSwingData],
           y: row[yField as keyof GolfSwingData],
           date: parseDate(getDayFromRow(row)),
@@ -149,7 +113,7 @@ export const ShotScatterPlot = () => {
       };
     }
     return { table: [] };
-  }, [sessions, xField, yField, clubs, club]);
+  }, [sessions, xField, yField, combinedClubData, club]);
 
   return (
     <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
@@ -164,13 +128,13 @@ export const ShotScatterPlot = () => {
               options={fields}
               setOption={setXField}
               value={xField}
-              valueText={xField as string}
+              valueText={xField}
             />
             <BaseListbox
               options={fields}
               setOption={setYField}
               value={yField}
-              valueText={yField as string}
+              valueText={yField}
             />
           </div>
         </div>
@@ -179,7 +143,10 @@ export const ShotScatterPlot = () => {
           <BaseLabel>Choose the club to display</BaseLabel>
           <div className="flex flex-row gap-4">
             <BaseListbox
-              options={[...Object.keys(clubs).filter((v) => !!v), "All"]}
+              options={[
+                ...Object.keys(combinedClubData).filter((v) => !!v),
+                "All",
+              ]}
               setOption={setClub}
               value={club || ""}
               valueText={club || "All"}
@@ -195,4 +162,28 @@ export const ShotScatterPlot = () => {
       </div>
     </div>
   );
+};
+
+const useCombinedClubData = () => {
+  const { sessions } = useContext(SessionContext);
+  return useMemo(() => {
+    if (sessions) {
+      const resultsByClub: { [key: string]: GolfSwingData[] } = {};
+
+      Object.values(sessions).forEach((session) => {
+        session.results.forEach((shot) => {
+          const clubName = getClubName(shot);
+          if (clubName) {
+            if (!resultsByClub[clubName]) {
+              resultsByClub[clubName] = [];
+            }
+            resultsByClub[clubName].push(shot);
+          }
+        });
+      });
+
+      return resultsByClub;
+    }
+    return {};
+  }, [sessions]);
 };
