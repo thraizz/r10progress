@@ -1,7 +1,10 @@
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 import { Goal, PartialGoal } from "../types/Goals";
-import { golfSwingDataKeysInDegrees } from "../types/GolfSwingData";
+import {
+  golfSwingDataKeysInDegrees,
+  golfSwingDataKeysInMeters,
+} from "../types/GolfSwingData";
 import { useAveragedSwings } from "../utils/calculateAverages";
 import { useIsEnglishDataset } from "./useIsEnglishDataset.ts";
 

@@ -1,12 +1,14 @@
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
-import React, {
+import {
   PropsWithChildren,
   createContext,
   useCallback,
   useContext,
   useMemo,
   useState,
+  FC,
 } from "react";
+
 import { ANONYMOUS_USER_UID, db } from "../firebase";
 import { Session, Sessions } from "../types/Sessions";
 import { translateSessionsToEnglish } from "../utils/csvLocalization";
@@ -25,6 +27,11 @@ export interface SessionContextInterface {
   exportSessionsToJson: (sessions: Sessions) => void;
 }
 
+/**
+ * This context manager gets the users data / shots / sessions from firestore
+ * and provides it to the app. We have an initial and loading state here too,
+ * handle anonymous users and provide a function to delete a session.
+ */
 const SessionContext = createContext<SessionContextInterface>({
   initialized: false,
   isLoading: false,
@@ -35,7 +42,7 @@ const SessionContext = createContext<SessionContextInterface>({
   exportSessionsToJson: () => {},
 });
 
-const SessionProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
   const [sessions, setSessions] = useState<Sessions>({});
   const setSessionsCallback = useCallback((sessions: Sessions) => {
     setSessions(filterResultsWithMissingCells(sessions));

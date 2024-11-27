@@ -98,16 +98,18 @@ export const sortGolfSwingKeysForHeader = (a: string, b: string) => {
 export const reduceSessionToDefinedValues: (session: Session) => Session = (
   session,
 ) => {
-  const fieldValueCount = session.results.reduce((accumulator, curr) => {
+  const fieldValueCount = session.results.reduce((shot, curr) => {
+    // Count the number of values for each field in the sessions results
     // @ts-expect-error - We know that the type will be correct
-    Object.keys(curr).forEach((key: keyof GolfSwingData) => {
+    Object.keys(curr).forEach((metric: keyof GolfSwingData) => {
       // @ts-expect-error - We know that the type will be correct
-      if (accumulator[key] === undefined) accumulator[key] = 0;
-      if (curr[key] !== undefined && curr[key] !== null)
+      if (shot[metric] === undefined) shot[metric] = 0;
+      if (curr[metric] !== undefined && curr[metric] !== null) {
         // @ts-expect-error - We know that the type will be correct
-        accumulator[key] = (accumulator[key] ?? 0) + 1;
+        shot[metric] = (shot[metric] ?? 0) + 1;
+      }
     });
-    return accumulator;
+    return shot;
   }, {} as GolfSwingData);
 
   const fieldsWithoutValues = Object.keys(fieldValueCount).filter(
@@ -122,7 +124,14 @@ export const reduceSessionToDefinedValues: (session: Session) => Session = (
     return newResult;
   });
 
-  return { ...session, results: reducedResults };
+  const resultsWithFixedSquashFactor = reducedResults.map((result) => {
+    if (result["Smash Factor"] < 0) {
+      result["Smash Factor"] = 0;
+    }
+    return result;
+  });
+
+  return { ...session, results: resultsWithFixedSquashFactor };
 };
 // Get pairs of average / session date
 export const getPairsForYfield: (
