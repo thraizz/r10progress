@@ -98,24 +98,30 @@ export const sortGolfSwingKeysForHeader = (a: string, b: string) => {
 export const reduceSessionToDefinedValues: (session: Session) => Session = (
   session,
 ) => {
-  const fieldValueCount = session.results.reduce((shot, curr) => {
-    // Count the number of values for each field in the sessions results
-    // @ts-expect-error - We know that the type will be correct
-    Object.keys(curr).forEach((metric: keyof GolfSwingData) => {
-      // @ts-expect-error - We know that the type will be correct
-      if (shot[metric] === undefined) shot[metric] = 0;
-      if (curr[metric] !== undefined && curr[metric] !== null) {
+  const fieldValueCount: Record<keyof GolfSwingData, number> =
+    session.results.reduce(
+      (shot, curr) => {
+        // Count the number of values for each field in the sessions results
         // @ts-expect-error - We know that the type will be correct
-        shot[metric] = (shot[metric] ?? 0) + 1;
-      }
-    });
-    return shot;
-  }, {} as GolfSwingData);
+        Object.keys(curr).forEach((metric: keyof GolfSwingData) => {
+          // Initialize the count for the field
+          if (!shot[metric]) shot[metric] = 0;
+          // If we have a value for the field, increment the count
+          if (curr[metric]) {
+            shot[metric] = (shot[metric] ?? 0) + 1;
+          }
+        });
+        return shot;
+      },
+      {} as Record<keyof GolfSwingData, number>,
+    );
 
+  // Identify fields without any values
   const fieldsWithoutValues = Object.keys(fieldValueCount).filter(
     (key) => fieldValueCount[key as keyof GolfSwingData] === 0,
   );
 
+  // Remove fields without values from session results
   const reducedResults = session.results.map((result) => {
     const newResult = { ...result };
     fieldsWithoutValues.forEach((key) => {
