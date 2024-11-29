@@ -2,7 +2,7 @@ import { useContext, useMemo } from "react";
 import { SessionContext } from "../provider/SessionContext";
 import { SettingsContext } from "../provider/SettingsContext";
 import { GolfSwingData } from "../types/GolfSwingData";
-import type { Sessions } from "../types/Sessions";
+import type { Session, Sessions } from "../types/Sessions";
 import { translateSwingsToEnglish } from "./csvLocalization";
 
 const quantile = (arr: number[], q: number) => {
@@ -82,9 +82,9 @@ export const calculateAverages: (
     // Iterate over all sessions
     for (const session of Object.values(sessions)) {
       if (
+        !session.selected ||
         !session.results ||
-        session.results.length === 0 ||
-        session.selected === false
+        session.results.length === 0
       ) {
         continue;
       }
@@ -134,8 +134,8 @@ export const calculateAverages: (
     // Use Interquartile Range to filter out outliers and calculate the average, except for the count
     for (const club of Object.keys(clubs)) {
       for (const key of Object.keys(clubs[club])) {
-        // Skip the count
-        if (key === "count") {
+        // Skip the count and name
+        if (key === "count" || key === "name") {
           continue;
         }
         // Calculate the average
@@ -148,7 +148,17 @@ export const calculateAverages: (
             return swingClub === club;
           })
           // @ts-expect-error - key is taken from Object keys
-          .map((swing) => swing[key]);
+          .map((swing) => swing[key])
+          .filter(
+            (value): value is number =>
+              typeof value === "number" && !isNaN(value),
+          );
+
+        if (values.length === 0) {
+          // @ts-expect-error - key is taken from Object keys
+          clubs[club][key] = 0;
+          continue;
+        }
 
         // @ts-expect-error - key is taken from Object keys
         clubs[club][key] =
@@ -312,4 +322,56 @@ export const getAboveAverageShots = (swings: GolfSwingData[]) => {
   });
 
   return filteredSwings;
+};
+
+/**
+ * Calculate the 10 best shots for all clubs for the selected sessions,
+ * average them and return the result.
+ */
+export const useBestShots = () => {
+  const { sessions } = useContext(SessionContext);
+
+  return useMemo(() => {
+    if (sessions) {
+      // Get all shots from selected sessions
+      const allShots = Object.values(sessions)
+        .filter((session) => session.selected)
+        .map((session) => session.results)
+        .flat();
+
+      // Group shots by club
+      const shotsByClub = allShots.reduce(
+        (acc, shot) => {
+          const club = shot["Schlägerart"] || shot["Club Type"];
+          if (!club) return acc;
+
+          if (!acc[club]) acc[club] = [];
+          acc[club].push(shot);
+          return acc;
+        },
+        {} as Record<string, GolfSwingData[]>,
+      );
+
+      // Get top 10 shots for each club
+      const bestShots = Object.values(shotsByClub)
+        .map((clubShots) =>
+          clubShots
+            .sort((a, b) => {
+              const distanceA = a["Carry Distance"] || a["Carry-Distanz"] || 0;
+              const distanceB = b["Carry Distance"] || b["Carry-Distanz"] || 0;
+              return distanceB - distanceA;
+            })
+            .slice(0, 10),
+        )
+        .flat();
+
+      const dummySession: Session = {
+        date: "",
+        selected: true,
+        results: bestShots,
+      };
+      return calculateAverages({ "1": dummySession });
+    }
+    return [];
+  }, [sessions]);
 };

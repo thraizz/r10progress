@@ -1,6 +1,6 @@
 import { ColDef } from "ag-grid-community";
 import { AgGridReact } from "ag-grid-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo } from "react";
 import { SessionContext } from "../../provider/SessionContext";
 import {
   AveragedSwing,
@@ -23,24 +23,11 @@ export const AveragesTable = () => {
 
   const averages = useAveragedSwings();
 
-  // Column Definitions: Defines & controls grid columns.
-  const [columnDefs, setColumnDefs] =
-    useState<ColDef<AveragedSwing>[]>(defaultColumns);
-
-  useEffect(() => {
-    if (averages && averages?.length > 0) {
-      const columns = Object.keys(averages[0])
-        .sort(sortGolfSwingKeysForHeader)
-        .map((key) => ({
-          field: key,
-          headerName: ["count", "name"].includes(key)
-            ? capitalizeFirstLetter(key)
-            : translateHeader(key),
-          sortable: true,
-          filter: true,
-        }));
-      setColumnDefs(columns as ColDef<AveragedSwing>[]);
+  const columnDefs: ColDef<AveragedSwing>[] = useMemo(() => {
+    if (averages?.length > 0) {
+      return getColumnDefinitions(averages);
     }
+    return defaultColumns;
   }, [averages]);
 
   if (!sessions) {
@@ -66,4 +53,23 @@ export const AveragesTable = () => {
       </div>
     </BaseDisclosure>
   );
+};
+
+/**
+ * Get the columns for the table based on the first swing
+ * @param averageSwings - An array of averaged swings
+ * @returns The column definitions.
+ */
+const getColumnDefinitions = (averageSwings: AveragedSwing[]) => {
+  const averageSwing = averageSwings[0];
+  return Object.keys(averageSwing)
+    .sort(sortGolfSwingKeysForHeader)
+    .map((key) => ({
+      field: key as keyof AveragedSwing,
+      headerName: ["count", "name"].includes(key)
+        ? capitalizeFirstLetter(key)
+        : translateHeader(key),
+      sortable: true,
+      filter: true,
+    }));
 };

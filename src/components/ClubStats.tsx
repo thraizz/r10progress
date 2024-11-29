@@ -26,10 +26,6 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
         name: "Deviation Distance",
         stat: getDeviationString(average),
       },
-      // {
-      //   name: "Smash Factor",
-      //   stat: (average?.["Smash Factor"] || 0).toPrecision(2),
-      // },
     ],
     [average],
   );

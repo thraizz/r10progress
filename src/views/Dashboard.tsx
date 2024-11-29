@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { BasePageLayout } from "../components/base/BasePageLayout";
-import { AverageOverview } from "../components/panels/Last30DaysAverages";
+import { ClubDistances } from "../components/panels/ClubDistances.tsx";
 import { SettingsForm } from "../components/panels/SettingsForm";
 import { useSelectedSessions } from "../hooks/useSelectedSessions";
 import { dashboardRoutes } from "../routes";
@@ -10,7 +10,7 @@ export const Dashboard = () => (
     <SettingsForm />
     <NoSessionSelectedHint />
     <div className="rounded-md bg-white p-4">
-      <AverageOverview />
+      <ClubDistances />
     </div>
     <div className="flex gap-4">
       <Link to={dashboardRoutes.visualization} className="btn">
