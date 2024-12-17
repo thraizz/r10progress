@@ -49,47 +49,41 @@ export const ShotScatterPlot = () => {
     return [];
   }, [sessions, xField, yField, combinedClubData, club]);
 
-  const chartOptions = useMemo(() => {
-    return {
-      grid: chartOptionsGrid,
-      tooltip: chartOptionsDateTooltip(xField, yField),
-      visualMap: chartOptionsVisualRecencyMap(chartData),
-      xAxis: {
-        type: "value",
-        name: xField,
-        axisLabel: {
-          formatter: (value: number) =>
-            golfSwingDataKeysInMeters.includes(xField as keyof GolfSwingData)
-              ? `${value} m`
-              : golfSwingDataKeysInDegrees.includes(
-                    xField as keyof GolfSwingData,
-                  )
-                ? `${value} °`
-                : value,
-        },
+  const chartOptions = {
+    grid: chartOptionsGrid,
+    tooltip: chartOptionsDateTooltip(xField, yField),
+    visualMap: chartOptionsVisualRecencyMap(chartData),
+    xAxis: {
+      type: "value",
+      name: xField,
+      axisLabel: {
+        formatter: (value: number) =>
+          golfSwingDataKeysInMeters.includes(xField as keyof GolfSwingData)
+            ? `${value} m`
+            : golfSwingDataKeysInDegrees.includes(xField as keyof GolfSwingData)
+              ? `${value} °`
+              : value,
       },
-      yAxis: {
-        type: "value",
-        name: yField,
-        axisLabel: {
-          formatter: (value: number) =>
-            golfSwingDataKeysInMeters.includes(yField as keyof GolfSwingData)
-              ? `${value} m`
-              : golfSwingDataKeysInDegrees.includes(
-                    yField as keyof GolfSwingData,
-                  )
-                ? `${value} °`
-                : value,
-        },
+    },
+    yAxis: {
+      type: "value",
+      name: yField,
+      axisLabel: {
+        formatter: (value: number) =>
+          golfSwingDataKeysInMeters.includes(yField as keyof GolfSwingData)
+            ? `${value} m`
+            : golfSwingDataKeysInDegrees.includes(yField as keyof GolfSwingData)
+              ? `${value} °`
+              : value,
       },
-      series: [
-        {
-          type: "scatter",
-          data: chartData.map((d) => [d.x, d.y, new Date(d.date).getTime()]),
-        },
-      ],
-    };
-  }, [chartData, xField, yField]);
+    },
+    series: [
+      {
+        type: "scatter",
+        data: chartData.map((d) => [d.x, d.y, new Date(d.date).getTime()]),
+      },
+    ],
+  };
 
   if (!chartData) return null;
 

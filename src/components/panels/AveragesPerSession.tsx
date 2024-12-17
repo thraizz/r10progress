@@ -1,5 +1,3 @@
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useContext, useMemo, useState } from "react";
 import { useClubDataByDate } from "../../hooks/useClubDataByData";
 import { useClubsPerSession } from "../../hooks/useClubsPerSesssion";
@@ -9,9 +7,14 @@ import { useAveragePerSession } from "../../utils/calculateAverages";
 import { getPairsForYfield, parseDate } from "../../utils/utils";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
-import type { ClubDataForTable } from "./AveragesPerSessionGraph";
 import { AveragesPerSessionGraph } from "./AveragesPerSessionGraph";
-dayjs.extend(customParseFormat);
+
+export type YFieldValue = string | number | null | undefined;
+export type ClubDataForTable = {
+  x: string | null | undefined;
+  y: YFieldValue;
+  club: string;
+}[];
 
 export const AveragesPerSession = () => {
   const averages = useAveragePerSession();
@@ -32,19 +35,17 @@ export const AveragesPerSession = () => {
     return [];
   }, [sessions]);
 
-  const averagesByDate: ClubDataForTable = useMemo(() => {
-    if (sessions) {
-      if (clubSelected && clubDataByDate) {
-        return Object.entries(clubDataByDate)?.map((x) => ({
-          x: parseDate(x[0]),
-          y: x[1],
-          club,
-        }));
-      } else {
-        return getPairsForYfield(averages, yField);
-      }
+  const data: ClubDataForTable = useMemo(() => {
+    if (!sessions) return [];
+    if (clubSelected && clubDataByDate) {
+      return Object.entries(clubDataByDate).map((x) => ({
+        x: parseDate(x[0]),
+        y: x[1],
+        club,
+      }));
+    } else {
+      return getPairsForYfield(averages, yField);
     }
-    return [];
   }, [sessions, clubSelected, clubDataByDate, averages, yField, club]);
 
   return (
@@ -64,7 +65,7 @@ export const AveragesPerSession = () => {
             />
           </div>
         </div>
-        <div className="h-auto w-0 border-l-2 border-gray-300"></div>
+        <div className="h-auto w-0 border-l-2 border-gray-300" />
         <div>
           <BaseLabel>Choose the club to display</BaseLabel>
           <div className="flex flex-row gap-4">
@@ -82,7 +83,9 @@ export const AveragesPerSession = () => {
           </div>
         </div>
       </div>
-      <AveragesPerSessionGraph yField={yField} data={averagesByDate} />
+      <div className="block h-[500px] w-full">
+        <AveragesPerSessionGraph metric={yField} data={data} />
+      </div>
     </div>
   );
 };
