@@ -83,7 +83,7 @@ export const AveragesPerSession = () => {
           </div>
         </div>
       </div>
-      <div className="block h-[500px] w-full">
+      <div className="block h-[600px] w-full">
         <AveragesPerSessionGraph metric={yField} data={data} />
       </div>
     </div>

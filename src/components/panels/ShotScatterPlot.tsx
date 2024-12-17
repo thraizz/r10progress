@@ -1,22 +1,19 @@
-import ReactECharts from "echarts-for-react";
 import { useContext, useMemo, useState } from "react";
 import { SessionContext } from "../../provider/SessionContext";
-import {
-  GolfSwingData,
-  golfSwingDataKeysInDegrees,
-  golfSwingDataKeysInMeters,
-} from "../../types/GolfSwingData";
+import { GolfSwingData } from "../../types/GolfSwingData";
 
 import { getDayFromRow } from "../../utils/date.utils";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { getClubName } from "../../utils/golfSwingData.helpers.ts";
 import { parseDate } from "../../utils/utils";
+import { BaseGraph } from "../base/BaseGraph.tsx";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
 import {
   chartOptionsDateTooltip,
   chartOptionsGrid,
   chartOptionsVisualRecencyMap,
+  golfSwingDataAxisFormatter,
 } from "../base/chartOptions.ts";
 
 export const ShotScatterPlot = () => {
@@ -49,7 +46,7 @@ export const ShotScatterPlot = () => {
     return [];
   }, [sessions, xField, yField, combinedClubData, club]);
 
-  const chartOptions = {
+  const chartOptions: echarts.EChartsOption = {
     grid: chartOptionsGrid,
     tooltip: chartOptionsDateTooltip(xField, yField),
     visualMap: chartOptionsVisualRecencyMap(chartData),
@@ -57,24 +54,14 @@ export const ShotScatterPlot = () => {
       type: "value",
       name: xField,
       axisLabel: {
-        formatter: (value: number) =>
-          golfSwingDataKeysInMeters.includes(xField as keyof GolfSwingData)
-            ? `${value} m`
-            : golfSwingDataKeysInDegrees.includes(xField as keyof GolfSwingData)
-              ? `${value} °`
-              : value,
+        formatter: golfSwingDataAxisFormatter(xField as keyof GolfSwingData),
       },
     },
     yAxis: {
       type: "value",
       name: yField,
       axisLabel: {
-        formatter: (value: number) =>
-          golfSwingDataKeysInMeters.includes(yField as keyof GolfSwingData)
-            ? `${value} m`
-            : golfSwingDataKeysInDegrees.includes(yField as keyof GolfSwingData)
-              ? `${value} °`
-              : value,
+        formatter: golfSwingDataAxisFormatter(yField as keyof GolfSwingData),
       },
     },
     series: [
@@ -127,7 +114,7 @@ export const ShotScatterPlot = () => {
         </div>
       </div>
       <div className="h-[400px] w-full">
-        <ReactECharts option={chartOptions} style={{ height: "100%" }} />
+        <BaseGraph options={chartOptions} />
       </div>
       <p className="text-sm text-gray-600">
         More recent data points are colored darker. Hover over a data point to
