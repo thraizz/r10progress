@@ -359,7 +359,7 @@ export const useBestShots = () => {
             .sort((a, b) => {
               const distanceA = a["Carry Distance"] || a["Carry-Distanz"] || 0;
               const distanceB = b["Carry Distance"] || b["Carry-Distanz"] || 0;
-              return distanceB - distanceA;
+              return distanceA > distanceB ? -1 : 1;
             })
             .slice(0, 10),
         )

@@ -21,6 +21,7 @@
     "autoprefixer": "^10.4.20",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
+    "echarts-for-react": "^3.0.2",
     "firebase": "^10.14.1",
     "jotai": "^2.10.2",
     "papaparse": "^5.4.1",

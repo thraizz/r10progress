@@ -27,3 +27,11 @@ describe("calculateAverages", () => {
     expect(iqrPW?.count).toBeLessThan(notIqrPW?.count || 0);
   });
 });
+
+describe("useBestShots", () => {
+  test("should return the best shots", () => {
+    // @ts-expect-error - testdata is a valid Sessions object
+    const result = calculateAverages(testdata);
+    expect(result).toMatchSnapshot();
+  });
+});
