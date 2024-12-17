@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { YFieldValue } from "../components/panels/AveragesPerSessionGraph";
+import { YFieldValue } from "../components/panels/AveragesPerSession";
 import { GolfSwingData } from "../types/GolfSwingData";
 import {
   AveragedSwing,
