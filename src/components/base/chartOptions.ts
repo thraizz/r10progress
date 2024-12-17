@@ -64,3 +64,15 @@ export const golfSwingDataAxisFormatter =
       : golfSwingDataKeysInDegrees.includes(xField as keyof GolfSwingData)
         ? `${value} °`
         : `${value}`;
+
+export type PointWithDate = {
+  x: GolfSwingData[keyof GolfSwingData];
+  y: GolfSwingData[keyof GolfSwingData];
+  date: string;
+};
+
+export type PointWithClub = {
+  x: GolfSwingData[keyof GolfSwingData];
+  y: GolfSwingData[keyof GolfSwingData];
+  club: string;
+};

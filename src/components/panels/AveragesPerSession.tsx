@@ -7,7 +7,7 @@ import { useAveragePerSession } from "../../utils/calculateAverages";
 import { getPairsForYfield, parseDate } from "../../utils/utils";
 import { BaseLabel } from "../base/BaseLabel";
 import { BaseListbox } from "../base/BaseListbox";
-import { AveragesPerSessionGraph } from "./AveragesPerSessionGraph";
+import { AverageMetricsGraph } from "./graphs/AverageMetricsGraph";
 
 export type YFieldValue = string | number | null | undefined;
 export type ClubDataForTable = {
@@ -84,7 +84,7 @@ export const AveragesPerSession = () => {
         </div>
       </div>
       <div className="block h-[600px] w-full">
-        <AveragesPerSessionGraph metric={yField} data={data} />
+        <AverageMetricsGraph metric={yField} data={data} />
       </div>
     </div>
   );

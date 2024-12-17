@@ -1,19 +1,14 @@
 import dayjs from "dayjs";
 import * as echarts from "echarts";
-import { GolfSwingData } from "../../types/GolfSwingData";
-import { BaseGraph } from "../base/BaseGraph";
+import { GolfSwingData } from "../../../types/GolfSwingData";
+import { BaseGraph } from "../../base/BaseGraph";
 import {
   chartOptionsGrid,
   golfSwingDataAxisFormatter,
-} from "../base/chartOptions";
-import { ClubDataForTable } from "./AveragesPerSession";
+} from "../../base/chartOptions";
+import { ClubDataForTable } from "../AveragesPerSession";
 
-/**
- * Custom echarts mount to make the graph rerender on nested data change,
- * which somehow does not work when using the echarts-for-react package.
- * It does in other graphs though, weird!
- */
-export const AveragesPerSessionGraph = ({
+export const AverageMetricsGraph = ({
   metric,
   data,
 }: {

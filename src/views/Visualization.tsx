@@ -1,15 +1,14 @@
 import { BasePageLayout } from "../components/base/BasePageLayout";
 import { AveragesPerSession } from "../components/panels/AveragesPerSession";
-import { ShotDispersion } from "../components/panels/ShotDispersion";
+import { ShotDispersionGraph } from "../components/panels/graphs/ShotDispersionGraph";
 import { ShotScatterPlot } from "../components/panels/ShotScatterPlot";
 
 export const Visualization = () => (
   <BasePageLayout>
     <h2 className="text-2xl font-bold">Visualization</h2>
-    <div className="mt-2">
-      <ShotDispersion />
+    <div className="flex flex-col gap-6">
+      <ShotDispersionGraph />
       <AveragesPerSession />
-      <hr className="my-6" />
       <ShotScatterPlot />
     </div>
   </BasePageLayout>
