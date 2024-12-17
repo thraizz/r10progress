@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
-import { ClubDataForTable } from "../components/panels/AveragesPerSessionGraph";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
+
+import { ClubDataForTable } from "../components/panels/AveragesPerSession";
 import { GolfSwingData } from "../types/GolfSwingData";
 import { Session } from "../types/Sessions";
 import { AveragedSwing, AveragedSwingRecord } from "./calculateAverages";
@@ -185,7 +188,9 @@ export const parseDate = (input: string) => {
 
     return date;
   } else if (input.includes(".")) {
-    return dayjs(input, "DD.MM.YY", "de").format("YYYY-MM-DD");
+    const parsed = dayjs(input, "DD.MM.YY");
+    const formatted = parsed.format("YYYY-MM-DD");
+    return formatted;
   } else {
     return input;
   }
