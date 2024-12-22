@@ -73,6 +73,6 @@ export type PointWithDate = {
 
 export type PointWithClub = {
   x: GolfSwingData[keyof GolfSwingData];
-  y: GolfSwingData[keyof GolfSwingData];
+  y: number;
   club: string;
 };

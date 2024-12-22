@@ -352,26 +352,122 @@ export const useBestShots = () => {
         {} as Record<string, GolfSwingData[]>,
       );
 
-      // Get top 10 shots for each club
-      const bestShots = Object.values(shotsByClub)
-        .map((clubShots) =>
-          clubShots
+      const bestShotData = Object.values(shotsByClub)
+        .map((clubShots) => {
+          const sortedShots = clubShots
             .sort((a, b) => {
               const distanceA = a["Carry Distance"] || a["Carry-Distanz"] || 0;
               const distanceB = b["Carry Distance"] || b["Carry-Distanz"] || 0;
               return distanceA > distanceB ? -1 : 1;
             })
-            .slice(0, 10),
-        )
+            .slice(0, 10);
+
+          // Add dispersion calculation
+          const dispersionRadius = calculateDispersionRadius(sortedShots);
+          return { sortedShots, dispersionRadius };
+        })
         .flat();
+
+      const bestShots = bestShotData.map((shot) => shot.sortedShots).flat();
 
       const dummySession: Session = {
         date: "",
         selected: true,
         results: bestShots,
       };
-      return calculateAverages({ "1": dummySession });
+      return {
+        bestShots,
+        averages: calculateAverages({ "1": dummySession }),
+        dispersion: bestShotData.map((shot) => ({
+          club:
+            shot.sortedShots[0]["Club Name"] ||
+            shot.sortedShots[0]["Schlägerart"],
+          ellipse: calculateDispersionEllipse(shot.sortedShots),
+        })),
+      };
     }
-    return [];
+    return {
+      bestShots: [],
+      averages: [],
+      dispersion: [
+        {
+          club: null,
+          ellipse: { xAxis: 0, yAxis: 0 },
+        },
+      ],
+    };
   }, [sessions]);
+};
+
+const calculateDispersionRadius = (shots: GolfSwingData[]): number => {
+  // Convert polar to cartesian coordinates
+  const points = shots.map((shot) => {
+    const distance = shot["Total Distance"] || shot["Gesamtstrecke"] || 0;
+    const deviation =
+      shot["Total Deviation Distance"] || shot["Gesamtabweichungsdistanz"] || 0;
+    const angle = Math.atan2(deviation, distance);
+
+    return {
+      x: distance * Math.cos(angle),
+      y: distance * Math.sin(angle),
+    };
+  });
+
+  if (points.length === 0) return 0;
+
+  // Calculate center point
+  const centerX = points.reduce((sum, p) => sum + p.x, 0) / points.length;
+  const centerY = points.reduce((sum, p) => sum + p.y, 0) / points.length;
+
+  // Find maximum distance from center (radius)
+  const radius = Math.max(
+    ...points.map((point) => {
+      const dx = point.x - centerX;
+      const dy = point.y - centerY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }),
+  );
+
+  return radius;
+};
+
+interface DispersionEllipse {
+  xAxis: number;
+  yAxis: number;
+}
+
+const calculateDispersionEllipse = (
+  shots: GolfSwingData[],
+): DispersionEllipse => {
+  const points = shots.map((shot) => {
+    const distance = shot["Total Distance"] || shot["Gesamtstrecke"] || 0;
+    const deviation =
+      shot["Total Deviation Distance"] || shot["Gesamtabweichungsdistanz"] || 0;
+    const angle = Math.atan2(deviation, distance);
+
+    return {
+      x: distance * Math.cos(angle),
+      y: distance * Math.sin(angle),
+    };
+  });
+
+  if (points.length === 0) return { xAxis: 0, yAxis: 0 };
+
+  const centerX = points.reduce((sum, p) => sum + p.x, 0) / points.length;
+  const centerY = points.reduce((sum, p) => sum + p.y, 0) / points.length;
+
+  // Calculate standard deviations with 95% confidence interval (1.96 * 2)
+  const confidenceInterval = 1.96 * 2;
+
+  const xDeviations = points.map((p) => Math.abs(p.x - centerX));
+  const yDeviations = points.map((p) => Math.abs(p.y - centerY));
+
+  // Use maximum deviations for more realistic dispersion
+  const xAxis = Math.max(...xDeviations) * confidenceInterval;
+  const yAxis = Math.max(...yDeviations) * confidenceInterval;
+
+  return {
+    xAxis,
+    yAxis,
+  };
 };

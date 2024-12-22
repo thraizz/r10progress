@@ -21,7 +21,7 @@ export const OutlierDetectionSettings = () => {
   };
 
   return (
-    <div className="mt-4 flex flex-col gap-2 lg:flex-row lg:gap-4">
+    <div className="flex flex-col gap-2 lg:flex-row lg:gap-4">
       <label className="block">
         <input
           type="checkbox"

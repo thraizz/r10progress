@@ -1,7 +1,6 @@
 import * as echarts from "echarts";
 import { BaseGraph } from "../../base/BaseGraph";
 import { chartOptionsGrid } from "../../base/chartOptions";
-import { SettingsForm } from "../SettingsForm";
 import { useCarryAndDeviation } from "./ShotDispersionGraph.utils";
 
 export const ShotDispersionGraph = () => {
@@ -50,12 +49,8 @@ export const ShotDispersionGraph = () => {
   };
 
   return (
-    <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
-      <SettingsForm />
-      <h4 className="mb-4 text-xl font-bold text-gray-800">Shot Dispersion</h4>
-      <div className="h-[400px] w-full">
-        <BaseGraph options={options} />
-      </div>
+    <div className="h-[400px] w-full">
+      <BaseGraph options={options} />
     </div>
   );
 };

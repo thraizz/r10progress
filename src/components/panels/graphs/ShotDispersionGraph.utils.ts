@@ -7,7 +7,7 @@ export const useCarryAndDeviation = () => {
   const sessions = useSelectedSessionsWithSettings();
 
   const combinedValues: {
-    shots: any[];
+    shots: PointWithClub[];
     shotsByClub: Record<string, PointWithClub[]>;
   } = useMemo(() => {
     if (sessions) {
