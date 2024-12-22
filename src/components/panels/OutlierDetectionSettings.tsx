@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { SettingsContext, SettingsType } from "../../provider/SettingsContext";
 
-export const SettingsForm = () => {
+export const OutlierDetectionSettings = () => {
   const { settings, setSettings } = useContext(SettingsContext);
 
   const changeIqr = (e: React.ChangeEvent<HTMLInputElement>) => {

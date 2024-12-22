@@ -23,7 +23,7 @@ export const SessionList = () => {
 
   return (
     <div className="mt-4 ">
-      <h2 className="text-2xl font-bold">Manage Sessions</h2>
+      <h3 className="text-xl font-semibold">Manage Sessions</h3>
       <DeletionModal
         callback={async () => {
           if (sessionToDelete) {

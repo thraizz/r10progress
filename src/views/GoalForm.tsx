@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useClubsPerSession } from "../hooks/useClubsPerSesssion";
 import { goalAtom } from "../hooks/useGoals";
 import { useIsEnglishDataset } from "../hooks/useIsEnglishDataset.ts";
+import { useUnit } from "../hooks/useUnit.ts";
 import {
   GolfSwingDataDE,
   GolfSwingDataEN,
@@ -22,6 +23,7 @@ export const GoalForm = ({ closeAction }: { closeAction: () => void }) => {
   }>();
 
   const isEnglish = useIsEnglishDataset();
+  const unit = useUnit();
   const metricOptions = isEnglish
     ? [...englishDegreeMetrics, ...englishMetersMetrics]
     : [...germanDegreeMetrics, ...germanMetersMetrics];
@@ -79,7 +81,7 @@ export const GoalForm = ({ closeAction }: { closeAction: () => void }) => {
             type="number"
             placeholder={`Target (${
               golfSwingDataKeysInMeters.includes(formMethods.watch("metric"))
-                ? "m"
+                ? unit
                 : "°"
             })`}
             {...formMethods.register("target", { required: true })}

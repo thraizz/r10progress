@@ -7,6 +7,7 @@ import {
 } from "../types/GolfSwingData";
 import { useAveragedSwings } from "../utils/calculateAverages";
 import { useIsEnglishDataset } from "./useIsEnglishDataset.ts";
+import { useUnit } from "./useUnit.ts";
 
 export const goalAtom = atom<PartialGoal[]>([]);
 export const useGoals: () => Goal[] = () => {
@@ -36,8 +37,12 @@ export const useGoals: () => Goal[] = () => {
     [isEnglish, setGoals],
   );
   const averages = useAveragedSwings();
+  const unitSetting = useUnit();
 
-  const calculateGoalProgress = (partialGoal: PartialGoal) => {
+  const calculateGoalProgress = (
+    partialGoal: PartialGoal,
+    unitSetting: string,
+  ) => {
     const current =
       averages.find((average) => average.name === "Driver")?.[
         "Carry Distance"
@@ -53,13 +58,13 @@ export const useGoals: () => Goal[] = () => {
     if (golfSwingDataKeysInDegrees.includes(partialGoal.metric)) {
       unit = "°";
     } else if (golfSwingDataKeysInMeters.includes(partialGoal.metric)) {
-      unit = "m";
+      unit = unitSetting;
     }
     return { progress, progressText, current, unit };
   };
 
   return goals.map((goal) => ({
     ...goal,
-    ...calculateGoalProgress(goal),
+    ...calculateGoalProgress(goal, unitSetting),
   }));
 };

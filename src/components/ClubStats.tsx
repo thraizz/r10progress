@@ -1,7 +1,9 @@
 import { useMemo } from "react";
+import { useUnit } from "../hooks/useUnit";
 import { AveragedSwing } from "../utils/calculateAverages";
 
 export const ClubStats = ({ average }: { average: AveragedSwing }) => {
+  const unit = useUnit();
   const stats = useMemo(
     () => [
       {
@@ -11,7 +13,7 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
             average?.["Carry Distance"] ||
             average?.["Carry-Distanz"] ||
             0
-          ).toPrecision(3) + "m",
+          ).toPrecision(3) + unit,
       },
       {
         name: "Total",
@@ -20,30 +22,50 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
             average?.["Total Distance"] ||
             average?.["Gesamtstrecke"] ||
             0
-          ).toPrecision(3) + "m",
+          ).toPrecision(3) + unit,
       },
       {
-        name: "Deviation Distance",
-        stat: getDeviationString(average),
+        name: "Smash Factor",
+        stat: (
+          average?.["Smash Factor"] ||
+          average?.["Smash-Faktor"] ||
+          0
+        ).toPrecision(3),
+      },
+      {
+        name: "Deviation Tendance",
+        stat: getDeviationString(average, unit),
+      },
+      {
+        name: "Apex Height",
+        stat:
+          (
+            average?.["Apex Height"] ||
+            average?.["Höhe des Scheitelpunkts"] ||
+            0
+          ).toPrecision(3) + unit,
+      },
+      {
+        name: "Backspin",
+        stat: Number(
+          average?.["Backspin"] || average?.["Backspin"] || 0,
+        ).toFixed(),
       },
     ],
     [average],
   );
   return (
-    <div>
-      <div className="flex flex-row gap-2">
+    <div className="rounded-lg bg-white p-2 px-4 py-5 shadow">
+      <div className="flex flex-row gap-2 ">
         <h4 className="text-lg font-semibold leading-6 text-gray-900">
           {average?.name || "Swing"}
         </h4>
-        <p className="text-sm font-normal leading-6 text-gray-900">
-          ({average?.count} shots)
-        </p>
       </div>
       <dl className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-3">
         {stats.map((item) => (
           <div
             key={item.name}
-            className="overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:p-6"
+            className="overflow-hidden rounded-lg border-2 border-gray-100 px-4 py-5 sm:p-6"
           >
             <dt className="truncate text-sm font-medium text-gray-500">
               {item.name}
@@ -58,11 +80,13 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
   );
 };
 
-const getDeviationString = (average: AveragedSwing) => {
+const getDeviationString = (average: AveragedSwing, unit: string) => {
   const deviation =
     average?.["Total Deviation Distance"] ||
     average?.["Gesamtabweichungsdistanz"] ||
     0;
 
-  return deviation > 0 ? `${deviation}m left` : `${Math.abs(deviation)}m right`;
+  return deviation > 0
+    ? `${deviation}${unit} left`
+    : `${Math.abs(deviation)}${unit} right`;
 };
