@@ -23,8 +23,10 @@ const colors = {
 export const BestShotDispersionGraph = () => {
   const { dispersion, bestShots } = useBestShots();
   const shots = bestShots.map((shot) => ({
-    x: shot["Carry Deviation Distance"] || shot["Gesamtabweichungsdistanz"],
-    y: shot["Carry Distance"] || shot["Carry-Distanz"],
+    x:
+      (shot["Carry Deviation Distance"] || shot["Gesamtabweichungsdistanz"]) ??
+      0,
+    y: (shot["Carry Distance"] || shot["Carry-Distanz"]) ?? 0,
     club: shot["Schlägerart"] || shot["Club Type"],
   }));
 
@@ -56,15 +58,16 @@ export const BestShotDispersionGraph = () => {
 
       const color =
         colors[
-          Object.values(shotsByClub).findIndex((shots) => shots === clubShots) +
-            1
+          (Object.values(shotsByClub).findIndex(
+            (shots) => shots === clubShots,
+          ) + 1) as keyof typeof colors
         ];
 
       return [
         {
           color,
           name: club,
-          type: "scatter",
+          type: "scatter" as const,
           data: clubShots.map((shot) => ({
             value: [shot.x, shot.y],
             club: shot.club,
@@ -74,7 +77,7 @@ export const BestShotDispersionGraph = () => {
         {
           color,
           name: `${club} Dispersion`,
-          type: "line",
+          type: "line" as const,
           smooth: true,
           symbol: "none",
           data: calculateEllipsePoints(

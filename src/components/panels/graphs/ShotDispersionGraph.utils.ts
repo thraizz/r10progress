@@ -44,12 +44,11 @@ export const calculateCarryAndDeviation: (
   results: GolfSwingData[],
 ) => (PointWithClub | undefined)[] = (results: GolfSwingData[]) =>
   results.map((result) => {
-    const carry = (
-      result["Carry Distance"] || result["Carry-Distanz"]
-    )?.toFixed(2);
-    const deviation = (
-      result["Carry Deviation Distance"] || result["Gesamtabweichungsdistanz"]
-    )?.toFixed(2);
+    const carry = result["Carry Distance"] || result["Carry-Distanz"];
+    const deviation =
+      result["Carry Deviation Distance"] ||
+      result["Gesamtabweichungsdistanz"] ||
+      0;
     const clubName = result["Schlägerart"] || result["Club Type"];
     if (carry && deviation && clubName) {
       return { y: carry, x: deviation, club: clubName };

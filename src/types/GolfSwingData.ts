@@ -42,7 +42,7 @@ export type GolfSwingDataDE = {
   Luftdichte: number | null;
   Schwungbahn: null | number;
   Drehrate: number | null;
-  "Smash Factor": number | null;
+  "Smash-Faktor": number | null;
   Drehratentyp: string | null;
   Ballgeschwindigkeit: number | null;
   Gesamtabweichungswinkel: number | null;
