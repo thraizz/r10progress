@@ -44,7 +44,7 @@ export const DispersionGraphs = () => {
     );
   }
   return (
-    <div>
+    <div className="flex h-auto flex-col gap-3 rounded-xl bg-white p-4">
       <div className="mb-4">
         <h4 className="text-xl font-bold text-gray-800">Shot Dispersion</h4>
         <OutlierDetectionSettings />
