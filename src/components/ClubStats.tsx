@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useUnit } from "../hooks/useUnit";
 import { AveragedSwing } from "../utils/calculateAverages";
+import { getCarryDistance } from "../utils/golfSwingData.helpers";
 
 export const ClubStats = ({ average }: { average: AveragedSwing }) => {
   const unit = useUnit();
@@ -8,12 +9,7 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
     () => [
       {
         name: "Carry",
-        stat:
-          (
-            average?.["Carry Distance"] ||
-            average?.["Carry-Distanz"] ||
-            0
-          ).toPrecision(3) + unit,
+        stat: getCarryDistance(average).toPrecision(3) + unit,
       },
       {
         name: "Total",

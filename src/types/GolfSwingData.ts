@@ -63,7 +63,7 @@ export type GolfSwingDataDE = {
   Notiz?: null | string;
   Schlägerart: string | null;
   Anstellwinkel: null | number;
-  "Carry-Distanz": number | null;
+  "Carry-Distanz": number;
 };
 
 export type GolfSwingData = GolfSwingDataEN & GolfSwingDataDE;

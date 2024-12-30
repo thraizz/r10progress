@@ -4,6 +4,7 @@ import { SettingsContext } from "../provider/SettingsContext";
 import { GolfSwingData } from "../types/GolfSwingData";
 import type { Session, Sessions } from "../types/Sessions";
 import { translateSwingsToEnglish } from "./csvLocalization";
+import { getCarryDistance, getClubName } from "./golfSwingData.helpers";
 
 const quantile = (arr: number[], q: number) => {
   const sorted = arr.sort((a, b) => a - b);
@@ -342,7 +343,7 @@ export const useBestShots = () => {
       // Group shots by club
       const shotsByClub = allShots.reduce(
         (acc, shot) => {
-          const club = shot["Schlägerart"] || shot["Club Type"];
+          const club = getClubName(shot);
           if (!club) return acc;
 
           if (!acc[club]) acc[club] = [];
@@ -356,8 +357,8 @@ export const useBestShots = () => {
         .map((clubShots) => {
           const sortedShots = clubShots
             .sort((a, b) => {
-              const distanceA = a["Carry Distance"] || a["Carry-Distanz"] || 0;
-              const distanceB = b["Carry Distance"] || b["Carry-Distanz"] || 0;
+              const distanceA = getCarryDistance(a);
+              const distanceB = getCarryDistance(b);
               return distanceA > distanceB ? -1 : 1;
             })
             .slice(0, 10);

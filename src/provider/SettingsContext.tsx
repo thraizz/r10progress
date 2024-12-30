@@ -71,3 +71,5 @@ export const SettingsProvider = ({ children }: PropsWithChildren) => {
     </SettingsContext.Provider>
   );
 };
+
+export const useSettings = () => useContext(SettingsContext);
