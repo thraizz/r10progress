@@ -106,8 +106,6 @@ export const DispersionCirclesGraph = () => {
           type: "line" as const,
           smooth: true,
           symbol: "none",
-          showLegend: false,
-          legendHoverLink: false,
           data: calculateEllipsePoints(
             [centerX, centerY],
             ellipseAxes.xAxis,
@@ -117,6 +115,7 @@ export const DispersionCirclesGraph = () => {
             opacity: 0.5,
             width: 1,
           },
+          silent: true,
         },
       ];
     })
@@ -131,87 +130,6 @@ export const DispersionCirclesGraph = () => {
         { offset: 1, color: "#739E73" }, // Darker green at bottom
       ]),
     },
-    graphic: [
-      // Center line
-      {
-        type: "line",
-        shape: {
-          x1: "50%",
-          y1: "0",
-          x2: "50%",
-          y2: "75%",
-        },
-        style: {
-          stroke: "white",
-          lineWidth: 2,
-          opacity: 0.5,
-        },
-        silent: true,
-        z: -1,
-      },
-      // Distance markers (every 50m)
-      ...[50, 100, 150, 200].map((distance) => ({
-        type: "circle",
-        shape: { r: distance },
-        style: {
-          stroke: "white",
-          fill: "none",
-          lineWidth: 1,
-          opacity: 0.3,
-        },
-        silent: true,
-        z: -1,
-        position: ["50%", "75%"],
-      })),
-      // Distance labels
-      ...[50, 100, 150, 200].map((distance) => ({
-        type: "text",
-        style: {
-          text: `${distance}m`,
-          fill: "white",
-          fontSize: 12,
-          opacity: 0.7,
-        },
-        position: ["51%", `${75 - distance / 3}%`],
-        silent: true,
-        z: -1,
-      })),
-      // Side markers (every 10m)
-      ...[10, 20, 30, 40].flatMap((deviation) => [
-        {
-          type: "line",
-          shape: {
-            x1: `${50 - deviation}%`,
-            y1: "0",
-            x2: `${50 - deviation}%`,
-            y2: "75%",
-          },
-          style: {
-            stroke: "white",
-            lineWidth: 1,
-            opacity: 0.2,
-          },
-          silent: true,
-          z: -1,
-        },
-        {
-          type: "line",
-          shape: {
-            x1: `${50 + deviation}%`,
-            y1: "0",
-            x2: `${50 + deviation}%`,
-            y2: "75%",
-          },
-          style: {
-            stroke: "white",
-            lineWidth: 1,
-            opacity: 0.2,
-          },
-          silent: true,
-          z: -1,
-        },
-      ]),
-    ],
     tooltip: {
       trigger: "item",
       formatter: (params: any) => {
