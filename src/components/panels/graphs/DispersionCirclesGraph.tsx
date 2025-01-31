@@ -1,11 +1,7 @@
 import * as echarts from "echarts";
-import { useSelectedShots } from "../../../hooks/useSelectedShots";
-import {
-  getCarryDistance,
-  getClubName,
-} from "../../../utils/golfSwingData.helpers";
 import { BaseGraph } from "../../base/BaseGraph";
 import { chartOptionsGrid, PointWithClub } from "../../base/chartOptions";
+import { useCarryAndDeviation } from "./ShotDispersionGraph.utils";
 
 // different colors for each club
 const colors = {
@@ -26,15 +22,7 @@ const colors = {
 };
 
 export const DispersionCirclesGraph = () => {
-  const bestShots = useSelectedShots();
-  const shots = bestShots.map((shot) => ({
-    x:
-      (shot["Carry Deviation Distance"] || shot["Gesamtabweichungsdistanz"]) ??
-      0,
-    y: getCarryDistance(shot),
-    club: getClubName(shot),
-  }));
-
+  const { shots } = useCarryAndDeviation();
   const shotsByClub: Record<string, PointWithClub[]> = shots.reduce(
     (acc, shot) => {
       const { club } = shot;

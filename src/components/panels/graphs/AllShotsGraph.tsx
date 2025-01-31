@@ -3,7 +3,7 @@ import { BaseGraph } from "../../base/BaseGraph";
 import { chartOptionsGrid } from "../../base/chartOptions";
 import { useCarryAndDeviation } from "./ShotDispersionGraph.utils";
 
-export const ShotScatterGraph = () => {
+export const AllShotsGraph = () => {
   const shots = useCarryAndDeviation();
 
   let maximumDeviation = Math.max(

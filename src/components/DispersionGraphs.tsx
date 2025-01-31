@@ -1,6 +1,6 @@
 import { BaseTabs } from "./base/BaseTabs";
+import { AllShotsGraph } from "./panels/graphs/AllShotsGraph";
 import { DispersionCirclesGraph } from "./panels/graphs/DispersionCirclesGraph";
-import { ShotScatterGraph } from "./panels/graphs/ShotScatterGraph";
 import { OutlierDetectionSettings } from "./panels/OutlierDetectionSettings";
 
 export const DispersionGraphs = () => (
@@ -18,7 +18,7 @@ export const DispersionGraphs = () => (
                   </h4>
                   <OutlierDetectionSettings />
                 </div>
-                <ShotScatterGraph />
+                <AllShotsGraph />
               </div>
             ),
           },
@@ -28,9 +28,12 @@ export const DispersionGraphs = () => (
             id: 2,
             content: (
               <div>
-                <h4 className="text-xl font-bold text-gray-800">
-                  Dispersion Circle Graph
-                </h4>
+                <div>
+                  <h4 className="text-xl font-bold text-gray-800">
+                    Dispersion Circle Graph
+                  </h4>
+                  <OutlierDetectionSettings />
+                </div>
                 <DispersionCirclesGraph />
               </div>
             ),
