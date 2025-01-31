@@ -12,7 +12,7 @@ export const Dashboard = () => (
         Go to visualizations
       </Link>
       <Link to={dashboardRoutes.sessions} className="btn">
-        See imported sessions
+        Go to shot tables
       </Link>
     </div>
     <div className="rounded-md bg-white p-4">
