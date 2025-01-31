@@ -20,6 +20,24 @@ const TrackingConsentContext = createContext<TrackingConsentContextInterface>({
   setShowConsentDialog: () => {},
 });
 
+const MOUSEFLOW_PROJECT_ID = "36f43937-3dfb-4ac0-aaa8-fcc6ee3d4434";
+
+const initializeMouseflow = () => {
+  window._mfq = window._mfq || [];
+  const script = document.createElement("script");
+  script.type = "text/javascript";
+  script.text = `
+    (function() {
+      var mf = document.createElement("script");
+      mf.type = "text/javascript";
+      mf.defer = true;
+      mf.src = "//cdn.mouseflow.com/projects/${MOUSEFLOW_PROJECT_ID}.js";
+      document.getElementsByTagName("head")[0].appendChild(mf);
+    })();
+  `;
+  document.head.appendChild(script);
+};
+
 export const TrackingConsentProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
@@ -42,15 +60,9 @@ export const TrackingConsentProvider: React.FC<PropsWithChildren> = ({
     // Store consent in localStorage
     localStorage.setItem("tracking_consent", hasConsented.toString());
 
-    // If consent is given, add the Mouseflow script
+    // If consent is given, initialize Mouseflow
     if (hasConsented) {
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.defer = true;
-      script.src =
-        "//cdn.mouseflow.com/projects/36f43937-3dfb-4ac0-aaa8-fcc6ee3d4434.js";
-      document.head.appendChild(script);
-      window._mfq = window._mfq || [];
+      initializeMouseflow();
       // Clear declined state if user later accepts
       localStorage.removeItem("tracking_consent_declined");
     }
