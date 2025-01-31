@@ -30,8 +30,10 @@ export const TrackingConsentProvider: React.FC<PropsWithChildren> = ({
   const [showConsentDialog, setShowConsentDialog] = useState<boolean>(false);
 
   useEffect(() => {
-    // Show the dialog if consent hasn't been given yet
-    if (!hasConsented) {
+    // Show the dialog if consent hasn't been given yet and hasn't been explicitly declined
+    const hasDeclined =
+      localStorage.getItem("tracking_consent_declined") === "true";
+    if (!hasConsented && !hasDeclined) {
       setShowConsentDialog(true);
     }
   }, [hasConsented]);
@@ -49,14 +51,24 @@ export const TrackingConsentProvider: React.FC<PropsWithChildren> = ({
         "//cdn.mouseflow.com/projects/36f43937-3dfb-4ac0-aaa8-fcc6ee3d4434.js";
       document.head.appendChild(script);
       window._mfq = window._mfq || [];
+      // Clear declined state if user later accepts
+      localStorage.removeItem("tracking_consent_declined");
     }
   }, [hasConsented]);
+
+  const handleSetHasConsented = (value: boolean) => {
+    setHasConsented(value);
+    if (!value) {
+      // If explicitly declined, store that in localStorage
+      localStorage.setItem("tracking_consent_declined", "true");
+    }
+  };
 
   return (
     <TrackingConsentContext.Provider
       value={{
         hasConsented,
-        setHasConsented,
+        setHasConsented: handleSetHasConsented,
         showConsentDialog,
         setShowConsentDialog,
       }}
