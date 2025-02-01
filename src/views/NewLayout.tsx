@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import {
   ArrowTrendingUpIcon,
   Bars3Icon,
+  BeakerIcon,
   ChartBarSquareIcon,
   Cog6ToothIcon,
   EnvelopeIcon,
@@ -45,6 +46,11 @@ const navigation: NavType[] = [
     name: "Goals",
     href: dashboardRoutes.goals,
     icon: ArrowTrendingUpIcon,
+  },
+  {
+    name: "AI Analysis",
+    href: dashboardRoutes.aiAnalysis,
+    icon: BeakerIcon,
   },
 ];
 

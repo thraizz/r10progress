@@ -4,22 +4,24 @@ import { ClubDistances } from "../components/panels/ClubDistances.tsx";
 import { useSelectedSessions } from "../hooks/useSelectedSessions";
 import { dashboardRoutes } from "../routes";
 
-export const Dashboard = () => (
-  <BasePageLayout>
-    <NoSessionSelectedHint />
-    <div className="flex gap-4">
-      <Link to={dashboardRoutes.visualization} className="btn">
-        Go to visualizations
-      </Link>
-      <Link to={dashboardRoutes.sessions} className="btn">
-        Go to shot tables
-      </Link>
-    </div>
-    <div className="rounded-md bg-white p-4">
-      <ClubDistances />
-    </div>
-  </BasePageLayout>
-);
+export const Dashboard = () => {
+  return (
+    <BasePageLayout>
+      <NoSessionSelectedHint />
+      <div className="flex gap-4">
+        <Link to={dashboardRoutes.visualization} className="btn">
+          Go to visualizations
+        </Link>
+        <Link to={dashboardRoutes.sessions} className="btn">
+          Go to shot tables
+        </Link>
+      </div>
+      <div className="rounded-md bg-white p-4">
+        <ClubDistances />
+      </div>
+    </BasePageLayout>
+  );
+};
 
 const NoSessionSelectedHint = () => {
   const selectedSessions = useSelectedSessions();

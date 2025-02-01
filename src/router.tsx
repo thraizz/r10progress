@@ -4,6 +4,8 @@ import {
   RedirectIfSignedIn,
 } from "./components/AuthRedirects";
 import { routes } from "./routes";
+import { AIAnalysis } from "./views/AIAnalysis";
+import { AIReport } from "./views/AIReport";
 import { Authentication } from "./views/Authentication";
 import { Dashboard } from "./views/Dashboard";
 import { Goals } from "./views/Goals";
@@ -49,6 +51,14 @@ export const router = createBrowserRouter([
       {
         path: routes.settings,
         Component: Settings,
+      },
+      {
+        path: routes.aiAnalysis,
+        Component: AIAnalysis,
+      },
+      {
+        path: routes.aiReport,
+        Component: AIReport,
       },
     ],
   },
