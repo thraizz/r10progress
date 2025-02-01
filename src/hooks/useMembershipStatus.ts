@@ -1,9 +1,6 @@
-import {
-  connectFunctionsEmulator,
-  getFunctions,
-  httpsCallable,
-} from "firebase/functions";
+import { httpsCallable } from "firebase/functions";
 import { useCallback, useContext, useEffect, useState } from "react";
+import { functions } from "../firebase";
 import { UserContext } from "../provider/UserContext";
 
 interface MembershipStatus {
@@ -17,15 +14,10 @@ export const useMembershipStatus = () => {
     useState<MembershipStatus | null>(null);
   const [isCheckingMembership, setIsCheckingMembership] = useState(true);
 
-  const functions = getFunctions();
-  if (process.env.NODE_ENV === "development") {
-    connectFunctionsEmulator(functions, "localhost", 5001);
-  }
-
   const checkMembershipStatus = useCallback(
     () =>
       httpsCallable<void, MembershipStatus>(functions, "checkMembershipStatus"),
-    [functions],
+    [],
   );
 
   useEffect(() => {

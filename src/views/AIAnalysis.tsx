@@ -1,14 +1,10 @@
 import { format } from "date-fns";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import {
-  connectFunctionsEmulator,
-  getFunctions,
-  httpsCallable,
-} from "firebase/functions";
+import { httpsCallable } from "firebase/functions";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BasePageLayout } from "../components/base/BasePageLayout";
-import { db } from "../firebase";
+import { db, functions } from "../firebase";
 import { useMembershipStatus } from "../hooks/useMembershipStatus";
 import { useSelectedShots } from "../hooks/useSelectedShots";
 import { UserContext } from "../provider/UserContext";
@@ -137,11 +133,6 @@ export const AIAnalysis = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [previousReports, setPreviousReports] = useState<AnalysisReport[]>([]);
-
-  const functions = getFunctions();
-  if (process.env.NODE_ENV === "development") {
-    connectFunctionsEmulator(functions, "localhost", 5001);
-  }
 
   const analyzeShotPatterns = httpsCallable<any, AIAnalysisResult>(
     functions,
