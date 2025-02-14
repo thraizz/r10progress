@@ -21,9 +21,19 @@ export const SessionList = () => {
     setOpen(true);
   };
 
+  if (Object.keys(sessions).length === 0) {
+    return (
+      <div className="mt-4">
+        <p className="text-sm text-gray-500">
+          No sessions found. Upload a file to get started.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="mt-4 ">
-      <h3 className="text-xl font-semibold">Manage Sessions</h3>
+      <h3 className="text-lg font-normal">Manage Sessions</h3>
       <DeletionModal
         callback={async () => {
           if (sessionToDelete) {

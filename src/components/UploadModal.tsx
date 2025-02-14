@@ -37,7 +37,10 @@ export const UploadModal = ({ disabled }: { disabled: boolean }) => {
             <Popover.Panel className="fixed left-0 right-0 z-30 mt-3 w-screen transform px-4 sm:absolute sm:left-[unset] sm:max-w-sm sm:px-0 lg:max-w-3xl">
               <div className="mx-auto flex w-full max-w-xl flex-col gap-4 rounded-md bg-white p-4 shadow-md ">
                 {disabled ? (
-                  <p className="text-md">Please login to upload a file.</p>
+                  <p className="text-md">
+                    You are in demo mode. <br />
+                    Create an account to upload your own CSV files.
+                  </p>
                 ) : (
                   <>
                     <p className="text-md">
