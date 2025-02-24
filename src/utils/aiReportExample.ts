@@ -4,6 +4,7 @@ export interface AnalysisReport {
   createdAt: string;
   shotCount: number;
   timeframe: string;
+  filename: string;
   analysis: AIAnalysisResult;
 }
 export interface AIAnalysisResult {
@@ -93,6 +94,7 @@ export const aiReportExample: AnalysisReport = {
   createdAt: new Date().toISOString(),
   shotCount: 25,
   timeframe: "Example Report",
+  filename: "example.csv",
   analysis: {
     technicalAnalysis: {
       impactConditions: {

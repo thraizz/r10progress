@@ -22,8 +22,8 @@ export const useMembershipStatus = () => {
 
   useEffect(() => {
     const checkMembership = async () => {
-      setIsCheckingMembership(true);
       if (!user) return;
+      setIsCheckingMembership(true);
 
       try {
         const result = await checkMembershipStatus()();

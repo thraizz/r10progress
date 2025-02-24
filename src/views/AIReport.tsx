@@ -189,6 +189,9 @@ export const AIReport = () => {
             <p className="mt-2 text-gray-600">
               Analysis from {format(new Date(report.createdAt), "PPP")} •{" "}
               {report.shotCount} shots analyzed
+              {report.filename && (
+                <> • Files used: {report.filename.split(",").length}</>
+              )}
             </p>
           </div>
           <button

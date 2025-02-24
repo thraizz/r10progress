@@ -7,9 +7,14 @@ import { BasePageLayout } from "../components/base/BasePageLayout";
 import { db, functions } from "../firebase";
 import { useMembershipStatus } from "../hooks/useMembershipStatus";
 import { useSelectedShots } from "../hooks/useSelectedShots";
+import { SessionContext } from "../provider/SessionContext";
 import { UserContext } from "../provider/UserContext";
 import { routes } from "../routes";
-import { AIAnalysisResult, AnalysisReport } from "../utils/aiReportExample";
+import {
+  AIAnalysisResult,
+  aiReportExample,
+  AnalysisReport,
+} from "../utils/aiReportExample";
 
 interface LoadingState {
   analyzing: boolean;
@@ -129,6 +134,7 @@ export const AIAnalysis = () => {
   const { membershipStatus, isCheckingMembership } = useMembershipStatus();
 
   const shots = useSelectedShots();
+  const { sessions } = useContext(SessionContext);
   const [loadingState, setLoadingState] = useState<LoadingState>({
     analyzing: false,
     generatingReport: false,
@@ -192,10 +198,31 @@ export const AIAnalysis = () => {
 
     try {
       setLoadingState({ analyzing: false, generatingReport: true });
-      await analyzeShotPatterns({
-        shots,
-        timeframe: "last session",
-      });
+
+      // Get the filename from the first shot, handling both English and German versions
+      const allSessions = Object.keys(sessions);
+      const selectedFiles = allSessions.filter(
+        (session) => sessions[session].selected,
+      );
+
+      const filename = selectedFiles.join(", ");
+
+      try {
+        await analyzeShotPatterns({
+          shots,
+          timeframe: "last session",
+          filename,
+        });
+      } catch (err: any) {
+        console.log(err);
+        // Check if the error is due to an existing report
+        if (err.message?.includes("Report already exists for this session:")) {
+          const reportId = err.message.split(": ")[1];
+          navigate(`${routes.aiAnalysis}/${reportId}`);
+          return;
+        }
+        throw err;
+      }
 
       // Refresh the reports list
       if (user) {
