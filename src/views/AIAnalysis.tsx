@@ -257,66 +257,95 @@ export const AIAnalysis = () => {
             Get personalized insights and recommendations for your golf game
             using advanced AI analysis.
           </p>
-          {!isCheckingMembership && membershipStatus?.isSupporter && (
-            <div className="mt-4 rounded-md bg-green-50 p-4">
+          {isCheckingMembership ? (
+            <div className="mt-4 rounded-md bg-gray-50 p-4">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg
-                    className="h-5 w-5 text-green-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
                 </div>
-                <div className="ml-3">
-                  <p className="text-sm text-green-700">
-                    Thank you for supporting R10 Progress! Your contribution
-                    helps us continue developing new features and improvements.
+                <div className="ml-3 flex-1">
+                  <p className="text-sm text-gray-700">
+                    Checking membership status...
                   </p>
                 </div>
               </div>
             </div>
-          )}
-          {!isCheckingMembership && !membershipStatus?.isSupporter && (
-            <div className="mt-4 rounded-md bg-blue-50 p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <svg
-                    className="h-5 w-5 text-blue-400"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="ml-3 flex-1 md:flex md:justify-between">
-                  <p className="text-sm text-blue-700">
-                    {membershipStatus?.message ||
-                      "This feature is only available to supporters right now."}
-                  </p>
-                  <p className="mt-3 text-sm md:ml-6 md:mt-0">
-                    <a
-                      href="https://www.buymeacoffee.com/aronschueler"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
+          ) : (
+            !membershipStatus?.isSupporter && (
+              <div className="mt-4 rounded-md bg-blue-50 p-4">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg
+                      className="h-5 w-5 text-blue-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
                     >
-                      Support now <span aria-hidden="true">&rarr;</span>
-                    </a>
-                  </p>
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div className="ml-3 flex-1 md:flex md:justify-between">
+                    <p className="text-sm text-blue-700">
+                      {membershipStatus?.message ||
+                        "This feature is only available to supporters right now."}
+                    </p>
+                    <p className="mt-3 text-sm md:ml-6 md:mt-0">
+                      <a
+                        href="https://www.buymeacoffee.com/aronschueler"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
+                      >
+                        Support now <span aria-hidden="true">&rarr;</span>
+                      </a>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            )
           )}
+        </div>
+
+        {/* ShotMetrics AI Ad */}
+        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg
+                className="h-6 w-6 text-green-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-gray-900">
+                Looking for more comprehensive analysis?
+              </h3>
+              <p className="mt-1 text-xs text-gray-500">
+                Try{" "}
+                <a
+                  href="https://shotmetrics-ai.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-green-600 hover:text-green-500"
+                >
+                  ShotMetrics AI
+                </a>{" "}
+                for complete swing analysis, insights, trends, visualization,
+                and personalized drills.
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="grid gap-8 lg:grid-cols-3">
@@ -361,7 +390,14 @@ export const AIAnalysis = () => {
                   Get detailed insights about your swing patterns and
                   consistency.
                 </p>
-                {!membershipStatus?.isSupporter ? (
+                {isCheckingMembership ? (
+                  <div className="mt-4 flex items-center justify-center p-4">
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+                    <span className="ml-2 text-sm text-gray-600">
+                      Checking membership status...
+                    </span>
+                  </div>
+                ) : !membershipStatus?.isSupporter ? (
                   <div className="mt-4 space-y-4">
                     <div className="rounded-md bg-blue-50 p-4">
                       <div className="flex">
@@ -429,7 +465,11 @@ export const AIAnalysis = () => {
             <PreviousReports
               reports={previousReports}
               onSelectReport={handleSelectReport}
-              isSupporter={membershipStatus?.isSupporter ?? false}
+              isSupporter={
+                isCheckingMembership
+                  ? true
+                  : (membershipStatus?.isSupporter ?? false)
+              }
             />
           </div>
         </div>
