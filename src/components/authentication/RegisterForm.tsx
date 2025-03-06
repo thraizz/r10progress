@@ -6,6 +6,19 @@ import { useNavigate } from "react-router";
 import { auth } from "../../firebase";
 import { UserContext } from "../../provider/UserContext";
 
+// Add TypeScript declaration for Reddit Pixel
+declare global {
+  interface Window {
+    plausible: (event: string, data?: any) => void;
+  }
+}
+
+const trackSignUp = () => {
+  if (typeof window !== "undefined") {
+    window?.plausible("Sign up");
+  }
+};
+
 export const RegisterForm = () => {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -20,6 +33,7 @@ export const RegisterForm = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         setUser(user);
+        trackSignUp();
         navigate("/dashboard");
       })
       .catch((error) => {
