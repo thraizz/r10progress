@@ -36,6 +36,9 @@ export const FileUpload = () => {
       newSessions[filename] = { ...newSessions[filename], selected: true };
       setSessions(newSessions);
     }
+    if (typeof window !== "undefined" && window.plausible) {
+      window.plausible?.("Upload CSV");
+    }
   };
 
   const [error, setError] = useState<string>("");

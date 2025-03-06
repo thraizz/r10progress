@@ -6,16 +6,9 @@ import { useNavigate } from "react-router";
 import { auth } from "../../firebase";
 import { UserContext } from "../../provider/UserContext";
 
-// Add TypeScript declaration for Reddit Pixel
-declare global {
-  interface Window {
-    plausible: (event: string, data?: any) => void;
-  }
-}
-
 const trackSignUp = () => {
-  if (typeof window !== "undefined") {
-    window?.plausible("Sign up");
+  if (typeof window !== "undefined" && window.plausible) {
+    window.plausible?.("Sign up");
   }
 };
 
