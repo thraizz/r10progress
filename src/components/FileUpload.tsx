@@ -1,14 +1,14 @@
+import clsx from "clsx";
 import { doc, setDoc } from "firebase/firestore";
 import Papa from "papaparse";
 import { ChangeEvent, createRef, useContext, useState } from "react";
 import { db } from "../firebase";
+import { SessionContext } from "../provider/SessionContext";
 import { UserContext } from "../provider/UserContext";
 import { BaseLoadingSpinner } from "./base/BaseLoadingSpinner";
-import { SessionContext } from "../provider/SessionContext";
-import clsx from "clsx";
 
 export const FileUpload = () => {
-  const { fetchSnapshot } = useContext(SessionContext);
+  const { fetchSnapshot, setSessions } = useContext(SessionContext);
   const formRef = createRef<HTMLFormElement>();
   const inputRef = createRef<HTMLInputElement>();
   const [csvFile, setCsvFile] = useState<unknown[] | null>(null);
@@ -27,7 +27,15 @@ export const FileUpload = () => {
     setIsUploading(false);
     formRef.current?.reset();
     setCsvFile(null);
-    fetchSnapshot();
+
+    // Fetch updated sessions and ensure the new session is selected
+    const updatedSessions = await fetchSnapshot();
+    if (updatedSessions && filename in updatedSessions) {
+      // Make sure the newly uploaded session is selected
+      const newSessions = { ...updatedSessions };
+      newSessions[filename] = { ...newSessions[filename], selected: true };
+      setSessions(newSessions);
+    }
   };
 
   const [error, setError] = useState<string>("");
