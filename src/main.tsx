@@ -17,6 +17,7 @@ if (!import.meta.env.DEV && location.host !== MAIN_SITE) {
 }
 
 Sentry.init({
+  enabled: !import.meta.env.DEV,
   dsn: "https://b922808c8cd418b5c6af64876f77e013@o4504645960138752.ingest.us.sentry.io/4509034783834112",
 });
 
