@@ -1,9 +1,9 @@
+import { getDate } from "./golfSwingData.helpers";
+
 export const getDateFromResults = (results: any[]) => {
   if (results.length > 0) {
     const date: string =
-      results[0].Date ||
-      results[0].Datum ||
-      "No date found. Contact me please.";
+      getDate(results[0]) || "No date found. Contact me please.";
 
     return date.split(" ")[0];
   }
@@ -11,7 +11,7 @@ export const getDateFromResults = (results: any[]) => {
 };
 
 export const getDayFromRow = (row: any) => {
-  const date = row["Date"] || row["Datum"] || "";
+  const date = getDate(row);
   const dayPart = date.split(" ")[0] ?? "";
   return dayPart;
 };

@@ -45,9 +45,53 @@ export const clubNameLocalizationDE: { [key: string]: string } = {
   Putter: "Putter",
 };
 
+export const clubNameLocalizationES: { [key: string]: string } = {
+  Driver: "Driver",
+  "Madera 1": "1 Wood",
+  "Madera 2": "2 Wood",
+  "Madera 3": "3 Wood",
+  "Madera 4": "4 Wood",
+  "Madera 5": "5 Wood",
+  "Madera 6": "6 Wood",
+  "Madera 7": "7 Wood",
+  "Madera 8": "8 Wood",
+  "Madera 9": "9 Wood",
+  "Híbrido 1": "1 Hybrid",
+  "Híbrido 2": "2 Hybrid",
+  "Híbrido 3": "3 Hybrid",
+  "Híbrido 4": "4 Hybrid",
+  "Híbrido 5": "5 Hybrid",
+  "Híbrido 6": "6 Hybrid",
+  "Híbrido 7": "7 Hybrid",
+  "Híbrido 8": "8 Hybrid",
+  "Híbrido 9": "9 Hybrid",
+  "Hierro 1": "1 Iron",
+  "Hierro 2": "2 Iron",
+  "Hierro 3": "3 Iron",
+  "Hierro 4": "4 Iron",
+  "Hierro 5": "5 Iron",
+  "Hierro 6": "6 Iron",
+  "Hierro 7": "7 Iron",
+  "Hierro 8": "8 Iron",
+  "Hierro 9": "9 Iron",
+  "Pitching Wedge": "Pitching Wedge",
+  "Gap Wedge": "Gap Wedge",
+  "Sand Wedge": "Sand Wedge",
+  "Lob Wedge": "Lob Wedge",
+  Putter: "Putter",
+};
+
 export const spinrateMeasure: { [key: string]: string } = {
   Berechnet: "Calculated",
   Gemessen: "Measured",
+};
+
+export const distanceFieldLocalization: { [key: string]: string } = {
+  "Distancia total": "Total Distance",
+  "Dist.​vuelo": "Carry Distance",
+  "Distancia de desviación total": "Total Deviation Distance",
+  "Distancia de desviación de vuelo": "Carry Deviation Distance",
+  "Altura máxima": "Apex Height",
 };
 
 export const translateSwingsToEnglish: (
@@ -68,11 +112,23 @@ export const translateSwingsToEnglish: (
             ...newResult,
             [identifier]: clubNameLocalizationDE[currentSwing],
           };
+        } else if (clubNameLocalizationES[currentSwing]) {
+          newResult = {
+            ...newResult,
+            [identifier]: clubNameLocalizationES[currentSwing],
+          };
         }
         if (spinrateMeasure[currentSwing]) {
           newResult = {
             ...newResult,
             [identifier]: spinrateMeasure[currentSwing],
+          };
+        }
+        if (distanceFieldLocalization[identifier]) {
+          newResult = {
+            ...newResult,
+            [distanceFieldLocalization[identifier]]: swing[identifier],
+            [identifier]: undefined,
           };
         }
       }

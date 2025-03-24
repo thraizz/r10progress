@@ -1,6 +1,11 @@
 import { useMemo } from "react";
 import { useSelectedSessionsWithSettings } from "../../../hooks/useSelectedSessions";
 import { GolfSwingData } from "../../../types/GolfSwingData";
+import {
+  getCarryDistance,
+  getClubName,
+  getTotalDeviationDistance,
+} from "../../../utils/golfSwingData.helpers";
 import { PointWithClub } from "../../base/chartOptions";
 
 export const useCarryAndDeviation = () => {
@@ -43,13 +48,10 @@ export const useCarryAndDeviation = () => {
 export const calculateCarryAndDeviation: (
   results: GolfSwingData[],
 ) => (PointWithClub | undefined)[] = (results: GolfSwingData[]) =>
-  results.map((result) => {
-    const carry = result["Carry Distance"] || result["Carry-Distanz"];
-    const deviation =
-      result["Carry Deviation Distance"] ||
-      result["Gesamtabweichungsdistanz"] ||
-      0;
-    const clubName = result["Schlägerart"] || result["Club Type"];
+  results.map((shot) => {
+    const carry = getCarryDistance(shot);
+    const deviation = getTotalDeviationDistance(shot);
+    const clubName = getClubName(shot);
     if (carry && deviation && clubName) {
       return { y: carry, x: deviation, club: clubName };
     }

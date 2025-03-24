@@ -4,7 +4,12 @@ import { SettingsContext } from "../provider/SettingsContext";
 import { GolfSwingData } from "../types/GolfSwingData";
 import type { Session, Sessions } from "../types/Sessions";
 import { translateSwingsToEnglish } from "./csvLocalization";
-import { getCarryDistance, getClubName } from "./golfSwingData.helpers";
+import {
+  getCarryDistance,
+  getClubName,
+  getTotalDeviationDistance,
+  getTotalDistance,
+} from "./golfSwingData.helpers";
 
 const quantile = (arr: number[], q: number) => {
   const sorted = arr.sort((a, b) => a - b);
@@ -98,7 +103,7 @@ export const calculateAverages: (
       // Iterate over all swings in the session
       for (const swing of session.results) {
         // Get the club name, which depends on the language
-        const club = swing["Schlägerart"] || swing["Club Type"];
+        const club = getClubName(swing);
         if (!club) {
           continue;
         }
@@ -145,7 +150,7 @@ export const calculateAverages: (
           .map((session) => session.results)
           .flat()
           .filter((swing) => {
-            const swingClub = swing["Schlägerart"] || swing["Club Type"];
+            const swingClub = getClubName(swing);
             return swingClub === club;
           })
           // @ts-expect-error - key is taken from Object keys
@@ -282,17 +287,17 @@ const lobwedgeVariations = [
 export const dropOutliers = (swings: GolfSwingData[]) => {
   // Filter out outliers
   const filteredSwings = swings.filter((swing) => {
-    const club = swing["Schlägerart"] || swing["Club Type"];
-    const distance = swing["Gesamtstrecke"] || swing["Total Distance"];
+    const club = getClubName(swing);
+    const distance = getTotalDistance(swing);
     if (!club || !distance) {
       return false;
     }
     const values = swings
       .filter((s) => {
-        const sClub = s["Schlägerart"] || s["Club Type"];
+        const sClub = getClubName(s);
         return sClub === club;
       })
-      .map((s) => s["Gesamtstrecke"] || s["Total Distance"]);
+      .map((s) => getTotalDistance(s));
     const q1 = quantile(values, 0.25);
     const q3 = quantile(values, 0.75);
     const iqr = q3 - q1;
@@ -307,17 +312,17 @@ export const dropOutliers = (swings: GolfSwingData[]) => {
 export const getAboveAverageShots = (swings: GolfSwingData[]) => {
   // Filter out outliers
   const filteredSwings = swings.filter((swing) => {
-    const club = swing["Schlägerart"] || swing["Club Type"];
-    const distance = swing["Gesamtstrecke"] || swing["Total Distance"];
+    const club = getClubName(swing);
+    const distance = getTotalDistance(swing);
     if (!club || !distance) {
       return false;
     }
     const values = swings
       .filter((s) => {
-        const sClub = s["Schlägerart"] || s["Club Type"];
+        const sClub = getClubName(s);
         return sClub === club;
       })
-      .map((s) => s["Gesamtstrecke"] || s["Total Distance"]);
+      .map((s) => getTotalDistance(s));
     const average = values.reduce((acc, curr) => acc + curr, 0) / values.length;
     return distance >= average;
   });
@@ -331,6 +336,7 @@ export const getAboveAverageShots = (swings: GolfSwingData[]) => {
  */
 export const useBestShots = () => {
   const { sessions } = useContext(SessionContext);
+  console.log(sessions);
 
   return useMemo(() => {
     if (sessions) {
@@ -380,9 +386,7 @@ export const useBestShots = () => {
         bestShots,
         averages: calculateAverages({ "1": dummySession }),
         dispersion: bestShotData.map((shot) => ({
-          club:
-            shot.sortedShots[0]["Club Name"] ||
-            shot.sortedShots[0]["Schlägerart"],
+          club: getClubName(shot.sortedShots[0]),
           ellipse: calculateDispersionEllipse(shot.sortedShots),
         })),
       };
@@ -403,9 +407,8 @@ export const useBestShots = () => {
 const calculateDispersionRadius = (shots: GolfSwingData[]): number => {
   // Convert polar to cartesian coordinates
   const points = shots.map((shot) => {
-    const distance = shot["Total Distance"] || shot["Gesamtstrecke"] || 0;
-    const deviation =
-      shot["Total Deviation Distance"] || shot["Gesamtabweichungsdistanz"] || 0;
+    const distance = getTotalDistance(shot);
+    const deviation = getTotalDeviationDistance(shot) || 0;
     const angle = Math.atan2(deviation, distance);
 
     return {
@@ -441,9 +444,8 @@ const calculateDispersionEllipse = (
   shots: GolfSwingData[],
 ): DispersionEllipse => {
   const points = shots.map((shot) => {
-    const distance = shot["Total Distance"] || shot["Gesamtstrecke"] || 0;
-    const deviation =
-      shot["Total Deviation Distance"] || shot["Gesamtabweichungsdistanz"] || 0;
+    const distance = getTotalDistance(shot);
+    const deviation = getTotalDeviationDistance(shot) || 0;
     const angle = Math.atan2(deviation, distance);
 
     return {

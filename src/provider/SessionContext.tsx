@@ -1,12 +1,12 @@
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import {
+  FC,
   PropsWithChildren,
   createContext,
   useCallback,
   useContext,
   useMemo,
   useState,
-  FC,
 } from "react";
 
 import { ANONYMOUS_USER_UID, db } from "../firebase";
@@ -52,24 +52,30 @@ const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const { user } = useContext(UserContext);
   const uuid = user?.isAnonymous ? ANONYMOUS_USER_UID : user?.uid;
+  console.log("uuid", uuid);
 
   const fetchSessions = useCallback(async () => {
     setIsLoading(true);
     if (uuid) {
-      const querySnapshot = await getDocs(
-        collection(db, "r10data", uuid, "data"),
-      );
-      const sessionResult = querySnapshot.docs.reduce((acc, curr) => {
-        const data = reduceSessionToDefinedValues(curr.data() as Session);
-        acc[curr.id] = {
-          ...data,
-          selected: true,
-          date: getDateFromResults(data.results),
-        };
-        return acc;
-      }, {} as Sessions);
-      setSessionsCallback(sessionResult);
-      setInitialized(true);
+      let sessionResult: Sessions | undefined;
+      try {
+        const querySnapshot = await getDocs(
+          collection(db, "r10data", uuid, "data"),
+        );
+        sessionResult = querySnapshot.docs.reduce((acc, curr) => {
+          const data = reduceSessionToDefinedValues(curr.data() as Session);
+          acc[curr.id] = {
+            ...data,
+            selected: true,
+            date: getDateFromResults(data.results),
+          };
+          return acc;
+        }, {} as Sessions);
+        setSessionsCallback(sessionResult);
+        setInitialized(true);
+      } catch (error) {
+        console.error(error);
+      }
       setIsLoading(false);
       return sessionResult;
     }

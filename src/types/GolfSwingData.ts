@@ -66,7 +66,41 @@ export type GolfSwingDataDE = {
   "Carry-Distanz": number;
 };
 
-export type GolfSwingData = GolfSwingDataEN & GolfSwingDataDE;
+export type GolfSwingDataES = {
+  "Altura máxima": number;
+  "Calidad del impacto": number;
+  "Cara a línea": number;
+  "Cara del palo": number;
+  "Densidad del aire": number;
+  "Dirección de lanzamiento": number;
+  "Dist.​vuelo": number;
+  "Distancia de desviación de vuelo": number;
+  "Distancia de desviación total": number;
+  "Distancia total": number;
+  "Efecto lateral": number;
+  "Eje de rotación": number;
+  Etiqueta: string;
+  Fecha: string;
+  "Humedad relativa": number;
+  Jugador: string;
+  "Línea cabeza del palo": number;
+  "Nombre del palo": string;
+  Nota: string;
+  "Presión de aire": number;
+  Retroceso: number;
+  Temperatura: number;
+  "Tipo de palo": string;
+  "Tipo de velocidad de rotación": string;
+  "Vel. palo": number;
+  "Velocidad de la pelota": number;
+  "Velocidad de rotación": number;
+  "Ángulo de ataque": number;
+  "Ángulo de desviación de vuelo": number;
+  "Ángulo de desviación total": number;
+  "Ángulo de lanzamiento": number;
+};
+
+export type GolfSwingData = GolfSwingDataEN & GolfSwingDataDE & GolfSwingDataES;
 
 export const englishMetersMetrics: (keyof GolfSwingDataEN)[] = [
   "Carry Distance",
@@ -84,11 +118,17 @@ export const germanMetersMetrics: (keyof GolfSwingDataDE)[] = [
   "Höhe des Scheitelpunkts",
 ];
 
-export const golfSwingDataKeysInMeters: Array<
-  keyof GolfSwingDataEN | keyof GolfSwingDataDE
-> = [...englishMetersMetrics, ...germanMetersMetrics];
+export const spanishMetersMetrics: (keyof GolfSwingDataES)[] = [
+  "Distancia de desviación total",
+  "Distancia de desviación de vuelo",
+  "Altura máxima",
+];
 
-export const englishDegreeMetrics = [
+export const golfSwingDataKeysInMeters: Array<
+  keyof GolfSwingDataEN | keyof GolfSwingDataDE | keyof GolfSwingDataES
+> = [...englishMetersMetrics, ...germanMetersMetrics, ...spanishMetersMetrics];
+
+export const englishDegreeMetrics: (keyof GolfSwingDataEN)[] = [
   "Carry Deviation Angle",
   "Total Deviation Angle",
   "Launch Direction",
@@ -112,8 +152,12 @@ export const germanDegreeMetrics: (keyof GolfSwingDataDE)[] = [
   "Anstellwinkel",
 ];
 
+export const spanishDegreeMetrics: (keyof GolfSwingDataES)[] = [
+  "Ángulo de desviación total",
+  "Ángulo de desviación de vuelo",
+  "Ángulo de lanzamiento",
+];
+
 export const golfSwingDataKeysInDegrees: Array<
-  keyof GolfSwingDataEN | keyof GolfSwingDataDE
-> = [...englishDegreeMetrics, ...germanDegreeMetrics] as unknown as Array<
-  keyof GolfSwingData
->;
+  keyof GolfSwingDataEN | keyof GolfSwingDataDE | keyof GolfSwingDataES
+> = [...englishDegreeMetrics, ...germanDegreeMetrics, ...spanishDegreeMetrics];
