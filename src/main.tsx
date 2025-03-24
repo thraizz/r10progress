@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
@@ -14,6 +15,10 @@ const MAIN_SITE = "app.r10progress.com";
 if (!import.meta.env.DEV && location.host !== MAIN_SITE) {
   window.location.href = `https://${MAIN_SITE}${location.pathname}`;
 }
+
+Sentry.init({
+  dsn: "https://b922808c8cd418b5c6af64876f77e013@o4504645960138752.ingest.us.sentry.io/4509034783834112",
+});
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
