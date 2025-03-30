@@ -1,8 +1,11 @@
-import { format } from "date-fns";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LoadingIndicator } from "../components/ai/LoadingIndicator";
+import { PreviousReports } from "../components/ai/PreviousReports";
+import { ShotMetricsAIAd } from "../components/ai/ShotMetricsAIAd";
+import { ThankYouNote } from "../components/ai/ThankYouNote";
 import { BasePageLayout } from "../components/base/BasePageLayout";
 import { db, functions } from "../firebase";
 import { useMembershipStatus } from "../hooks/useMembershipStatus";
@@ -21,118 +24,10 @@ interface LoadingState {
   generatingReport: boolean;
 }
 
-const LoadingIndicator = ({ state }: { state: LoadingState }) => (
-  <div className="space-y-4">
-    <div className="flex items-center space-x-4">
-      <div className="flex items-center">
-        {state.analyzing ? (
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-        ) : (
-          <svg
-            className="h-4 w-4 text-green-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        )}
-        <span className="ml-2 text-sm text-gray-600">Analyzing shots...</span>
-      </div>
-    </div>
-    <div className="flex items-center space-x-4">
-      <div className="flex items-center">
-        {state.analyzing ? (
-          <div className="h-4 w-4" />
-        ) : state.generatingReport ? (
-          <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-        ) : (
-          <svg
-            className="h-4 w-4 text-green-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
-        )}
-        <span className="ml-2 text-sm text-gray-600">
-          Generating detailed report...
-        </span>
-      </div>
-    </div>
-    <p className="text-sm text-gray-500">
-      This process can take up to 30 seconds to complete.
-    </p>
-  </div>
-);
-
-const PreviousReports = ({
-  reports,
-  onSelectReport,
-  isSupporter,
-}: {
-  reports: AnalysisReport[];
-  onSelectReport: (report: AnalysisReport) => void;
-  isSupporter: boolean;
-}) => (
-  <div className="rounded-lg bg-white p-6 shadow-sm">
-    <h2 className="text-lg font-semibold text-gray-900">
-      {isSupporter ? "Previous Reports" : "Example Report"}
-    </h2>
-    <div className="mt-4 divide-y divide-gray-200">
-      {reports.length === 0 ? (
-        <p className="text-sm text-gray-500">No previous reports found.</p>
-      ) : (
-        reports.map((report) => (
-          <div
-            key={report.id}
-            className="flex cursor-pointer items-center justify-between py-4 hover:bg-gray-50"
-            onClick={() => onSelectReport(report)}
-          >
-            <div>
-              <p className="text-sm font-medium text-gray-900">
-                {report.id === "example"
-                  ? "Example Report"
-                  : `Analysis from ${format(new Date(report.createdAt), "PPP")}`}
-              </p>
-              <p className="text-sm text-gray-500">
-                {report.shotCount} shots analyzed
-              </p>
-            </div>
-            <svg
-              className="h-5 w-5 text-gray-400"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
-        ))
-      )}
-    </div>
-  </div>
-);
-
 export const AIAnalysis = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const { membershipStatus, isCheckingMembership } = useMembershipStatus();
-
   const shots = useSelectedShots();
   const { sessions } = useContext(SessionContext);
   const [loadingState, setLoadingState] = useState<LoadingState>({
@@ -441,71 +336,3 @@ export const AIAnalysis = () => {
     </BasePageLayout>
   );
 };
-
-const ShotMetricsAIAd = () => (
-  <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-    <div className="flex items-center">
-      <div className="flex-shrink-0">
-        <svg
-          className="h-6 w-6 text-green-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 10V3L4 14h7v7l9-11h-7z"
-          />
-        </svg>
-      </div>
-      <div className="ml-3">
-        <h3 className="text-sm font-medium text-gray-900">
-          Looking for more comprehensive analysis?
-        </h3>
-        <p className="mt-1 text-xs text-gray-500">
-          Try{" "}
-          <a
-            href="https://shotmetrics-ai.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-medium text-green-600 hover:text-green-500"
-          >
-            ShotMetrics AI
-          </a>{" "}
-          for complete swing analysis, insights, trends, visualization, and
-          personalized drills.
-        </p>
-      </div>
-    </div>
-  </div>
-);
-
-const ThankYouNote = () => (
-  <div className="rounded-lg border border-gray-100 bg-white p-3 shadow-sm">
-    <div className="flex items-center">
-      <div className="flex-shrink-0">
-        <svg
-          className="h-5 w-5 text-blue-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-          />
-        </svg>
-      </div>
-      <div className="ml-2">
-        <p className="text-xs text-gray-600">
-          Thank you for supporting the development of R10 Progress! Your support
-          helps me create better tools for golfers.
-        </p>
-      </div>
-    </div>
-  </div>
-);
