@@ -52,7 +52,6 @@ const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const { user } = useContext(UserContext);
   const uuid = user?.isAnonymous ? ANONYMOUS_USER_UID : user?.uid;
-  console.log("uuid", uuid);
 
   const fetchSessions = useCallback(async () => {
     setIsLoading(true);

@@ -336,7 +336,6 @@ export const getAboveAverageShots = (swings: GolfSwingData[]) => {
  */
 export const useBestShots = () => {
   const { sessions } = useContext(SessionContext);
-  console.log(sessions);
 
   return useMemo(() => {
     if (sessions) {

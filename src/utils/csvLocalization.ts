@@ -86,14 +86,6 @@ export const spinrateMeasure: { [key: string]: string } = {
   Gemessen: "Measured",
 };
 
-export const distanceFieldLocalization: { [key: string]: string } = {
-  "Distancia total": "Total Distance",
-  "Dist.​vuelo": "Carry Distance",
-  "Distancia de desviación total": "Total Deviation Distance",
-  "Distancia de desviación de vuelo": "Carry Deviation Distance",
-  "Altura máxima": "Apex Height",
-};
-
 export const translateSwingsToEnglish: (
   results: GolfSwingData[],
 ) => GolfSwingData[] = (results) => {
@@ -122,13 +114,6 @@ export const translateSwingsToEnglish: (
           newResult = {
             ...newResult,
             [identifier]: spinrateMeasure[currentSwing],
-          };
-        }
-        if (distanceFieldLocalization[identifier]) {
-          newResult = {
-            ...newResult,
-            [distanceFieldLocalization[identifier]]: swing[identifier],
-            [identifier]: undefined,
           };
         }
       }

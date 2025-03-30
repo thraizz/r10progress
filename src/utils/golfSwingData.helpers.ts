@@ -8,8 +8,11 @@ export const getClubName = (golfSwingData: GolfSwingData) =>
 export const getCarryDistance = (shot: GolfSwingData) =>
   shot["Carry Distance"] || shot["Carry-Distanz"] || shot["Dist.​vuelo"];
 
-export const getTotalDistance = (shot: GolfSwingData) =>
-  shot["Total Distance"] || shot["Gesamtstrecke"] || shot["Distancia total"];
+export const getTotalDistance = (shot: GolfSwingData) => {
+  return (
+    shot["Total Distance"] || shot["Gesamtstrecke"] || shot["Distan​cia total"]
+  );
+};
 
 export const getTotalDeviationDistance = (shot: GolfSwingData) =>
   shot["Total Deviation Distance"] ||

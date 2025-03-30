@@ -1,6 +1,9 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { SessionContext } from "../../provider/SessionContext.tsx";
-import { GolfSwingData } from "../../types/GolfSwingData";
+import {
+  GolfSwingData,
+  nonNumericGolfSwingDataKeys,
+} from "../../types/GolfSwingData";
 import { getDayFromRow } from "../../utils/date.utils";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
 import { getClubName } from "../../utils/golfSwingData.helpers.ts";
@@ -15,15 +18,29 @@ export const ShotScatterPlot = () => {
   const [club, setClub] = useState<string | null>(null);
   const combinedClubData = useCombinedClubData();
 
-  const [xField, setXField] = useState("Backspin");
-  const [yField, setYField] = useState("Smash Factor");
+  const [xField, setXField] = useState<keyof GolfSwingData>("Backspin");
+  const [yField, setYField] = useState<keyof GolfSwingData>("Carry Distance");
 
-  const fields = useMemo(() => {
+  const fields: (keyof GolfSwingData)[] = useMemo(() => {
     const firstSession = Object.values(sessions)?.[0];
     const firstResult = firstSession?.results?.[0];
     const fields = firstResult ? Object.keys(firstResult) : [];
-    return fields.sort((a, b) => a.localeCompare(b));
+    const nonNumericFields = fields.filter(
+      (field) =>
+        !nonNumericGolfSwingDataKeys.includes(field as keyof GolfSwingData),
+    );
+
+    return nonNumericFields.sort((a, b) =>
+      a.localeCompare(b),
+    ) as (keyof GolfSwingData)[];
   }, [sessions]);
+
+  useEffect(() => {
+    if (fields.length > 0) {
+      setXField(fields[0]);
+      setYField(fields[1]);
+    }
+  }, [fields]);
 
   const chartData: PointWithDate[] = useMemo(() => {
     if (sessions) {
@@ -57,13 +74,13 @@ export const ShotScatterPlot = () => {
           <div className="flex flex-col gap-4 md:flex-row">
             <BaseListbox
               options={fields}
-              setOption={setXField}
+              setOption={(option) => setXField(option as keyof GolfSwingData)}
               value={xField}
               valueText={xField}
             />
             <BaseListbox
               options={fields}
-              setOption={setYField}
+              setOption={(option) => setYField(option as keyof GolfSwingData)}
               value={yField}
               valueText={yField}
             />

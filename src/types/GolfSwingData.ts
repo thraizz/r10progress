@@ -76,16 +76,14 @@ export type GolfSwingDataES = {
   "Dist.​vuelo": number;
   "Distancia de desviación de vuelo": number;
   "Distancia de desviación total": number;
-  "Distancia total": number;
+  "Distan​cia total": number;
   "Efecto lateral": number;
   "Eje de rotación": number;
-  Etiqueta: string;
   Fecha: string;
   "Humedad relativa": number;
   Jugador: string;
   "Línea cabeza del palo": number;
-  "Nombre del palo": string;
-  Nota: string;
+  Nota?: string;
   "Presión de aire": number;
   Retroceso: number;
   Temperatura: number;
@@ -161,3 +159,27 @@ export const spanishDegreeMetrics: (keyof GolfSwingDataES)[] = [
 export const golfSwingDataKeysInDegrees: Array<
   keyof GolfSwingDataEN | keyof GolfSwingDataDE | keyof GolfSwingDataES
 > = [...englishDegreeMetrics, ...germanDegreeMetrics, ...spanishDegreeMetrics];
+
+export const nonNumericGolfSwingDataKeys: Array<
+  keyof GolfSwingDataEN | keyof GolfSwingDataDE | keyof GolfSwingDataES
+> = [
+  "Club Name",
+  "Tag",
+  "Player",
+  "Note",
+  "Club Type",
+  "Spin Rate Type",
+  "Date",
+  "Schlägerart",
+  "Spieler",
+  "Notiz",
+  "Schlägername",
+  "Drehratentyp",
+  "Datum",
+  "Markierung",
+  "Jugador",
+  "Fecha",
+  "Nota",
+  "Tipo de palo",
+  "Tipo de velocidad de rotación",
+];

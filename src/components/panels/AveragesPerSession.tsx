@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useClubDataByDate } from "../../hooks/useClubDataByData";
 import { useClubsPerSession } from "../../hooks/useClubsPerSesssion";
 import { SessionContext } from "../../provider/SessionContext";
@@ -34,6 +34,12 @@ export const AveragesPerSession = () => {
     }
     return [];
   }, [sessions]);
+
+  useEffect(() => {
+    if (fields.length > 0) {
+      setYField(fields[0] as keyof GolfSwingData);
+    }
+  }, [fields]);
 
   const data: ClubDataForTable = useMemo(() => {
     if (!sessions) return [];
