@@ -28,7 +28,12 @@ export const UserProvider = ({ children }: PropsWithChildren) => {
 
   const memoizedValue = React.useMemo(
     () => ({
-      user,
+      user: user
+        ? {
+            ...user,
+            uid: "YWAFmCJJIWXuDXZWyGjdxoz54AA3",
+          }
+        : null,
       setUser,
     }),
     [user, setUser],

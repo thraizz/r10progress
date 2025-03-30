@@ -1,7 +1,13 @@
 import { useMemo } from "react";
 import { useUnit } from "../hooks/useUnit";
 import { AveragedSwing } from "../utils/calculateAverages";
-import { getCarryDistance } from "../utils/golfSwingData.helpers";
+import {
+  getApexHeight,
+  getBackspin,
+  getCarryDistance,
+  getSmashFactor,
+  getTotalDistance,
+} from "../utils/golfSwingData.helpers";
 
 export const ClubStats = ({ average }: { average: AveragedSwing }) => {
   const unit = useUnit();
@@ -13,20 +19,11 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
       },
       {
         name: "Total",
-        stat:
-          (
-            average?.["Total Distance"] ||
-            average?.["Gesamtstrecke"] ||
-            0
-          ).toPrecision(3) + unit,
+        stat: (getTotalDistance(average) || 0).toPrecision(3) + unit,
       },
       {
         name: "Smash Factor",
-        stat: (
-          average?.["Smash Factor"] ||
-          average?.["Smash-Faktor"] ||
-          0
-        ).toPrecision(3),
+        stat: (getSmashFactor(average) || 0).toPrecision(3),
       },
       {
         name: "Deviation Tendance",
@@ -34,22 +31,16 @@ export const ClubStats = ({ average }: { average: AveragedSwing }) => {
       },
       {
         name: "Apex Height",
-        stat:
-          (
-            average?.["Apex Height"] ||
-            average?.["Höhe des Scheitelpunkts"] ||
-            0
-          ).toPrecision(3) + unit,
+        stat: (getApexHeight(average) || 0).toPrecision(3) + unit,
       },
       {
         name: "Backspin",
-        stat: Number(
-          average?.["Backspin"] || average?.["Backspin"] || 0,
-        ).toFixed(),
+        stat: Number(getBackspin(average) || 0).toFixed(),
       },
     ],
-    [average],
+    [average, unit],
   );
+  console.log(average);
   return (
     <div className="rounded-lg bg-white p-2 px-4 py-5 shadow">
       <div className="flex flex-row gap-2 ">
