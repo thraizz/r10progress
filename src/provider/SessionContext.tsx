@@ -10,10 +10,12 @@ import {
 } from "react";
 
 import { ANONYMOUS_USER_UID, db } from "../firebase";
+import { GolfSwingData } from "../types/GolfSwingData";
 import { Session, Sessions } from "../types/Sessions";
 import { translateSessionsToEnglish } from "../utils/csvLocalization";
 import { getDateFromResults } from "../utils/date.utils";
 import { filterResultsWithMissingCells } from "../utils/filterResultsWithMissingCells";
+import { getDate } from "../utils/golfSwingData.helpers";
 import { reduceSessionToDefinedValues } from "../utils/utils";
 import { UserContext } from "./UserContext";
 
@@ -25,6 +27,10 @@ export interface SessionContextInterface {
   fetchSnapshot: () => Promise<Sessions | undefined>;
   deleteSession: (id: string) => Promise<void>;
   exportSessionsToJson: (sessions: Sessions) => void;
+  deleteRowFromSession: (
+    sessionId: string,
+    row: GolfSwingData,
+  ) => Promise<void>;
 }
 
 /**
@@ -39,6 +45,7 @@ const SessionContext = createContext<SessionContextInterface>({
   setSessions: () => {},
   fetchSnapshot: () => Promise.resolve(undefined),
   deleteSession: () => Promise.resolve(),
+  deleteRowFromSession: () => Promise.resolve(),
   exportSessionsToJson: () => {},
 });
 
@@ -109,6 +116,39 @@ const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
     [uuid, setSessions],
   );
 
+  const deleteRowFromSession = useCallback(
+    async (sessionId: string, row: GolfSwingData) => {
+      if (!uuid) {
+        return;
+      }
+      // Find the session
+      const session = sessions[sessionId];
+      if (!session) return;
+      // Find the index of the row to delete (deep equality)
+      const rowIndex = session.results.findIndex(
+        (r) => getDate(r) === getDate(row),
+      );
+      if (rowIndex === -1) return;
+      // Remove the row from the results
+      const updatedResults = [...session.results];
+      updatedResults.splice(rowIndex, 1);
+      // Update Firestore
+      const documentRef = doc(db, "r10data", uuid, "data", sessionId);
+      const { updateDoc } = await import("firebase/firestore");
+      await updateDoc(documentRef, { results: updatedResults });
+      // Update local state
+      setSessions((prev: Sessions) => {
+        const newSessions = { ...prev };
+        newSessions[sessionId] = {
+          ...newSessions[sessionId],
+          results: updatedResults,
+        };
+        return newSessions;
+      });
+    },
+    [uuid, sessions, setSessions],
+  );
+
   const memoizedValue = useMemo(
     () => ({
       initialized,
@@ -118,6 +158,7 @@ const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
       fetchSnapshot: fetchSessions,
       deleteSession,
       exportSessionsToJson,
+      deleteRowFromSession,
     }),
     [
       initialized,
@@ -127,6 +168,7 @@ const SessionProvider: FC<PropsWithChildren> = ({ children }) => {
       fetchSessions,
       deleteSession,
       exportSessionsToJson,
+      deleteRowFromSession,
     ],
   );
 

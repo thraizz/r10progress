@@ -98,7 +98,48 @@ export type GolfSwingDataES = {
   "Ángulo de lanzamiento": number;
 };
 
-export type GolfSwingData = GolfSwingDataEN & GolfSwingDataDE & GolfSwingDataES;
+// Datum,Speler,Clubnaam,Type club,Clubsnelh.,Aanvalshoek,Clubtraject,Slagvlak van de club,Slagvlak t.o.v. traject,Balsnelheid,Smashfactor,Slaghoek,Slagrichting,Backspin,Sidespin,Spinsnelheid,Type draaisnelheid,Spinas,Apexhoogte,Carry-afstand,Carry-afwijkingshoek,Carry-afwijkingsafstand,Totale afstand,Totale afwijkingshoek,Totale afwijkingsafstand,Opmerking,Tag,Luchtdichtheid,Temperatuur,Luchtdruk,Relatieve vochtigheid
+// ,,,,[km/u],[deg],[deg],[deg],[deg],[km/u],,[deg],[deg],[rpm],[rpm],[rpm],,[deg],[m],[m],[deg],[m],[m],[deg],[m],,,[g/L],[deg C],[kPa],[%]
+// 11/05/2025 12:09:10,Francois Colin,Callaway 8,IJzer 8,117.71990582407534,0.0,-2.5,-11.6,-9.1,126.35989341892119,1.0733944487498805,4.670000076293945,-9.84000015258789,2992.920654296875,20.37247657775879,2992.989990234375,Geschat,-0.38999998569488525,0.9200000166893005,37.970001220703125,-9.90999984741211,-6.53000020980835,79.0,-9.920000076293945,-13.600000381469727,,,1.1929908,21.11,101.1,35
+// 11/05/2025 12:09:28,Francois Colin,Callaway 8,IJzer 8,113.9399088480729,9.62,-6.08,15.96,22.04,110.6279098497229,0.9709320550469615,35.810001373291016,12.350000381469727,4622.11181640625,-328.0738220214844,4633.740234375,Geschat,4.059999942779541,18.84000015258789,71.4800033569336,14.880000114440918,18.350000381469727,76.87000274658203,14.84000015258789,19.68000030517578,,,1.1929908,21.11,101.1,35
+export type GolfSwingDataNL = {
+  Datum: string;
+  Speler: string;
+  Clubnaam: string;
+  "Type club": string;
+  "Clubsnelh.": number;
+  Aanvalshoek: number;
+  Clubtraject: number;
+  "Slagvlak van de club": number;
+  "Slagvlak t.o.v. traject": number;
+  Balsnelheid: number;
+  Smashfactor: number;
+  Slaghoek: number;
+  Slagrichting: number;
+  Backspin: number;
+  Sidespin: number;
+  Spinsnelheid: number;
+  "Type draaisnelheid": string;
+  Spinas: number;
+  Apexhoogte: number;
+  "Carry-afstand": number;
+  "Carry-afwijkingshoek": number;
+  "Carry-afwijkingsafstand": number;
+  "Totale afstand": number;
+  "Totale afwijkingshoek": number;
+  "Totale afwijkingsafstand": number;
+  Opmerking: string;
+  Tag: string;
+  Luchtdichtheid: number;
+  Temperatuur: number;
+  Luchtdruk: number;
+  "Relatieve vochtigheid": number;
+};
+
+export type GolfSwingData = GolfSwingDataEN &
+  GolfSwingDataDE &
+  GolfSwingDataES &
+  GolfSwingDataNL;
 
 export const englishMetersMetrics: (keyof GolfSwingDataEN)[] = [
   "Carry Distance",
@@ -122,9 +163,24 @@ export const spanishMetersMetrics: (keyof GolfSwingDataES)[] = [
   "Altura máxima",
 ];
 
+export const dutchMetersMetrics: (keyof GolfSwingDataNL)[] = [
+  "Carry-afstand",
+  "Carry-afwijkingsafstand",
+  "Totale afwijkingsafstand",
+  "Apexhoogte",
+];
+
 export const golfSwingDataKeysInMeters: Array<
-  keyof GolfSwingDataEN | keyof GolfSwingDataDE | keyof GolfSwingDataES
-> = [...englishMetersMetrics, ...germanMetersMetrics, ...spanishMetersMetrics];
+  | keyof GolfSwingDataEN
+  | keyof GolfSwingDataDE
+  | keyof GolfSwingDataES
+  | keyof GolfSwingDataNL
+> = [
+  ...englishMetersMetrics,
+  ...germanMetersMetrics,
+  ...spanishMetersMetrics,
+  ...dutchMetersMetrics,
+];
 
 export const englishDegreeMetrics: (keyof GolfSwingDataEN)[] = [
   "Carry Deviation Angle",
@@ -156,12 +212,29 @@ export const spanishDegreeMetrics: (keyof GolfSwingDataES)[] = [
   "Ángulo de lanzamiento",
 ];
 
+export const dutchDegreeMetrics: (keyof GolfSwingDataNL)[] = [
+  "Aanvalshoek",
+  "Clubtraject",
+  "Slagvlak van de club",
+];
+
 export const golfSwingDataKeysInDegrees: Array<
-  keyof GolfSwingDataEN | keyof GolfSwingDataDE | keyof GolfSwingDataES
-> = [...englishDegreeMetrics, ...germanDegreeMetrics, ...spanishDegreeMetrics];
+  | keyof GolfSwingDataEN
+  | keyof GolfSwingDataDE
+  | keyof GolfSwingDataES
+  | keyof GolfSwingDataNL
+> = [
+  ...englishDegreeMetrics,
+  ...germanDegreeMetrics,
+  ...spanishDegreeMetrics,
+  ...dutchDegreeMetrics,
+];
 
 export const nonNumericGolfSwingDataKeys: Array<
-  keyof GolfSwingDataEN | keyof GolfSwingDataDE | keyof GolfSwingDataES
+  | keyof GolfSwingDataEN
+  | keyof GolfSwingDataDE
+  | keyof GolfSwingDataES
+  | keyof GolfSwingDataNL
 > = [
   "Club Name",
   "Tag",
@@ -182,4 +255,12 @@ export const nonNumericGolfSwingDataKeys: Array<
   "Nota",
   "Tipo de palo",
   "Tipo de velocidad de rotación",
+  "Type draaisnelheid",
+  "Type club",
+  "Clubnaam",
+  "Speler",
+  "Opmerking",
+  "Tag",
+  "Luchtdichtheid",
+  "Temperatuur",
 ];
