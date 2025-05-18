@@ -8,7 +8,7 @@ export type GolfSwingDataEN = {
   "Club Name": null;
   "Ball Speed": number;
   "Launch Angle": number;
-  Tag: null;
+  Tag: string;
   "Carry Deviation Angle": number;
   Player: string;
   Note: null;
@@ -99,9 +99,6 @@ export type GolfSwingDataES = {
 };
 
 // Datum,Speler,Clubnaam,Type club,Clubsnelh.,Aanvalshoek,Clubtraject,Slagvlak van de club,Slagvlak t.o.v. traject,Balsnelheid,Smashfactor,Slaghoek,Slagrichting,Backspin,Sidespin,Spinsnelheid,Type draaisnelheid,Spinas,Apexhoogte,Carry-afstand,Carry-afwijkingshoek,Carry-afwijkingsafstand,Totale afstand,Totale afwijkingshoek,Totale afwijkingsafstand,Opmerking,Tag,Luchtdichtheid,Temperatuur,Luchtdruk,Relatieve vochtigheid
-// ,,,,[km/u],[deg],[deg],[deg],[deg],[km/u],,[deg],[deg],[rpm],[rpm],[rpm],,[deg],[m],[m],[deg],[m],[m],[deg],[m],,,[g/L],[deg C],[kPa],[%]
-// 11/05/2025 12:09:10,Francois Colin,Callaway 8,IJzer 8,117.71990582407534,0.0,-2.5,-11.6,-9.1,126.35989341892119,1.0733944487498805,4.670000076293945,-9.84000015258789,2992.920654296875,20.37247657775879,2992.989990234375,Geschat,-0.38999998569488525,0.9200000166893005,37.970001220703125,-9.90999984741211,-6.53000020980835,79.0,-9.920000076293945,-13.600000381469727,,,1.1929908,21.11,101.1,35
-// 11/05/2025 12:09:28,Francois Colin,Callaway 8,IJzer 8,113.9399088480729,9.62,-6.08,15.96,22.04,110.6279098497229,0.9709320550469615,35.810001373291016,12.350000381469727,4622.11181640625,-328.0738220214844,4633.740234375,Geschat,4.059999942779541,18.84000015258789,71.4800033569336,14.880000114440918,18.350000381469727,76.87000274658203,14.84000015258789,19.68000030517578,,,1.1929908,21.11,101.1,35
 export type GolfSwingDataNL = {
   Datum: string;
   Speler: string;
@@ -129,7 +126,6 @@ export type GolfSwingDataNL = {
   "Totale afwijkingshoek": number;
   "Totale afwijkingsafstand": number;
   Opmerking: string;
-  Tag: string;
   Luchtdichtheid: number;
   Temperatuur: number;
   Luchtdruk: number;
