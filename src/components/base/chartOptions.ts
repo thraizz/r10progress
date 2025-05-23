@@ -22,9 +22,9 @@ export const chartOptionsDateTooltip: (
 ) => echarts.TooltipComponentOption = (xField, yField) => ({
   trigger: "item",
   formatter: (params: any) =>
-    `${xField}: ${params.value[0].toFixed(2)}<br/>
-         ${yField}: ${params.value[1].toFixed(2)}<br/>
-         Date: ${params.value[2]}`,
+    `${xField}: ${params.value[0]?.toFixed(2) ?? "N/A"}<br/>
+         ${yField}: ${params.value[1]?.toFixed(2) ?? "N/A"}<br/>
+         Date: ${params.value[2] ?? "N/A"}`,
 });
 
 /**
