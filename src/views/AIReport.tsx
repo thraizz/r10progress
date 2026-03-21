@@ -178,6 +178,39 @@ export const AIReport = () => {
 
   const { analysis } = report;
 
+  if (
+    !analysis?.performanceMetrics ||
+    !analysis?.technicalAnalysis?.impactConditions ||
+    !analysis?.technicalAnalysis?.ballFlight ||
+    !analysis?.practiceRecommendations
+  ) {
+    return (
+      <BasePageLayout>
+        <div className="rounded-md bg-red-50 p-4">
+          <div className="flex">
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">
+                Incomplete Report
+              </h3>
+              <div className="mt-2 text-sm text-red-700">
+                <p>
+                  This report is missing data. The AI analysis may have been
+                  cut short. Please try generating a new report.
+                </p>
+              </div>
+              <button
+                onClick={() => navigate(routes.aiAnalysis)}
+                className="mt-3 rounded-md bg-red-100 px-4 py-2 text-sm font-medium text-red-800 hover:bg-red-200"
+              >
+                Back to Reports
+              </button>
+            </div>
+          </div>
+        </div>
+      </BasePageLayout>
+    );
+  }
+
   return (
     <BasePageLayout>
       <div className="space-y-8">
