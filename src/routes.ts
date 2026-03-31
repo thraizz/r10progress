@@ -7,6 +7,7 @@ export const dashboardRoutes = {
   settings: "/settings",
   aiAnalysis: "/ai-analysis",
   aiReport: "/ai-analysis/:reportId",
+  upload: "/upload",
 } as const;
 
 export const routes = {

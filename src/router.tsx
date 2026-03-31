@@ -14,6 +14,7 @@ import { NewLayout } from "./views/NewLayout";
 import { Reports } from "./views/Reports";
 import { Sessions } from "./views/Sessions";
 import { Settings } from "./views/Settings";
+import { Upload } from "./views/Upload";
 import { Visualization } from "./views/Visualization";
 
 export const router = createBrowserRouter([
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: routes.aiReport,
         Component: AIReport,
+      },
+      {
+        path: routes.upload,
+        Component: Upload,
       },
     ],
   },

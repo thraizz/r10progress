@@ -5,7 +5,9 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { SessionContext } from "../provider/SessionContext";
+import { dashboardRoutes } from "../routes";
 
 // This list allows the users to see all the sessions that are available to them.
 // They can see the recorded date, the amount of shots and have an option to delete the session.
@@ -25,7 +27,14 @@ export const SessionList = () => {
     return (
       <div className="mt-4">
         <p className="text-sm text-gray-500">
-          No sessions found. Upload a file to get started.
+          No sessions found.{" "}
+          <Link
+            to={dashboardRoutes.upload}
+            className="text-sky-600 underline hover:text-sky-800"
+          >
+            Upload a file
+          </Link>{" "}
+          to get started.
         </p>
       </div>
     );

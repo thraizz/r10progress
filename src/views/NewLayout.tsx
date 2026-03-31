@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import {
   ArrowTrendingUpIcon,
+  ArrowUpTrayIcon,
   Bars3Icon,
   BeakerIcon,
   ChartBarSquareIcon,
@@ -31,6 +32,11 @@ const navigation: NavType[] = [
     name: "Dashboard",
     href: dashboardRoutes.dashboard,
     icon: HomeIcon,
+  },
+  {
+    name: "Upload",
+    href: dashboardRoutes.upload,
+    icon: ArrowUpTrayIcon,
   },
   {
     name: "Visualization",

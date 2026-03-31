@@ -4,7 +4,9 @@ import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { AgGridReact } from "ag-grid-react";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { SessionContext } from "../../provider/SessionContext";
+import { dashboardRoutes } from "../../routes";
 import { GolfSwingData } from "../../types/GolfSwingData";
 import { translateHeader } from "../../utils/csvLocalization";
 import { getAllDataFromSession } from "../../utils/getAllDataFromSession";
@@ -231,7 +233,14 @@ export const AllDataCombinedTable = () => {
     </BaseDisclosure>
   ) : (
     <p className="text-md text-sky-900">
-      No files uploaded yet. Please upload a file first.
+      No files uploaded yet.{" "}
+      <Link
+        to={dashboardRoutes.upload}
+        className="text-sky-600 underline hover:text-sky-800"
+      >
+        Upload a file
+      </Link>{" "}
+      to get started.
     </p>
   );
 };
