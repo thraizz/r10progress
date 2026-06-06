@@ -8,6 +8,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "jsdom",
-    exclude: ["**/node_modules/**", "**/e2e/**"],
+    // functions/ has its own Jest test setup
+    exclude: ["**/node_modules/**", "**/e2e/**", "functions/**"],
   },
 });
