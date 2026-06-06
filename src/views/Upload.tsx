@@ -74,10 +74,16 @@ export const Upload = () => {
       const docRef = doc(db, "r10data", uid, "data", filename);
       await setDoc(docRef, { results });
 
+      // fetchSnapshot marks every session as selected, so explicitly
+      // select only the uploaded session to make it the displayed one.
       const updatedSessions = await fetchSnapshot();
       if (updatedSessions && filename in updatedSessions) {
-        const newSessions = { ...updatedSessions };
-        newSessions[filename] = { ...newSessions[filename], selected: true };
+        const newSessions = Object.fromEntries(
+          Object.entries(updatedSessions).map(([key, session]) => [
+            key,
+            { ...session, selected: key === filename },
+          ]),
+        );
         setSessions(newSessions);
       }
 
