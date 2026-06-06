@@ -10,6 +10,7 @@ export const getCarryDistance = (shot: GolfSwingData) =>
   shot["Carry Distance"] ||
   shot["Carry-Distanz"] ||
   shot["Dist.​vuelo"] ||
+  shot["Dist.vuelo"] ||
   shot["Carry-afstand"];
 
 export const getTotalDistance = (shot: GolfSwingData) => {
@@ -17,6 +18,7 @@ export const getTotalDistance = (shot: GolfSwingData) => {
     shot["Total Distance"] ||
     shot["Gesamtstrecke"] ||
     shot["Distan​cia total"] ||
+    shot["Distancia total"] ||
     shot["Totale afstand"]
   );
 };

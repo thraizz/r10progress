@@ -46,6 +46,11 @@ export const Upload = () => {
           Papa.parse(csvData, {
             header: true,
             dynamicTyping: true,
+            // Newer Garmin exports prefix the first header with a BOM and
+            // embed zero-width spaces (e.g. in "Gesamtstrecke"), which
+            // breaks key lookups. Strip them so headers match our known keys.
+            transformHeader: (header: string) =>
+              header.replace(/[\u200B\uFEFF]/g, ""),
             complete: (results) => {
               setCsvFile(results.data);
             },

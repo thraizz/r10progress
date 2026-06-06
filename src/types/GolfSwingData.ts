@@ -42,7 +42,8 @@ export type GolfSwingDataDE = {
   Luftdichte: number | null;
   Schwungbahn: null | number;
   Drehrate: number | null;
-  "Smash-Faktor": number | null;
+  // Older exports use "Smash-Faktor", newer exports use "Smash Factor" (see GolfSwingDataEN)
+  "Smash-Faktor"?: number | null;
   Drehratentyp: string | null;
   Ballgeschwindigkeit: number | null;
   Gesamtabweichungswinkel: number | null;
@@ -64,6 +65,18 @@ export type GolfSwingDataDE = {
   Schlägerart: string | null;
   Anstellwinkel: null | number;
   "Carry-Distanz": number;
+  // Fields added in newer Garmin exports (2026+)
+  "Marke/Modell"?: null | string;
+  "Ziel-Gesamtdistanz"?: number | null;
+  "Ziel-Carry-Distanz"?: number | null;
+  Rückschwunglänge?: number | null;
+  "Ziel-Rückschwungzeit"?: number | null;
+  "Ziel-Durchschwungzeit"?: number | null;
+  "Follow-Through-Länge"?: number | null;
+  "Rückschw.zeit"?: number | null;
+  "Durchschw.zeit"?: number | null;
+  Zieltempo?: number | null;
+  Schwungtempo?: number | null;
 };
 
 export type GolfSwingDataES = {
@@ -74,6 +87,9 @@ export type GolfSwingDataES = {
   "Densidad del aire": number;
   "Dirección de lanzamiento": number;
   "Dist.​vuelo": number;
+  // Zero-width-space-free variants (headers are normalized on upload)
+  "Dist.vuelo"?: number;
+  "Distancia total"?: number;
   "Distancia de desviación de vuelo": number;
   "Distancia de desviación total": number;
   "Distan​cia total": number;
@@ -151,6 +167,10 @@ export const germanMetersMetrics: (keyof GolfSwingDataDE)[] = [
   "Gesamtabweichungsdistanz",
   "Carry-Abweichungsdistanz",
   "Höhe des Scheitelpunkts",
+  "Ziel-Gesamtdistanz",
+  "Ziel-Carry-Distanz",
+  "Rückschwunglänge",
+  "Follow-Through-Länge",
 ];
 
 export const spanishMetersMetrics: (keyof GolfSwingDataES)[] = [
@@ -243,6 +263,7 @@ export const nonNumericGolfSwingDataKeys: Array<
   "Spieler",
   "Notiz",
   "Schlägername",
+  "Marke/Modell",
   "Drehratentyp",
   "Datum",
   "Markierung",
