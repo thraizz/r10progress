@@ -194,8 +194,8 @@ export const AIReport = () => {
               </h3>
               <div className="mt-2 text-sm text-red-700">
                 <p>
-                  This report is missing data. The AI analysis may have been
-                  cut short. Please try generating a new report.
+                  This report is missing data. The AI analysis may have been cut
+                  short. Please try generating a new report.
                 </p>
               </div>
               <button

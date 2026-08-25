@@ -1,3 +1,4 @@
+import type * as echarts from "echarts";
 import { GolfSwingData } from "../../../types/GolfSwingData.ts";
 
 import { BaseGraph } from "../../base/BaseGraph.tsx";
