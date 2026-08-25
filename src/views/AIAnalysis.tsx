@@ -1,5 +1,5 @@
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { httpsCallable } from "firebase/functions";
+import { FunctionsError, httpsCallable } from "firebase/functions";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingIndicator } from "../components/ai/LoadingIndicator";
@@ -23,6 +23,57 @@ interface LoadingState {
   analyzing: boolean;
   generatingReport: boolean;
 }
+
+const isFunctionsError = (err: unknown): err is FunctionsError =>
+  typeof err === "object" &&
+  err !== null &&
+  "code" in err &&
+  typeof (err as { code: unknown }).code === "string" &&
+  (err as { code: string }).code.startsWith("functions/");
+
+const getExistingReportId = (err: unknown): string | null => {
+  if (!isFunctionsError(err) || err.code !== "functions/already-exists") {
+    return null;
+  }
+  const details = err.details as { reportId?: string } | undefined;
+  if (details?.reportId) return details.reportId;
+  // Fallback for older function deployments that only sent the message
+  const match = err.message.match(
+    /Report already exists for this session: (\S+)/,
+  );
+  return match ? match[1] : null;
+};
+
+const getAnalysisErrorMessage = (err: unknown): string => {
+  if (!isFunctionsError(err)) {
+    return "Failed to analyze shots. Please check your connection and try again.";
+  }
+  switch (err.code) {
+    case "functions/unauthenticated":
+      return "Your session has expired. Please sign in again and retry.";
+    case "functions/permission-denied":
+      return "You don't have access to AI analysis. Please check your supporter status.";
+    case "functions/invalid-argument":
+      return (
+        err.message ||
+        "The selected shots could not be analyzed. Please choose a different session."
+      );
+    case "functions/resource-exhausted":
+      return "The AI service is busy right now. Please wait a minute and try again.";
+    case "functions/deadline-exceeded":
+      return "The analysis took too long. Try again with fewer shots or a single session.";
+    case "functions/unavailable":
+      return "The AI service is temporarily unavailable. Please try again in a few minutes.";
+    case "functions/failed-precondition":
+      return "AI analysis is currently misconfigured on our side. We've been notified — please try again later.";
+    case "functions/internal":
+      return err.message && err.message !== "INTERNAL"
+        ? err.message
+        : "Something went wrong while generating your analysis. Please try again.";
+    default:
+      return err.message || "Failed to analyze shots. Please try again later.";
+  }
+};
 
 export const AIAnalysis = () => {
   const { user } = useContext(UserContext);
@@ -108,12 +159,11 @@ export const AIAnalysis = () => {
           timeframe: "last session",
           filename,
         });
-      } catch (err: any) {
-        console.log(err);
-        // Check if the error is due to an existing report
-        if (err.message?.includes("Report already exists for this session:")) {
-          const reportId = err.message.split(": ")[1];
-          navigate(`${routes.aiAnalysis}/${reportId}`);
+      } catch (err) {
+        // A report for this session already exists: open it instead of failing
+        const existingReportId = getExistingReportId(err);
+        if (existingReportId) {
+          navigate(`${routes.aiAnalysis}/${existingReportId}`);
           return;
         }
         throw err;
@@ -136,7 +186,7 @@ export const AIAnalysis = () => {
         }
       }
     } catch (err) {
-      setError("Failed to analyze shots. Please try again later.");
+      setError(getAnalysisErrorMessage(err));
       console.error("Analysis error:", err);
     } finally {
       setLoadingState({ analyzing: false, generatingReport: false });
