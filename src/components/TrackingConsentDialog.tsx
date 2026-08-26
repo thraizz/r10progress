@@ -57,10 +57,19 @@ export const TrackingConsentDialog = () => {
                       Help Us Improve Your Experience
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">
-                      We use Mouseflow to analyze how visitors use our site.
-                      This helps us improve the user experience. The tracking is
-                      completely anonymous and does not collect any personal
-                      information.
+                      With your consent we use Mouseflow to record how you
+                      interact with the app (clicks, scrolling, navigation) so
+                      we can find and fix usability problems. Declining does not
+                      limit any feature. See our{" "}
+                      <a
+                        className="underline"
+                        href="https://r10progress.com/privacy"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Privacy Policy
+                      </a>
+                      .
                     </p>
                   </div>
                   <div className="flex shrink-0 gap-4">
@@ -105,16 +114,24 @@ export const TrackingConsentDialog = () => {
                     </Dialog.Title>
                     <div className="mt-4">
                       <p className="text-sm text-gray-500">
-                        We use Mouseflow to analyze how visitors use our site.
-                        This helps us improve the user experience and make our
-                        application better for everyone. The tracking is
-                        completely anonymous and does not collect any personal
-                        information.
+                        With your consent we use Mouseflow to record how you
+                        interact with the app (clicks, scrolling, navigation) so
+                        we can find and fix usability problems. Declining does
+                        not limit any feature.
                       </p>
                       <p className="mt-2 text-sm text-gray-500">
-                        By accepting, you agree to allow us to collect usage
-                        data through Mouseflow. You can change this setting at
-                        any time in your preferences.
+                        By accepting, you allow us to collect this usage data
+                        through Mouseflow. You can withdraw your consent at any
+                        time. See our{" "}
+                        <a
+                          className="underline"
+                          href="https://r10progress.com/privacy"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Privacy Policy
+                        </a>
+                        .
                       </p>
                     </div>
                   </div>

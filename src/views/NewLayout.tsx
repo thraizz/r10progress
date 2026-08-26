@@ -264,7 +264,7 @@ export const NewLayout = ({ children }: PropsWithChildren) => {
                   </a>
 
                   <a
-                    href="mailto:info@lakur.tech"
+                    href="mailto:aron@r10progress.com"
                     className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-sky-200 hover:bg-sky-700 hover:text-white"
                   >
                     <EnvelopeIcon
@@ -317,6 +317,26 @@ export const NewLayout = ({ children }: PropsWithChildren) => {
           <main className="py-4 lg:py-10">
             <div className="px-0 sm:px-4 lg:px-8">{children}</div>
           </main>
+
+          <footer className="flex flex-row items-center justify-center gap-2 px-6 py-4 text-sm text-gray-500">
+            <a
+              className="underline"
+              href="https://r10progress.com/privacy"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Privacy Policy
+            </a>
+            <span>|</span>
+            <a
+              className="underline"
+              href="https://r10progress.com/imprint"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Imprint
+            </a>
+          </footer>
         </div>
       </div>
     </>

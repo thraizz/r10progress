@@ -42,8 +42,16 @@ export const Layout = ({ children }: PropsWithChildren) => {
             Aron Schüler
           </a>
         </p>
-        <a href="mailto:r10progress@lakur.tech" className="ml-2 flex underline">
+        <a href="mailto:aron@r10progress.com" className="ml-2 flex underline">
           <EnvelopeIcon className="h-5 w-5" />
+        </a>
+        <a
+          className="text-md ml-2 underline"
+          href="https://r10progress.com/privacy"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Privacy Policy
         </a>
       </footer>
     </div>
