@@ -1,5 +1,6 @@
 import { SessionList } from "../components/SessionList";
 import { BasePageLayout } from "../components/base/BasePageLayout";
+import { DangerZone } from "../components/panels/DangerZone";
 import { OutlierDetectionSettings } from "../components/panels/OutlierDetectionSettings";
 import { TrackingSettings } from "../components/panels/TrackingSettings";
 import { UnitSettings } from "../components/panels/UnitSettings";
@@ -27,6 +28,11 @@ export const Settings = () => (
       <section>
         <h3 className="mb-4 text-xl font-semibold">Sessions</h3>
         <SessionList />
+      </section>
+
+      <section>
+        <h3 className="mb-4 text-xl font-semibold">Your Data</h3>
+        <DangerZone />
       </section>
 
       <p className="text-sm text-gray-500">
